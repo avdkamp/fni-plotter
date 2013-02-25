@@ -1,16 +1,18 @@
 =Handige URLS=
 
- # http://whaticode.com/2010/05/24/a-java-implementation-for-shannon-entropy/
- # http://nl.wikipedia.org/wiki/Entropie_(informatietheorie)
- # http://mathworld.wolfram.com/Entropy.html
- # http://www.jfree.org/jfreechart/
+ # [http://whaticode.com/2010/05/24/a-java-implementation-for-shannon-entropy/ Example Code Shannon Entropy]
+ # [http://nl.wikipedia.org/wiki/Entropie_(informatietheorie) NL Wiki Shannon Entropy]
+ # [http://mathworld.wolfram.com/Entropy.html Wolfram Shannon Entropy]
+ # [http://www.jfree.org/jfreechart/ jFreeChart]
+ # [http://sourceforge.net/projects/jfreechart/files/3.%20JCommon/ jCommon]
+ # [http://commons.apache.org/codec/download_codec.cgi Apache Commons Codec]
 
 ==Eclipse Links==
 
- # http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/junosr1
- # http://help.eclipse.org/juno/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-129.htm
- # [http://subclipse.tigris.org/servlets/ProjectProcess;jsessionid=6223934926 C07A2563F9C013AB4E9E82?pageID=p4wYuA Subclipse]
+ # [http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/junosr1 Eclipse Download]
+ # [http://help.eclipse.org/juno/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-129.htm Install plugin in Eclipse]
+ # [http://subclipse.tigris.org/servlets/ProjectProcess;jsessionid=6223934926%20C07A2563F9C013AB4E9E82?pageID=p4wYuA Subclipse]
                  * http://subclipse.tigris.org/update_1.8.x
                    * SVN Repositories > add SVN Repository > enter url > right click on trunk > Checkout... > Finish
- # https://developers.google.com/java-dev-tools/download-wbpro
+ # [https://developers.google.com/java-dev-tools/download-wbpro WindowBuilder Pro]
                  * http://dl.google.com/eclipse/inst/d2wbpro/latest/3.7
