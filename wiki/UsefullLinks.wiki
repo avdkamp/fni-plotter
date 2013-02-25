@@ -11,5 +11,6 @@
  # http://help.eclipse.org/juno/index.jsp?topic=%2Forg.eclipse.platform.doc.user%2Ftasks%2Ftasks-129.htm
  # http://subclipse.tigris.org/servlets/ProjectProcess;jsessionid=6223934926C07A2563F9C013AB4E9E82?pageID=p4wYuA
                  * http://subclipse.tigris.org/update_1.8.x
+                   * SVN Repositories > add SVN Repository > enter url > right click on trunk > Checkout... > Finish
  # https://developers.google.com/java-dev-tools/download-wbpro
                  * http://dl.google.com/eclipse/inst/d2wbpro/latest/3.7
