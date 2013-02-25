@@ -7,7 +7,6 @@ public class ShannonEntropyCalc {
 	
 	public ShannonEntropyCalc(byte[] bytes){
 		//supposed to be shannon algorithm
-        //TODO: needs validation from proven programs if this works
 //		double result = 0.0d;
 //		for(Byte b : bytes){
 //			if(!map.containsKey(b.toString())){
