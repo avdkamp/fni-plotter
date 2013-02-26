@@ -14,6 +14,10 @@ public class ByteConverter {
 	    return bits; 
 	}
 	
+	public static int fromUnsignedByteToInteger(byte b){
+		return (b &0xFF);
+	}
+	
 	public static int[] fromUnsignedBytesToIntegers(byte[] bytes){
 		int[] byteVal = new int[bytes.length];
 		int count = 0;
@@ -23,6 +27,10 @@ public class ByteConverter {
 		}
 		
 		return byteVal;
+	}
+	
+	public static int fromSignedByteToInteger(byte b){
+		return b;
 	}
 	
 	public static int[] fromSignedBytesToIntegers(byte[] bytes){
