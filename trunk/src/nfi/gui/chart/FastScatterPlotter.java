@@ -20,7 +20,7 @@ public class FastScatterPlotter extends ApplicationFrame {
      */
     private float[][] data;
 	
-	public FastScatterPlotter(String title, int[] values) {
+	public FastScatterPlotter(String title, double[] values) {
 		super(title);
 		
 		populateData(values);
@@ -47,7 +47,7 @@ public class FastScatterPlotter extends ApplicationFrame {
 	 /**
      * Populates the data array with values.
      */
-    private void populateData(int[] values) {
+    private void populateData(double[] values) {
     	/*
     	 * data[0][float] = x
     	 * data[1][float] = y
@@ -56,7 +56,7 @@ public class FastScatterPlotter extends ApplicationFrame {
     	
         for (int i = 0; i < values.length; i++) {
             this.data[0][i] = i;
-            this.data[1][i] = values[i];
+            this.data[1][i] = (float) values[i];
         }
     }
 }
