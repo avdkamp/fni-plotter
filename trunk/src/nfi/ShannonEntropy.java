@@ -3,6 +3,10 @@ package nfi;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.swing.SwingWorker;
 
@@ -11,18 +15,14 @@ public class ShannonEntropy {
 	private double[] shannonResults;
 	private byte[] bytes;
 	private int blockSize;
-	private int progressChunk;
+	private int progress;
 	private OnShannonEntropyEventListener shannonEntropyEventListener;
 	/**
 	 * 
 	 * @param bytes the bytes of the file that has to be processed.
 	 * @param blockSize that has to be used for the calculation
 	 */
-	//TODO: klasse threaded maken en indien mogelijk zelfs multi-threaded maken.
-	//dit kan alleen getest worden met grote bestanden.
-	//TODO: callback functie maken dat berekening klaar is.
 	//TODO: klassen extreem goed documenteren
-	//TODO: waar mogelijk de code optimalizeren om extreem snel data te kunnen verwerken
 	public ShannonEntropy(byte[] bytes, int blockSize){
 		this.bytes = bytes;
 		this.blockSize = blockSize;
@@ -34,7 +34,7 @@ public class ShannonEntropy {
 	}
 	
 	public class worker extends Thread{
-		
+		@Override
 		public void run(){
 			int[] values = ByteConverter.fromUnsignedBytesToIntegers(bytes);
 			int[][] blockedValues = new int[values.length/blockSize+1][blockSize];
@@ -52,7 +52,12 @@ public class ShannonEntropy {
 			
 			shannonResults = new double[blockedValues.length];
 			
+			
+			final int bLength = blockedValues.length;
+			
 			for (int i = 0; i < blockedValues.length; i++) {
+				progress = ((i*100)/bLength);
+				shannonEntropyEventListener.onProgressUpdate();
 				shannonResults[i] = entropy(blockedValues[i]);
 			}
 			
@@ -79,7 +84,7 @@ public class ShannonEntropy {
 	}
 	
 	public int getProgressChunk(){
-		return progressChunk;
+		return progress;
 	}
 	
 	public double[] getResults(){
