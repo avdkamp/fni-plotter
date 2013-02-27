@@ -25,7 +25,7 @@ public class Main {
 		fis.read(bytes);
 		fis.close();
 		
-		ShannonEntropyCalc sec = new ShannonEntropyCalc(bytes, 512);
+		ShannonEntropyCalc sec = new ShannonEntropyCalc(bytes, 1024);
 		
 //		create chart example
 		final FastScatterPlotter graphFrame = new FastScatterPlotter("Fast Scatter Plot", sec.getResults());
