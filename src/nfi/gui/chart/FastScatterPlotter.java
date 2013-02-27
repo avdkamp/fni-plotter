@@ -92,7 +92,7 @@ public class FastScatterPlotter extends ApplicationFrame {
         panel.setMaximumDrawWidth(2000);
         
         setContentPane(panel);
-        btnNewButton.setBounds(280, 5, 89, 23);
+        btnNewButton.setBounds(157, 5, 89, 23);
         btnNewButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		se.run();
@@ -114,6 +114,11 @@ public class FastScatterPlotter extends ApplicationFrame {
         panel.add(btnNewButton_1);
         panel.add(btnNewButton);
         
+        final JProgressBar progressBar = new JProgressBar();
+        progressBar.setBounds(353, 5, 262, 20);
+        progressBar.setValue(0);
+        panel.add(progressBar);
+        
         se.setOnShannonEntropyEventListener(new OnShannonEntropyEventListener() {
 			
 			@Override
@@ -122,12 +127,13 @@ public class FastScatterPlotter extends ApplicationFrame {
 				if(dataSet.getSeriesCount() != 0){
 					dataSet.removeSeries("Series0");
 				}
+				progressBar.setValue(100);
 				dataSet.addSeries("Series0", data);
 			}
 			
 			@Override
 			public void onProgressUpdate() {
-				
+				progressBar.setValue(se.getProgressChunk());
 			}
 		});
 	}
