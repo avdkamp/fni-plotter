@@ -32,7 +32,7 @@ public class ShannonEntropy {
 	public void run(){
 		new worker().start();
 	}
-	
+	//TODO: progress beter verdelen
 	public class worker extends Thread{
 		@Override
 		public void run(){
@@ -86,15 +86,21 @@ public class ShannonEntropy {
 	public int getProgressChunk(){
 		return progress;
 	}
-	
+	/*
+	 *  
+	 */
 	public double[] getResults(){
 		return shannonResults;
 	}
-	
+	/*
+	 * initializes the interface
+	 */
 	public void setOnShannonEntropyEventListener(OnShannonEntropyEventListener listener){
 		this.shannonEntropyEventListener = listener;
 	}
-	
+	/*
+	 * Inner callback interface
+	 */
 	public static interface OnShannonEntropyEventListener{
 		public void onProgressUpdate();
 		public void onWorkerComplete();
