@@ -16,13 +16,15 @@ public class GraphPanel extends JPanel {
 	
 	private Color CustomColor=new Color(21,66,115);
 	private final JLabel lblStatistics = new JLabel(" Statistics");
-	private final JPanel StatisticsPanel = new JPanel();
+	private final JPanel statisticsPanel = new JPanel();
 	private final JPanel GraphPanel_2 = new JPanel();
 	private final JLabel lblGraph = new JLabel(" Graph");
-	private final JLabel BackLabel = new JLabel("");
-	private final JLabel UpdateLabel = new JLabel("");
-	private final JLabel ForwardLabel = new JLabel("");
-	private final JLabel ExportLabel = new JLabel("");
+	private final JLabel backLabel = new JLabel("");
+	private final JLabel updateLabel = new JLabel("");
+	private final JLabel forwardLabel = new JLabel("");
+	private final JLabel exportLabel = new JLabel("");
+	
+	private OnGraphEventListener onGraphEventListener;
 	
 	public GraphPanel(){
 		this.setVisible(false);
@@ -50,27 +52,31 @@ public class GraphPanel extends JPanel {
 		lblStatistics.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblStatistics.setBackground(new Color(21, 66, 115));
 		
-		StatisticsPanel.setBounds(10, 11, 242, 221);
-		this.add(StatisticsPanel);
-		StatisticsPanel.setLayout(null);
-		StatisticsPanel.setBackground(SystemColor.menu);
-		StatisticsPanel.setBorder(new LineBorder(CustomColor));
+		statisticsPanel.setBounds(10, 11, 242, 221);
+		this.add(statisticsPanel);
+		statisticsPanel.setLayout(null);
+		statisticsPanel.setBackground(SystemColor.menu);
+		statisticsPanel.setBorder(new LineBorder(CustomColor));
 		
-		BackLabel.setIcon(new ImageIcon("images/back.png"));
-		BackLabel.setBounds(33, 273, 53, 44);
+		backLabel.setIcon(new ImageIcon("images/back.png"));
+		backLabel.setBounds(33, 273, 53, 44);
 		
-		this.add(BackLabel);
-		UpdateLabel.setIcon(new ImageIcon("images/update.png"));
-		UpdateLabel.setBounds(108, 275, 48, 55);
+		this.add(backLabel);
+		updateLabel.setIcon(new ImageIcon("images/update.png"));
+		updateLabel.setBounds(108, 275, 48, 55);
 		
-		this.add(UpdateLabel);
-		ForwardLabel.setIcon(new ImageIcon("images/forward.png"));
-		ForwardLabel.setBounds(166, 274, 58, 41);
+		this.add(updateLabel);
+		forwardLabel.setIcon(new ImageIcon("images/forward.png"));
+		forwardLabel.setBounds(166, 274, 58, 41);
 		
-		this.add(ForwardLabel);
-		ExportLabel.addMouseListener(new MouseAdapter() {
+		this.add(forwardLabel);
+		
+		exportLabel.setIcon(new ImageIcon("images/export.png"));
+		exportLabel.setBounds(108, 341, 50, 50);
+		exportLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				onGraphEventListener.exportResults();
 //				btnHome.setBackground(SystemColor.menu);
 //				btnInfo.setBackground(SystemColor.menu);
 //				infoPanel.setVisible(false);
@@ -82,7 +88,18 @@ public class GraphPanel extends JPanel {
 						
 			}
 		});
-		ExportLabel.setIcon(new ImageIcon("images/export.png"));
-		ExportLabel.setBounds(108, 341, 50, 50);
+		this.add(exportLabel);
+	}
+	/**
+	 * initializes the interface
+	 */
+	public void setOnGraphEventListener(OnGraphEventListener listener){
+		this.onGraphEventListener = listener;
+	}
+	/**
+	 * Inner callback interface
+	 */
+	public static interface OnGraphEventListener{
+		public void exportResults();
 	}
 }
