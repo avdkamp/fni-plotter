@@ -32,6 +32,8 @@ public class PlotFilePanel extends JPanel {
 	private JSpinner MemorySizeSpinner = new JSpinner();
 	private JTextField FilePathTextField;
 	private OnPlotFileEventListener onPlotFileEventListener;
+	private int blocksize;
+	private String pathToFile;
 	
 	public PlotFilePanel(){
 		
@@ -65,48 +67,14 @@ public class PlotFilePanel extends JPanel {
 		
 		JButton btnPlotEntropy = new JButton("Plot Entropy");
 		btnPlotEntropy.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				blocksize = Integer.valueOf((String)BlockSizeComboBox.getSelectedItem());
+//				int memorysize = (int) MemorySizeSpinner.getValue();
+//				String pathToFile = "C:\\Users\\Robert\\Documents\\templates\\CCS template.psd";
+				pathToFile = "D:\\Downloads\\jfreechart-1.0.14\\lib\\jfreechart-1.0.14.jar";
 				
 				onPlotFileEventListener.showGraph();
-				
-//				btnHome.setBackground(SystemColor.menu);
-//				btnInfo.setBackground(SystemColor.menu);
-//				btnPlotFile.setBackground(Color.WHITE);
-//				HomePanel.setVisible(false);
-//				PlotFilePanel.setVisible(false);
-//				InfoPanel.setVisible(false);
-//				ExportPanel.setVisible(false);
-//				GraphPanel.setVisible(true);
-				
-//				int blocksize = Integer.valueOf((String)BlockSizeComboBox.getSelectedItem());
-//				int memorysize = (int) MemorySizeSpinner.getValue();
-				
-//				String dataFile = "C:\\Users\\Robert\\Documents\\templates\\CCS template.psd";
-//				String dataFile = "D:\\Downloads\\jfreechart-1.0.14\\lib\\jfreechart-1.0.14.jar";
-				
-//				byte bytes[] = null; 
-//				File f = new File(dataFile);
-//				FileInputStream fis = null;
-//				try {
-//					fis = new FileInputStream(f);
-//					bytes = new byte[(int)f.length()];
-//					fis.read(bytes);
-//					fis.close();
-//				} catch (FileNotFoundException e1) {
-//					e1.printStackTrace();
-//				} catch (IOException e1) {
-//					e1.printStackTrace();
-//				}
-				
-//				final ShannonEntropy se = new ShannonEntropy(bytes, blocksize);
-				
-//				create chart example
-//				graphFrame = new FastScatterPlotter("Fast Scatter Plot", se);
-//		        graphFrame.pack();
-//		        RefineryUtilities.centerFrameOnScreen(graphFrame);
-//		        graphFrame.setVisible(true);
 			}
 		});
 		
@@ -159,6 +127,12 @@ public class PlotFilePanel extends JPanel {
 //            }
 //        }
 //	});
+	}
+	public int getBlockSize(){
+		return blocksize;
+	}
+	public String getPathToFile(){
+		return pathToFile;
 	}
 	/**
 	 * initializes the interface

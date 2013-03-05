@@ -118,6 +118,9 @@ public class Main {
 		plotFilePanel.setOnPlotFileEventListener(new OnPlotFileEventListener() {
 			@Override
 			public void showGraph() {
+				graphPanel.setBlockSize(plotFilePanel.getBlockSize());
+				graphPanel.setPathToFile(plotFilePanel.getPathToFile());
+				graphPanel.addGraph();
 				infoPanel.setVisible(false);
 				plotFilePanel.setVisible(false);
 				graphPanel.setVisible(true);

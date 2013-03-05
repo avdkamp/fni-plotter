@@ -10,21 +10,25 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import nfi.gui.chart.ScatterPlotChart;
+
 public class GraphPanel extends JPanel {
 
 	private static final long serialVersionUID = 7518936767614981258L;
+	private OnGraphEventListener onGraphEventListener;
 	
 	private Color CustomColor=new Color(21,66,115);
 	private final JLabel lblStatistics = new JLabel(" Statistics");
 	private final JPanel statisticsPanel = new JPanel();
-	private final JPanel GraphPanel_2 = new JPanel();
-	private final JLabel lblGraph = new JLabel(" Graph");
+	private final JPanel graphPanel = new JPanel();
+	private final JLabel lblGraph = new JLabel("Graph");
 	private final JLabel backLabel = new JLabel("");
 	private final JLabel updateLabel = new JLabel("");
 	private final JLabel forwardLabel = new JLabel("");
 	private final JLabel exportLabel = new JLabel("");
 	
-	private OnGraphEventListener onGraphEventListener;
+	private int blockSize;
+	private String pathToFile;
 	
 	public GraphPanel(){
 		this.setVisible(false);
@@ -37,26 +41,26 @@ public class GraphPanel extends JPanel {
 		lblGraph.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblGraph.setBackground(new Color(21, 66, 115));
 		lblGraph.setBounds(284, 0, 84, 23);
-		
 		this.add(lblGraph);
-		GraphPanel_2.setLayout(null);
-		GraphPanel_2.setBackground(SystemColor.menu);
-		GraphPanel_2.setBorder(new LineBorder(CustomColor));
-		GraphPanel_2.setBounds(262, 13, 601, 492);
 		
-		this.add(GraphPanel_2);
+		graphPanel.setLayout(null);
+		graphPanel.setBackground(SystemColor.menu);
+		graphPanel.setBorder(new LineBorder(CustomColor));
+		graphPanel.setBounds(262, 13, 601, 492);
+		this.add(graphPanel);
+		
 		lblStatistics.setBounds(32, 0, 84, 23);
-		this.add(lblStatistics);
 		lblStatistics.setOpaque(true);
 		lblStatistics.setForeground(Color.WHITE);
 		lblStatistics.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblStatistics.setBackground(new Color(21, 66, 115));
+		this.add(lblStatistics);
 		
 		statisticsPanel.setBounds(10, 11, 242, 221);
-		this.add(statisticsPanel);
 		statisticsPanel.setLayout(null);
 		statisticsPanel.setBackground(SystemColor.menu);
 		statisticsPanel.setBorder(new LineBorder(CustomColor));
+		this.add(statisticsPanel);
 		
 		backLabel.setIcon(new ImageIcon("images/back.png"));
 		backLabel.setBounds(33, 273, 53, 44);
@@ -77,18 +81,19 @@ public class GraphPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				onGraphEventListener.exportResults();
-//				btnHome.setBackground(SystemColor.menu);
-//				btnInfo.setBackground(SystemColor.menu);
-//				infoPanel.setVisible(false);
-//				plotFilePanel.setVisible(false);
-//				this.setVisible(false);
-//				homePanel.setVisible(false);
-//				exportPanel.setVisible(true);
-//				btnPlotFile.setBackground(Color.WHITE);
-						
 			}
 		});
 		this.add(exportLabel);
+	}
+	public void addGraph(){
+		ScatterPlotChart spc = new ScatterPlotChart(pathToFile, blockSize);
+		graphPanel.add(spc.getScatterPlotChart());
+	}
+	public void setBlockSize(int blockSize) {
+		this.blockSize = blockSize;
+	}
+	public void setPathToFile(String pathToFile) {
+		this.pathToFile = pathToFile;
 	}
 	/**
 	 * initializes the interface
