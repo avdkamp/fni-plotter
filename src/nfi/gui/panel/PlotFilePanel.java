@@ -20,7 +20,7 @@ public class PlotFilePanel extends JPanel {
 	
 	private Color CustomColor=new Color(21,66,115);
 	
-	private String[] PlotOptions = {"512", "1024", "2048" ,"4096" ,"8192" ,"16384" ,"32768"};
+	private String[] PlotOptions = {"64", "128", "256", "512", "1024", "2048" ,"4096" ,"8192" ,"16384" ,"32768"};
 	private JLabel Option_Label = new JLabel(" Plot Options");
 	private JLabel lblBlockSize = new JLabel("Block Size");
 	private JLabel lblMemorySize = new JLabel("Memory Size");
