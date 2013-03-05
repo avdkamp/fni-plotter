@@ -134,7 +134,6 @@ public class ScatterPlotChart {
 		panel.setBounds(0, 0, 601, 492);
 		return panel;
 	}
-	
 	 /**
      * Populates the data array with values.
      */
