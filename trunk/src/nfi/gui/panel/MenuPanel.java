@@ -10,8 +10,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import nfi.ShannonEntropy.OnShannonEntropyEventListener;
-
 public class MenuPanel extends JPanel {
 
 	private static final long serialVersionUID = -8850675340470968449L;
@@ -22,8 +20,8 @@ public class MenuPanel extends JPanel {
 	private OnMenuEventListener onMenuEventListener;
 	
 	public MenuPanel(){
-		FlowLayout fl_Menu_Panel = (FlowLayout) this.getLayout();
-		fl_Menu_Panel.setAlignment(FlowLayout.LEFT);
+		FlowLayout flMenuPanel = (FlowLayout) this.getLayout();
+		flMenuPanel.setAlignment(FlowLayout.LEFT);
 		this.setBackground(new Color(240, 240, 240));
 		this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.black));
 		this.setBounds(0, 82, 900, 25);
