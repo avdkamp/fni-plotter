@@ -15,7 +15,7 @@ public class Main {
 	 */
 	public static void main(String[] args) throws Exception {
 		
-		String dataFile = "/home/albert/test";
+		String dataFile = "C:\\Users\\Robert\\Documents\\templates\\CCS template.psd";
 //		String dataFile = "D:\\Downloads\\jfreechart-1.0.14\\lib\\jfreechart-1.0.14.jar";
 		
 		byte bytes[] = null; 
