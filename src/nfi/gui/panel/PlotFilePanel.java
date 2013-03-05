@@ -71,9 +71,6 @@ public class PlotFilePanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				blocksize = Integer.valueOf((String)BlockSizeComboBox.getSelectedItem());
 //				int memorysize = (int) MemorySizeSpinner.getValue();
-//				String pathToFile = "C:\\Users\\Robert\\Documents\\templates\\CCS template.psd";
-				pathToFile = "D:\\Downloads\\jfreechart-1.0.14\\lib\\jfreechart-1.0.14.jar";
-				
 				onPlotFileEventListener.showGraph();
 			}
 		});
