@@ -4,10 +4,6 @@ import java.awt.Color;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,10 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
-
-import nfi.ShannonEntropy;
-import nfi.ShannonEntropy.OnShannonEntropyEventListener;
-import nfi.gui.chart.FastScatterPlotter;
 
 public class PlotFilePanel extends JPanel {
 
@@ -40,7 +32,6 @@ public class PlotFilePanel extends JPanel {
 	private JSpinner MemorySizeSpinner = new JSpinner();
 	private JTextField FilePathTextField;
 	private OnPlotFileEventListener onPlotFileEventListener;
-	FastScatterPlotter graphFrame;
 	
 	public PlotFilePanel(){
 		
@@ -77,6 +68,9 @@ public class PlotFilePanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				onPlotFileEventListener.showGraph();
+				
 //				btnHome.setBackground(SystemColor.menu);
 //				btnInfo.setBackground(SystemColor.menu);
 //				btnPlotFile.setBackground(Color.WHITE);
@@ -86,35 +80,33 @@ public class PlotFilePanel extends JPanel {
 //				ExportPanel.setVisible(false);
 //				GraphPanel.setVisible(true);
 				
-				int blocksize = Integer.valueOf((String)BlockSizeComboBox.getSelectedItem());
+//				int blocksize = Integer.valueOf((String)BlockSizeComboBox.getSelectedItem());
 //				int memorysize = (int) MemorySizeSpinner.getValue();
 				
 //				String dataFile = "C:\\Users\\Robert\\Documents\\templates\\CCS template.psd";
-				String dataFile = "D:\\Downloads\\jfreechart-1.0.14\\lib\\jfreechart-1.0.14.jar";
+//				String dataFile = "D:\\Downloads\\jfreechart-1.0.14\\lib\\jfreechart-1.0.14.jar";
 				
-				byte bytes[] = null; 
-				File f = new File(dataFile);
-				FileInputStream fis = null;
-				try {
-					fis = new FileInputStream(f);
-					bytes = new byte[(int)f.length()];
-					fis.read(bytes);
-					fis.close();
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+//				byte bytes[] = null; 
+//				File f = new File(dataFile);
+//				FileInputStream fis = null;
+//				try {
+//					fis = new FileInputStream(f);
+//					bytes = new byte[(int)f.length()];
+//					fis.read(bytes);
+//					fis.close();
+//				} catch (FileNotFoundException e1) {
+//					e1.printStackTrace();
+//				} catch (IOException e1) {
+//					e1.printStackTrace();
+//				}
 				
-				final ShannonEntropy se = new ShannonEntropy(bytes, blocksize);
+//				final ShannonEntropy se = new ShannonEntropy(bytes, blocksize);
 				
 //				create chart example
-				graphFrame = new FastScatterPlotter("Fast Scatter Plot", se);
-		        graphFrame.pack();
+//				graphFrame = new FastScatterPlotter("Fast Scatter Plot", se);
+//		        graphFrame.pack();
 //		        RefineryUtilities.centerFrameOnScreen(graphFrame);
-		        graphFrame.setVisible(true);
+//		        graphFrame.setVisible(true);
 			}
 		});
 		

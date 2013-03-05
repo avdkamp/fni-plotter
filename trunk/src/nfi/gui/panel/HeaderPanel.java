@@ -10,8 +10,7 @@ public class HeaderPanel extends JPanel {
 	private Color CustomColor=new Color(21,66,115);
 	
 	public HeaderPanel(){
-		JPanel BlueHeaderPanel = new JPanel();
-		BlueHeaderPanel.setBackground(CustomColor);
-		BlueHeaderPanel.setBounds(0, 0, 900, 25);
+		this.setBackground(CustomColor);
+		this.setBounds(0, 0, 900, 25);
 	}
 }

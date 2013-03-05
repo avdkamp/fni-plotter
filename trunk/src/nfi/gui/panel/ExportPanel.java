@@ -15,6 +15,7 @@ import javax.swing.border.LineBorder;
 public class ExportPanel extends JPanel {
 
 	private static final long serialVersionUID = -8394418126759717567L;
+	private OnExportEventListener onExportEventListener;
 	
 	private Color CustomColor=new Color(21,66,115);
 	private String[] ImageOptions = {"1024x768", "800x600", "1920x1080" ,"Screen size"};
@@ -178,5 +179,17 @@ public class ExportPanel extends JPanel {
 		JLabel label_1 = new JLabel("Height");
 		label_1.setBounds(10, 52, 46, 14);
 		ExportZoomedImagePanel.add(label_1);
+	}
+	/**
+	 * initializes the interface
+	 */
+	public void setOnExportEventListener(OnExportEventListener listener){
+		this.onExportEventListener = listener;
+	}
+	/**
+	 * Inner callback interface
+	 */
+	public static interface OnExportEventListener{
+		public void exportToPDF();
 	}
 }

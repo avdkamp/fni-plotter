@@ -30,29 +30,25 @@ public class MenuPanel extends JPanel {
 		
 		btnHome.setBackground(SystemColor.menu);
 		btnPlotFile.setBackground(SystemColor.menu);
-		
 		btnInfo.setBackground(SystemColor.menu);
-		
-		
-		
 		
 		this.add(btnHome);
 		this.add(btnPlotFile);
 		this.add(btnInfo);
-		
 	}
 	private void setButtonEventListeners(){
 		btnPlotFile.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				btnHome.setBackground(SystemColor.menu);
 				btnInfo.setBackground(SystemColor.menu);
 				btnPlotFile.setBackground(Color.WHITE);
-				
 				onMenuEventListener.onPlotFileClick();
 			}
 		});
 		
 		btnInfo.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				btnHome.setBackground(SystemColor.menu);
 				btnPlotFile.setBackground(SystemColor.menu);
