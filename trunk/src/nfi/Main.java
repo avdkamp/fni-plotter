@@ -8,6 +8,12 @@ import javax.swing.JLayeredPane;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDropEvent;
+import java.io.File;
+import java.util.List;
 
 import nfi.gui.panel.*;
 
@@ -56,38 +62,65 @@ public class Main {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		JFrame frmHi = new JFrame();
-		frmHi.setResizable(false);
-		frmHi.setVisible(true);
-		frmHi.setTitle("Plotting Entropy");
-		frmHi.setIconImage(Toolkit.getDefaultToolkit().getImage("images/icon.png"));
-		frmHi.getContentPane().setBackground(Color.WHITE);
-		frmHi.setBounds(100, 100, 900, 700);
-		frmHi.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmHi.getContentPane().setLayout(null);
+		JFrame mainFrame = new JFrame();
+		mainFrame.setResizable(false);
+		mainFrame.setVisible(true);
+		mainFrame.setTitle("Plotting Entropy");
+		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/icon.png"));
+		mainFrame.getContentPane().setBackground(Color.WHITE);
+		mainFrame.setBounds(100, 100, 900, 700);
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainFrame.getContentPane().setLayout(null);
 		
-		frmHi.getContentPane().add(headerPanel);
+		mainFrame.getContentPane().add(headerPanel);
 		
 		JLabel logoLabel = new JLabel("");
 		logoLabel.setIcon(new ImageIcon("images/logo.png"));
 		logoLabel.setBounds(26, 11, 235, 71);
-		frmHi.getContentPane().add(logoLabel);
-		frmHi.getContentPane().add(menuPanel);
-		frmHi.getContentPane().add(homePanel);
-		frmHi.getContentPane().add(plotFilePanel);
-		frmHi.getContentPane().add(infoPanel);
-		frmHi.getContentPane().add(graphPanel);
-		frmHi.getContentPane().add(exportPanel);
-		frmHi.getContentPane().add(footerPanel);
+		mainFrame.getContentPane().add(logoLabel);
+		mainFrame.getContentPane().add(menuPanel);
+		mainFrame.getContentPane().add(homePanel);
+		mainFrame.getContentPane().add(plotFilePanel);
+		mainFrame.getContentPane().add(infoPanel);
+		mainFrame.getContentPane().add(graphPanel);
+		mainFrame.getContentPane().add(exportPanel);
+		mainFrame.getContentPane().add(footerPanel);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setBounds(314, 416, -114, -67);
-		frmHi.getContentPane().add(layeredPane);
+		mainFrame.getContentPane().add(layeredPane);
+		
+		//TODO: is windows only op het moment, moet ook compatible met linux zijn
+		mainFrame.setDropTarget(new DropTarget() {
+			private static final long serialVersionUID = 1284909278859440490L;
+
+			@SuppressWarnings("unchecked")
+			@Override
+		    public synchronized void drop(DropTargetDropEvent evt) {
+		        try {
+		            evt.acceptDrop(DnDConstants.ACTION_COPY);
+		            List<File> droppedFiles = (List<File>)
+		                evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+		            for (File file : droppedFiles) {
+		                plotFilePanel.setPathToFile(file.getAbsolutePath());
+		            }
+		        } catch (Exception ex) {
+		            ex.printStackTrace();
+		        }
+		    }
+		});
 		
 		eventListeners();
 	}
 	
 	private void eventListeners(){
+		menuEventListeners();
+		plotFileEventListeners();
+		graphEventListeners();
+		exportEventListeners();
+	}
+	
+	private void menuEventListeners(){
 		menuPanel.setOnMenuEventListener(new OnMenuEventListener() {
 			@Override
 			public void onPlotFileClick() {
@@ -114,7 +147,9 @@ public class Main {
 				homePanel.setVisible(true);
 			}
 		});
-		
+	}
+	
+	private void plotFileEventListeners(){
 		plotFilePanel.setOnPlotFileEventListener(new OnPlotFileEventListener() {
 			@Override
 			public void showGraph() {
@@ -128,7 +163,9 @@ public class Main {
 				homePanel.setVisible(false);
 			}
 		});
-		
+	}
+	
+	private void graphEventListeners(){
 		graphPanel.setOnGraphEventListener(new OnGraphEventListener() {
 			@Override
 			public void exportResults() {
@@ -139,7 +176,8 @@ public class Main {
 				exportPanel.setVisible(true);
 			}
 		});
-		
+	}
+	private void exportEventListeners(){
 		exportPanel.setOnExportEventListener(new OnExportEventListener() {
 			@Override
 			public void exportToPDF() {

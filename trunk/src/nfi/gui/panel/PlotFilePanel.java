@@ -106,30 +106,12 @@ public class PlotFilePanel extends JPanel {
 		BlockSizeComboBox.setBounds(104, 34, 209, 20);
 		PlotOptionPanel.add(BlockSizeComboBox);
 		
-//		textField.setDropTarget(new DropTarget() {
-//        public synchronized void drop(DropTargetDropEvent evt) {
-//            try {
-//                evt.acceptDrop(DnDConstants.ACTION_COPY);
-//                @SuppressWarnings("unchecked")
-//				List<File> droppedFiles = (List<File>) evt
-//                        .getTransferable().getTransferData(
-//                                DataFlavor.javaFileListFlavor);
-//                for (File file : droppedFiles) {
-//                    /*
-//                     * NOTE:
-//                     *  When I change this to a println,
-//                     *  it prints the correct path
-//                     */
-//                	textField.setText(file.getAbsolutePath());
-//                }
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//            }
-//        }
-//	});
 	}
 	public int getBlockSize(){
 		return blocksize;
+	}
+	public void setPathToFile(String pathToFile){
+		this.pathToFile = pathToFile;
 	}
 	public String getPathToFile(){
 		return pathToFile;
