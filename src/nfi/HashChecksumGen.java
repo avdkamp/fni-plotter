@@ -25,6 +25,24 @@ public class HashChecksumGen {
 		
 		return checkSumCreater(md, pathToFile);
 	}
+	/**
+	 * @param pathToFile
+	 * 
+	 * @return hashes, [0] = MD5, [1] = SHA1, [2] = SHA256 
+	 * 
+	 * @throws NoSuchAlgorithmException
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public static String[] GenerateAllHashes(String pathToFile) throws NoSuchAlgorithmException, FileNotFoundException, IOException{
+		String[] hashes = new String[3];
+		
+		hashes[0] = GenerateMD5(pathToFile);
+		hashes[1] = GenerateSHA1(pathToFile);
+		hashes[2] = GenerateSHA256(pathToFile);
+		
+		return hashes;
+	}
 	
 	private static String checkSumCreater(MessageDigest md, String pathToFile) throws NoSuchAlgorithmException, FileNotFoundException, IOException{
 		FileInputStream fis = new FileInputStream(pathToFile);
