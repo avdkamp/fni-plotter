@@ -1,5 +1,9 @@
 package nfi;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +17,9 @@ import javax.swing.SwingWorker;
 public class ShannonEntropy {
 	
 	private double[] shannonResults;
-	private byte[] bytes;
 	private int blockSize;
 	private int progress;
+	private String pathToFile;
 	private OnShannonEntropyEventListener shannonEntropyEventListener;
 	/**
 	 * 
@@ -23,8 +27,8 @@ public class ShannonEntropy {
 	 * @param blockSize that has to be used for the calculation
 	 */
 	//TODO: klassen extreem goed documenteren
-	public ShannonEntropy(byte[] bytes, int blockSize){
-		this.bytes = bytes;
+	public ShannonEntropy(String pathToFile, int blockSize){
+		this.pathToFile = pathToFile;
 		this.blockSize = blockSize;
 		
 	}
@@ -36,6 +40,21 @@ public class ShannonEntropy {
 	public class worker extends Thread{
 		@Override
 		public void run(){
+			
+			byte bytes[] = null; 
+			File f = new File(pathToFile);
+			FileInputStream fis = null;
+			try {
+				fis = new FileInputStream(f);
+				bytes = new byte[(int)f.length()];
+				fis.read(bytes);
+				fis.close();
+			} catch (FileNotFoundException fnfe) {
+				fnfe.printStackTrace();
+			} catch (IOException oie) {
+				oie.printStackTrace();
+			}
+			
 			int[] values = ByteConverter.fromUnsignedBytesToIntegers(bytes);
 			int[][] blockedValues = new int[values.length/blockSize+1][blockSize];
 			

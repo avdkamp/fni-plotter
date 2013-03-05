@@ -18,19 +18,15 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
-import org.jfree.ui.ApplicationFrame;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JProgressBar;
 
-public class FastScatterPlotter extends ApplicationFrame {
-	
+public class ScatterPlotChart {
 	/**
 	 * Generated frame ID
 	 */
-	private static final long serialVersionUID = 1049714305982614154L;
 	private JFreeChart chart;
+	private ChartPanel panel;
     /** 
      * The data 
      */
@@ -38,12 +34,11 @@ public class FastScatterPlotter extends ApplicationFrame {
     private final JButton btnNewButton = new JButton("Start");
     private JButton btnNewButton_1;
 	
-	public FastScatterPlotter(String title, final ShannonEntropy se) {
-		super(title);
+	public ScatterPlotChart(String pathToFile, int blockSize) {
 		
 		final DefaultXYDataset dataSet = new DefaultXYDataset();
 		
-        chart = ChartFactory.createScatterPlot("titel", 
+        chart = ChartFactory.createScatterPlot(null, 
         			"X", 
         			"y", 
         			dataSet, 
@@ -53,13 +48,15 @@ public class FastScatterPlotter extends ApplicationFrame {
         			false);
         // force aliasing of the rendered content..
         chart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        chart.setBackgroundPaint(Color.white);
+//        chart.setBackgroundPaint(Color.OPAQUE);
+        chart.setBorderVisible(false);
+        chart.setBackgroundImageAlpha(100);
         
         XYPlot plot = (XYPlot) chart.getPlot();
-        plot.setBackgroundPaint(new Color(0xffffe0));
+//        plot.setBackgroundPaint(new Color(0xffffe0));
         plot.setDomainGridlinesVisible(true);
-        plot.setDomainGridlinePaint(Color.lightGray);
-        plot.setRangeGridlinePaint(Color.lightGray);
+//        plot.setDomainGridlinePaint(Color.lightGray);
+//        plot.setRangeGridlinePaint(Color.lightGray);
 
         // set the plot's axes to display integers
         TickUnitSource ticks = NumberAxis.createIntegerTickUnits();
@@ -84,41 +81,34 @@ public class FastScatterPlotter extends ApplicationFrame {
         renderer.setBaseItemLabelGenerator(generator);
         renderer.setBaseItemLabelsVisible(true);
         
-        final ChartPanel panel = new ChartPanel(chart, true);
-        panel.setPreferredSize(new java.awt.Dimension(1300, 700));
-        panel.setMinimumDrawHeight(10);
-        panel.setMaximumDrawHeight(2000);
-        panel.setMinimumDrawWidth(20);
-        panel.setMaximumDrawWidth(2000);
+//        btnNewButton.setBounds(157, 5, 89, 23);
+//        btnNewButton.addActionListener(new ActionListener() {
+//        	public void actionPerformed(ActionEvent e) {
+//        		se.run();
+//        	}
+//        });
+////        panel.setLayout(null);
+//        
+//        btnNewButton_1 = new JButton("Toggle");
+//        btnNewButton_1.addActionListener(new ActionListener() {
+//        	public void actionPerformed(ActionEvent e) {
+//        		if(renderer.getBaseItemLabelsVisible()){
+//        			renderer.setBaseItemLabelsVisible(false);
+//        		} else {
+//        			renderer.setBaseItemLabelsVisible(true);
+//        		}
+//        	}
+//        });
+//        btnNewButton_1.setBounds(58, 5, 89, 23);
+//        panel.add(btnNewButton_1);
+//        panel.add(btnNewButton);
         
-        setContentPane(panel);
-        btnNewButton.setBounds(157, 5, 89, 23);
-        btnNewButton.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		se.run();
-        	}
-        });
-        panel.setLayout(null);
+//        final JProgressBar progressBar = new JProgressBar();
+//        progressBar.setBounds(353, 5, 262, 20);
+//        progressBar.setValue(0);
+//        panel.add(progressBar);
         
-        btnNewButton_1 = new JButton("Toggle");
-        btnNewButton_1.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		if(renderer.getBaseItemLabelsVisible()){
-        			renderer.setBaseItemLabelsVisible(false);
-        		} else {
-        			renderer.setBaseItemLabelsVisible(true);
-        		}
-        	}
-        });
-        btnNewButton_1.setBounds(58, 5, 89, 23);
-        panel.add(btnNewButton_1);
-        panel.add(btnNewButton);
-        
-        final JProgressBar progressBar = new JProgressBar();
-        progressBar.setBounds(353, 5, 262, 20);
-        progressBar.setValue(0);
-        panel.add(progressBar);
-        
+        final ShannonEntropy se = new ShannonEntropy(pathToFile, blockSize);
         se.setOnShannonEntropyEventListener(new OnShannonEntropyEventListener() {
 			
 			@Override
@@ -127,15 +117,22 @@ public class FastScatterPlotter extends ApplicationFrame {
 				if(dataSet.getSeriesCount() != 0){
 					dataSet.removeSeries("Series0");
 				}
-				progressBar.setValue(100);
+//				progressBar.setValue(100);
 				dataSet.addSeries("Series0", data);
 			}
 			
 			@Override
 			public void onProgressUpdate() {
-				progressBar.setValue(se.getProgressChunk());
+//				progressBar.setValue(se.getProgressChunk());
 			}
 		});
+        se.run();
+	}
+	
+	public ChartPanel getScatterPlotChart(){
+		panel = new ChartPanel(chart, true);
+		panel.setBounds(0, 0, 601, 492);
+		return panel;
 	}
 	
 	 /**
