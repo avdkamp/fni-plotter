@@ -24,7 +24,7 @@ public class GraphPanel extends JPanel {
 	private final JLabel lblGraph = new JLabel("Graph");
 	private final JLabel backLabel = new JLabel("");
 	private final JLabel updateLabel = new JLabel("");
-	private final JLabel forwardLabel = new JLabel("");
+	private final JLabel forwardLabel = new JLabel("Forward");
 	private final JLabel exportLabel = new JLabel("");
 	
 	private int blockSize;
