@@ -118,13 +118,15 @@ public class PlotFilePanel extends JPanel {
 		return blocksize;
 	}
 	public void setPathToFile(String pathToFile){
-		this.pathToFile = pathToFile;		
+		String str = pathToFile.replace("\\", "/");
+		
+		this.pathToFile = str;		
 	}
 	public void setFilePathTextField(String path){
 		this.FilePathTextField.setText(path);
 	}
 	public String getPathToFile(){
-		return pathToFile;
+		return FilePathTextField.getText();
 	}
 	/**
 	 * initializes the interface
