@@ -5,12 +5,10 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
@@ -25,13 +23,11 @@ public class PlotFilePanel extends JPanel {
 	private String[] PlotOptions = {"64", "128", "256", "512", "1024", "2048" ,"4096" ,"8192" ,"16384" ,"32768"};
 	private JLabel Option_Label = new JLabel(" Plot Options");
 	private JLabel lblBlockSize = new JLabel("Block Size");
-	private JLabel lblMemorySize = new JLabel("Memory Size");
 	private JLabel lblFile = new JLabel("File");
 	private JLabel lblFilePath = new JLabel("File Path");
 	private JLabel DragNDrop = new JLabel("");
 	private JLabel lblOr = new JLabel("Or");
 	private JComboBox<?> BlockSizeComboBox = new JComboBox<Object>(PlotOptions);
-	private JSpinner MemorySizeSpinner = new JSpinner();
 	private JTextField filePathTextField;
 	private OnPlotFileEventListener onPlotFileEventListener;
 	private int blocksize;
@@ -59,8 +55,6 @@ public class PlotFilePanel extends JPanel {
 		this.add(PlotOptionPanel);
 		lblBlockSize.setBounds(10, 37, 84, 14);
 		PlotOptionPanel.add(lblBlockSize);
-		lblMemorySize.setBounds(10, 62, 107, 14);
-		PlotOptionPanel.add(lblMemorySize);
 		lblFile.setBounds(10, 90, 84, 14);
 		PlotOptionPanel.add(lblFile);
 		lblFilePath.setBounds(10, 208, 94, 14);
@@ -71,8 +65,6 @@ public class PlotFilePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				blocksize = Integer.valueOf((String)BlockSizeComboBox.getSelectedItem());
-				System.out.println(blocksize);
-//				int memorysize = (int) MemorySizeSpinner.getValue();
 				onPlotFileEventListener.showGraph();
 			}
 		});
@@ -107,22 +99,15 @@ public class PlotFilePanel extends JPanel {
 		PlotOptionPanel.add(filePathTextField);
 		filePathTextField.setColumns(10);
 		
-		MemorySizeSpinner.setBounds(104, 59, 209, 20);
-		PlotOptionPanel.add(MemorySizeSpinner);
-		
 		BlockSizeComboBox.setBounds(104, 34, 209, 20);
 		BlockSizeComboBox.setEditable(true);
+		BlockSizeComboBox.setSelectedIndex(3);
 		PlotOptionPanel.add(BlockSizeComboBox);
 		
 	}
 	public int getBlockSize(){
 		return blocksize;
 	}
-//	public void setPathToFile(String pathToFile){
-//		String str = pathToFile.replace("\\", "/");
-//		
-//		this.pathToFile = str;		
-//	}
 	public void setFilePathTextField(String path){
 		String str = path.replace("\\", "/");
 		this.filePathTextField.setText(str);

@@ -26,7 +26,6 @@ public class ShannonEntropy {
 	 * @param path to the file that needs to be processed.
 	 * @param the blocksize of that has to be used for the file.
 	 */
-	//TODO: klassen extreem goed documenteren
 	public ShannonEntropy(String pathToFile, int blockSize){
 		this.pathToFile = pathToFile;
 		this.blockSize = blockSize;
@@ -43,7 +42,6 @@ public class ShannonEntropy {
 	 * 
 	 * @author Albert
 	 */
-	//TODO: progress beter verdelen
 	private class Worker extends Thread{
 		@SuppressWarnings("resource")
 		@Override
@@ -72,20 +70,17 @@ public class ShannonEntropy {
 						}
 					}
 					
-//					final int bLength = blockedValues.length;
-					
 					for (int i = 0; i < blockedValues.length; i++) {
-//						progress = ((i*100)/bLength);
-//						shannonEntropyEventListener.onProgressUpdate();
 						allShannonResults.add(entropy(blockedValues[i]));
 					}
+					progress = (int) ((in.getFilePointer()*100)/in.length());
+					shannonEntropyEventListener.onProgressUpdate();
 				}
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
 			shannonEntropyEventListener.onWorkerComplete();
 		}
 	}
