@@ -1,5 +1,6 @@
 package nfi;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
@@ -12,6 +13,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
@@ -23,7 +26,7 @@ import nfi.gui.panel.MenuPanel.OnMenuEventListener;
 import nfi.gui.panel.PlotFilePanel.OnPlotFileEventListener;
 
 public class Main {
-	
+
 	private static final InfoPanel infoPanel = new InfoPanel();
 	private static final HomePanel homePanel = new HomePanel();
 	private static final PlotFilePanel plotFilePanel = new PlotFilePanel();
@@ -32,9 +35,9 @@ public class Main {
 	private static final MenuPanel menuPanel = new MenuPanel();
 	private static final HeaderPanel headerPanel = new HeaderPanel();
 	private static final FooterPanel footerPanel = new FooterPanel();
-	
+
 	public static void main(String[] args) throws Exception {
-		
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -45,12 +48,15 @@ public class Main {
 				}
 			}
 		});
-		
-//		System.out.println("MD5   (in hex format): " + HashChecksumGen.GenerateMD5(dataFile));
-//		System.out.println("SHA1  (in hex format): " + HashChecksumGen.GenerateSHA1(dataFile));
-//		System.out.println("SHA256(in hex format): " + HashChecksumGen.GenerateSHA256(dataFile));
+
+		// System.out.println("MD5   (in hex format): " +
+		// HashChecksumGen.GenerateMD5(dataFile));
+		// System.out.println("SHA1  (in hex format): " +
+		// HashChecksumGen.GenerateSHA1(dataFile));
+		// System.out.println("SHA256(in hex format): " +
+		// HashChecksumGen.GenerateSHA256(dataFile));
 	}
-	
+
 	/**
 	 * Create the application.
 	 */
@@ -66,14 +72,15 @@ public class Main {
 		mainFrame.setResizable(false);
 		mainFrame.setVisible(true);
 		mainFrame.setTitle("Plotting Entropy");
-		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("images/icon.png"));
+		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(
+				"images/icon.png"));
 		mainFrame.getContentPane().setBackground(Color.WHITE);
 		mainFrame.setBounds(100, 100, 900, 700);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.getContentPane().setLayout(null);
-		
+
 		mainFrame.getContentPane().add(headerPanel);
-		
+
 		JLabel logoLabel = new JLabel("");
 		logoLabel.setIcon(new ImageIcon("images/logo.png"));
 		logoLabel.setBounds(26, 11, 235, 71);
@@ -85,42 +92,45 @@ public class Main {
 		mainFrame.getContentPane().add(graphPanel);
 		mainFrame.getContentPane().add(exportPanel);
 		mainFrame.getContentPane().add(footerPanel);
-		
+
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setBounds(314, 416, -114, -67);
 		mainFrame.getContentPane().add(layeredPane);
-		
-		//TODO: is windows only op het moment, moet ook compatible met linux zijn
+
+		// TODO: is windows only op het moment, moet ook compatible met linux
+		// zijn
 		mainFrame.setDropTarget(new DropTarget() {
 			private static final long serialVersionUID = 1284909278859440490L;
 
 			@SuppressWarnings("unchecked")
 			@Override
-		    public synchronized void drop(DropTargetDropEvent evt) {
-		        try {
-		            evt.acceptDrop(DnDConstants.ACTION_COPY);
-		            List<File> droppedFiles = (List<File>)
-		                evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-		            for (File file : droppedFiles) {
-		                plotFilePanel.setPathToFile(file.getAbsolutePath());
-		            }
-		        } catch (Exception ex) {
-		            ex.printStackTrace();
-		        }
-		    }
+			public synchronized void drop(DropTargetDropEvent evt) {
+				try {
+					evt.acceptDrop(DnDConstants.ACTION_COPY);
+					List<File> droppedFiles = (List<File>) evt
+							.getTransferable().getTransferData(
+									DataFlavor.javaFileListFlavor);
+					for (File file : droppedFiles) {
+						plotFilePanel.setPathToFile(file.getAbsolutePath());
+						plotFilePanel.setFilePathTextField(file.getAbsolutePath());
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
 		});
-		
+
 		eventListeners();
 	}
-	
-	private void eventListeners(){
+
+	private void eventListeners() {
 		menuEventListeners();
 		plotFileEventListeners();
 		graphEventListeners();
 		exportEventListeners();
 	}
-	
-	private void menuEventListeners(){
+
+	private void menuEventListeners() {
 		menuPanel.setOnMenuEventListener(new OnMenuEventListener() {
 			@Override
 			public void onPlotFileClick() {
@@ -130,6 +140,7 @@ public class Main {
 				plotFilePanel.setVisible(true);
 				graphPanel.setVisible(false);
 			}
+
 			@Override
 			public void onInfoClick() {
 				homePanel.setVisible(false);
@@ -138,6 +149,7 @@ public class Main {
 				infoPanel.setVisible(true);
 				graphPanel.setVisible(false);
 			}
+
 			@Override
 			public void onHomeClick() {
 				infoPanel.setVisible(false);
@@ -148,8 +160,8 @@ public class Main {
 			}
 		});
 	}
-	
-	private void plotFileEventListeners(){
+
+	private void plotFileEventListeners() {
 		plotFilePanel.setOnPlotFileEventListener(new OnPlotFileEventListener() {
 			@Override
 			public void showGraph() {
@@ -162,10 +174,25 @@ public class Main {
 				exportPanel.setVisible(false);
 				homePanel.setVisible(false);
 			}
+
+			@Override
+			public void fileExplorerPanel() {
+				final JFileChooser fc = new JFileChooser();				
+
+				fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+				fc.showOpenDialog(fc);				
+				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				File file = fc.getSelectedFile();		
+				
+				plotFilePanel.setPathToFile(file.getAbsolutePath());
+				plotFilePanel.setFilePathTextField(file.getAbsolutePath());
+				
+
+			}
 		});
 	}
-	
-	private void graphEventListeners(){
+
+	private void graphEventListeners() {
 		graphPanel.setOnGraphEventListener(new OnGraphEventListener() {
 			@Override
 			public void exportResults() {
@@ -177,11 +204,12 @@ public class Main {
 			}
 		});
 	}
-	private void exportEventListeners(){
+
+	private void exportEventListeners() {
 		exportPanel.setOnExportEventListener(new OnExportEventListener() {
 			@Override
 			public void exportToPDF() {
-				//TODO: call PDF generate class here.
+				// TODO: call PDF generate class here.
 			}
 		});
 	}
