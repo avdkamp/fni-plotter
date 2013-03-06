@@ -1,18 +1,19 @@
 package nfi;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ShannonEntropy {
 	
-	private double[] shannonResults;
+	private ArrayList<Double> allShannonResults;
 	private int blockSize;
 	private int progress;
 	private String pathToFile;
+	private byte[] bytes;
 	private OnShannonEntropyEventListener shannonEntropyEventListener;
 	/**
 	 * 
@@ -23,7 +24,7 @@ public class ShannonEntropy {
 	public ShannonEntropy(String pathToFile, int blockSize){
 		this.pathToFile = pathToFile;
 		this.blockSize = blockSize;
-		
+		allShannonResults = new ArrayList<Double>();
 	}
 	
 	public void run(){
@@ -31,46 +32,47 @@ public class ShannonEntropy {
 	}
 	//TODO: progress beter verdelen
 	public class worker extends Thread{
+		@SuppressWarnings("resource")
 		@Override
 		public void run(){
-			
-			byte bytes[] = null; 
-			File f = new File(pathToFile);
-			FileInputStream fis = null;
 			try {
-				fis = new FileInputStream(f);
-				bytes = new byte[(int)f.length()];
-				fis.read(bytes);
-				fis.close();
-			} catch (FileNotFoundException fnfe) {
-				fnfe.printStackTrace();
-			} catch (IOException oie) {
-				oie.printStackTrace();
-			}
-			
-			int[] values = ByteConverter.fromUnsignedBytesToIntegers(bytes);
-			int[][] blockedValues = new int[values.length/blockSize+1][blockSize];
-			
-			int block = 0;
-			int blockPos = 0;
-			
-			for (int value: values) {
-				blockedValues[block][blockPos++] = value;
-				if(blockPos >= blockSize){
-					block++;
-					blockPos = 0;
+				// use RandomAccessFile because it supports readFully()
+				RandomAccessFile in = new RandomAccessFile(pathToFile, "r");
+				in.seek(0L);
+				while (in.getFilePointer() < in.length())
+				{
+				    int readSize = (int)Math.min(1000000, in.length() - in.getFilePointer());
+				    bytes = new byte[readSize];
+				    in.readFully(bytes);
+				    
+		        	int[] values = ByteConverter.fromUnsignedBytesToIntegers(bytes);
+					int[][] blockedValues = new int[values.length/blockSize+1][blockSize];
+					
+					int block = 0;
+					int blockPos = 0;
+					
+					for (int value: values) {
+						blockedValues[block][blockPos++] = value;
+						if(blockPos >= blockSize){
+							block++;
+							blockPos = 0;
+						}
+					}
+					
+//					final int bLength = blockedValues.length;
+					
+					for (int i = 0; i < blockedValues.length; i++) {
+//						progress = ((i*100)/bLength);
+//						shannonEntropyEventListener.onProgressUpdate();
+						allShannonResults.add(entropy(blockedValues[i]));
+					}
 				}
-			}
-			
-			shannonResults = new double[blockedValues.length];
-			
-			
-			final int bLength = blockedValues.length;
-			
-			for (int i = 0; i < blockedValues.length; i++) {
-				progress = ((i*100)/bLength);
-				shannonEntropyEventListener.onProgressUpdate();
-				shannonResults[i] = entropy(blockedValues[i]);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
 			shannonEntropyEventListener.onWorkerComplete();
@@ -101,8 +103,8 @@ public class ShannonEntropy {
 	/*
 	 *  
 	 */
-	public double[] getResults(){
-		return shannonResults;
+	public ArrayList<Double> getResults(){
+		return allShannonResults;
 	}
 	/*
 	 * initializes the interface

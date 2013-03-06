@@ -1,8 +1,8 @@
 package nfi.gui.chart;
 
-import java.awt.Color;
 import java.awt.RenderingHints;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
 import nfi.ShannonEntropy;
 import nfi.ShannonEntropy.OnShannonEntropyEventListener;
@@ -18,8 +18,6 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
-import javax.swing.JButton;
-import javax.swing.JProgressBar;
 
 public class ScatterPlotChart {
 	/**
@@ -31,8 +29,8 @@ public class ScatterPlotChart {
      * The data 
      */
     private double[][] data;
-    private final JButton btnNewButton = new JButton("Start");
-    private JButton btnNewButton_1;
+//    private final JButton btnNewButton = new JButton("Start");
+//    private JButton btnNewButton_1;
 	
 	public ScatterPlotChart(String pathToFile, int blockSize) {
 		
@@ -137,16 +135,15 @@ public class ScatterPlotChart {
 	 /**
      * Populates the data array with values.
      */
-    private void populateData(double[] values) {
+    private void populateData(ArrayList<Double> values) {
     	/*
     	 * data[0][float] = x
     	 * data[1][float] = y
     	 */
-    	data = new double[2][values.length];
-    	
-        for (int i = 0; i < values.length; i++) {
+    	this.data = new double[2][values.size()];
+        for (int i = 0; i < values.size(); i++) {
             this.data[0][i] = i;
-            this.data[1][i] = (float) values[i];
+            this.data[1][i] = (float) values.get(i).floatValue();
         }
     }
 }

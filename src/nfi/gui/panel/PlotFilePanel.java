@@ -70,6 +70,7 @@ public class PlotFilePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				blocksize = Integer.valueOf((String)BlockSizeComboBox.getSelectedItem());
+				System.out.println(blocksize);
 //				int memorysize = (int) MemorySizeSpinner.getValue();
 				onPlotFileEventListener.showGraph();
 			}
@@ -109,6 +110,7 @@ public class PlotFilePanel extends JPanel {
 		PlotOptionPanel.add(MemorySizeSpinner);
 		
 		BlockSizeComboBox.setBounds(104, 34, 209, 20);
+		BlockSizeComboBox.setEditable(true);
 		PlotOptionPanel.add(BlockSizeComboBox);
 		
 	}
