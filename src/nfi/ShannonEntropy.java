@@ -6,7 +6,12 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * Calculates the Shannon entropy values of unsigned bytes of the given blocksize.
+ * 
+ * @author Albert
+ * @version 1.2
+ */
 public class ShannonEntropy {
 	
 	private ArrayList<Double> allShannonResults;
@@ -16,9 +21,10 @@ public class ShannonEntropy {
 	private byte[] bytes;
 	private OnShannonEntropyEventListener shannonEntropyEventListener;
 	/**
+	 * Initialize the class
 	 * 
-	 * @param bytes the bytes of the file that has to be processed.
-	 * @param blockSize that has to be used for the calculation
+	 * @param path to the file that needs to be processed.
+	 * @param the blocksize of that has to be used for the file.
 	 */
 	//TODO: klassen extreem goed documenteren
 	public ShannonEntropy(String pathToFile, int blockSize){
@@ -26,12 +32,20 @@ public class ShannonEntropy {
 		this.blockSize = blockSize;
 		allShannonResults = new ArrayList<Double>();
 	}
-	
+	/**
+	 * Start the Thread worker.
+	 */
 	public void run(){
-		new worker().start();
+		new Worker().start();
 	}
+	/**
+	 * The worker which processes file in a different thread to prevent the GUI from freezing.
+	 * 
+	 * @author Albert
+	 */
 	//TODO: progress beter verdelen
-	public class worker extends Thread{
+	//TODO: split worker in 2 workers
+	private class Worker extends Thread{
 		@SuppressWarnings("resource")
 		@Override
 		public void run(){
@@ -68,18 +82,21 @@ public class ShannonEntropy {
 					}
 				}
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 			shannonEntropyEventListener.onWorkerComplete();
 		}
 	}
-	
-	public static double entropy(int[] values) {	 
+	/**
+	 * Calculates the Shannon value of unsigned bytes.
+	 * 
+	 * @param values - Array of unsigned byte values as integers.
+	 * @return Shannon value of the given values.
+	 */
+	private static double entropy(int[] values) {	 
 		final Map<Integer, Long> valueOccurances = new HashMap<Integer, Long>();
 		
 		for (Integer value : values) {
@@ -96,27 +113,47 @@ public class ShannonEntropy {
 		
 		return -combinedEntropy;
 	}
-	
-	public int getProgressChunk(){
+	/**
+	 * Allows a progressbar to be set by the given %.
+	 * Use onProgressUpdate eventlistener to get the values.
+	 * 
+	 * @return the progress in % of the worker.
+	 */
+	public int getProgress(){
 		return progress;
 	}
-	/*
-	 *  
+	/**
+	 * Returns all the calculated values according to the Shannon calculation.
+	 * Use onWorkerComplete eventlistener to get the value, it might return null or an incomplete ArrayList
+	 * 
+	 * @return all the results as double in an ArrayList
 	 */
 	public ArrayList<Double> getResults(){
-		return allShannonResults;
+		if(allShannonResults.size() > 1){
+			return allShannonResults;
+		} else {
+			return null;
+		}
 	}
-	/*
-	 * initializes the interface
+	/**
+	 * Initializes the eventlistener.
+	 * 
+	 * @param new OnShannonEntropyEventListener
 	 */
 	public void setOnShannonEntropyEventListener(OnShannonEntropyEventListener listener){
 		this.shannonEntropyEventListener = listener;
 	}
-	/*
+	/**
 	 * Inner callback interface
 	 */
 	public static interface OnShannonEntropyEventListener{
+		/**
+		 * Called when there is a progres update of the worker.
+		 */
 		public void onProgressUpdate();
+		/**
+		 * Called when the worker has completed its task.
+		 */
 		public void onWorkerComplete();
 	}
 }
