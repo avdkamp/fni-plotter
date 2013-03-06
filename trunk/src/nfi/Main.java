@@ -111,7 +111,6 @@ public class Main {
 							.getTransferable().getTransferData(
 									DataFlavor.javaFileListFlavor);
 					for (File file : droppedFiles) {
-						plotFilePanel.setPathToFile(file.getAbsolutePath());
 						plotFilePanel.setFilePathTextField(file.getAbsolutePath());
 					}
 				} catch (Exception ex) {
@@ -184,7 +183,6 @@ public class Main {
 				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				File file = fc.getSelectedFile();		
 				
-				plotFilePanel.setPathToFile(file.getAbsolutePath());
 				plotFilePanel.setFilePathTextField(file.getAbsolutePath());
 				
 
