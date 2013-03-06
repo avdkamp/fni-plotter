@@ -30,10 +30,9 @@ public class PlotFilePanel extends JPanel {
 	private JLabel lblOr = new JLabel("Or");
 	private JComboBox<?> BlockSizeComboBox = new JComboBox<Object>(PlotOptions);
 	private JSpinner MemorySizeSpinner = new JSpinner();
-	private JTextField FilePathTextField;
+	private JTextField filePathTextField;
 	private OnPlotFileEventListener onPlotFileEventListener;
 	private int blocksize;
-	private String pathToFile;
 	
 	public PlotFilePanel(){
 		
@@ -101,10 +100,10 @@ public class PlotFilePanel extends JPanel {
 		lblOr.setBounds(337, 135, 40, 14);
 		PlotOptionPanel.add(lblOr);
 		
-		FilePathTextField = new JTextField();
-		FilePathTextField.setBounds(104, 205, 209, 20);
-		PlotOptionPanel.add(FilePathTextField);
-		FilePathTextField.setColumns(10);
+		filePathTextField = new JTextField();
+		filePathTextField.setBounds(104, 205, 209, 20);
+		PlotOptionPanel.add(filePathTextField);
+		filePathTextField.setColumns(10);
 		
 		MemorySizeSpinner.setBounds(104, 59, 209, 20);
 		PlotOptionPanel.add(MemorySizeSpinner);
@@ -117,16 +116,17 @@ public class PlotFilePanel extends JPanel {
 	public int getBlockSize(){
 		return blocksize;
 	}
-	public void setPathToFile(String pathToFile){
-		String str = pathToFile.replace("\\", "/");
-		
-		this.pathToFile = str;		
-	}
+//	public void setPathToFile(String pathToFile){
+//		String str = pathToFile.replace("\\", "/");
+//		
+//		this.pathToFile = str;		
+//	}
 	public void setFilePathTextField(String path){
-		this.FilePathTextField.setText(path);
+		String str = path.replace("\\", "/");
+		this.filePathTextField.setText(str);
 	}
 	public String getPathToFile(){
-		return FilePathTextField.getText();
+		return filePathTextField.getText();
 	}
 	/**
 	 * initializes the interface
