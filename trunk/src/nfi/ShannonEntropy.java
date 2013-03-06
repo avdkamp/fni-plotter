@@ -44,7 +44,6 @@ public class ShannonEntropy {
 	 * @author Albert
 	 */
 	//TODO: progress beter verdelen
-	//TODO: split worker in 2 workers
 	private class Worker extends Thread{
 		@SuppressWarnings("resource")
 		@Override
