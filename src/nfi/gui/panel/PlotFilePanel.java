@@ -81,6 +81,14 @@ public class PlotFilePanel extends JPanel {
 		btnPlotEntropy.setForeground(Color.white);
 		
 		JButton btnBrowse = new JButton("Browse");
+		btnBrowse.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				onPlotFileEventListener.fileExplorerPanel();
+				
+			}
+		});
 		btnBrowse.setBounds(387, 126, 109, 33);
 		PlotOptionPanel.add(btnBrowse);
 		btnBrowse.setBackground(CustomColor);
@@ -108,7 +116,10 @@ public class PlotFilePanel extends JPanel {
 		return blocksize;
 	}
 	public void setPathToFile(String pathToFile){
-		this.pathToFile = pathToFile;
+		this.pathToFile = pathToFile;		
+	}
+	public void setFilePathTextField(String path){
+		this.FilePathTextField.setText(path);
 	}
 	public String getPathToFile(){
 		return pathToFile;
@@ -124,5 +135,6 @@ public class PlotFilePanel extends JPanel {
 	 */
 	public static interface OnPlotFileEventListener{
 		public void showGraph();
+		public void fileExplorerPanel();
 	}
 }
