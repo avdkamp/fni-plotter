@@ -14,6 +14,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import nfi.ResourceLoader;
+
 public class PlotFilePanel extends JPanel {
 
 	private static final long serialVersionUID = 3296663492279627737L;
@@ -96,7 +98,7 @@ public class PlotFilePanel extends JPanel {
 		DragNDrop.setBounds(104, 90, 209, 104);
 		PlotOptionPanel.add(DragNDrop);
 		
-		DragNDrop.setIcon(new ImageIcon("images/DragAndDrop.png"));
+		DragNDrop.setIcon(ResourceLoader.loadImageIcon("/images/DragAndDrop.png"));
 		lblOr.setBounds(337, 135, 40, 14);
 		PlotOptionPanel.add(lblOr);
 		

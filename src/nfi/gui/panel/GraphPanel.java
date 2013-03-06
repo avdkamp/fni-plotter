@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import nfi.ResourceLoader;
 import nfi.gui.chart.ScatterPlotChart;
 
 public class GraphPanel extends JPanel {
@@ -62,20 +63,20 @@ public class GraphPanel extends JPanel {
 		statisticsPanel.setBorder(new LineBorder(CustomColor));
 		this.add(statisticsPanel);
 		
-		backLabel.setIcon(new ImageIcon("images/back.png"));
+		backLabel.setIcon(ResourceLoader.loadImageIcon("/images/back.png"));
 		backLabel.setBounds(33, 273, 53, 44);
 		
 		this.add(backLabel);
-		updateLabel.setIcon(new ImageIcon("images/update.png"));
+		updateLabel.setIcon(ResourceLoader.loadImageIcon("/images/update.png"));
 		updateLabel.setBounds(108, 275, 48, 55);
 		
 		this.add(updateLabel);
-		forwardLabel.setIcon(new ImageIcon("images/forward.png"));
+		forwardLabel.setIcon(ResourceLoader.loadImageIcon("/images/forward.png"));
 		forwardLabel.setBounds(166, 274, 58, 41);
 		
 		this.add(forwardLabel);
 		
-		exportLabel.setIcon(new ImageIcon("images/export.png"));
+		exportLabel.setIcon(ResourceLoader.loadImageIcon("/images/export.png"));
 		exportLabel.setBounds(108, 341, 50, 50);
 		exportLabel.addMouseListener(new MouseAdapter() {
 			@Override

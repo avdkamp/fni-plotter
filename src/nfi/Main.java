@@ -3,18 +3,14 @@ package nfi;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.ImageIcon;
 import javax.swing.JLayeredPane;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
@@ -72,8 +68,7 @@ public class Main {
 		mainFrame.setResizable(false);
 		mainFrame.setVisible(true);
 		mainFrame.setTitle("Plotting Entropy");
-		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(
-				"images/icon.png"));
+		mainFrame.setIconImage(ResourceLoader.loadImage("/images/icon.png"));
 		mainFrame.getContentPane().setBackground(Color.WHITE);
 		mainFrame.setBounds(100, 100, 900, 700);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,7 +77,7 @@ public class Main {
 		mainFrame.getContentPane().add(headerPanel);
 
 		JLabel logoLabel = new JLabel("");
-		logoLabel.setIcon(new ImageIcon("images/logo.png"));
+		logoLabel.setIcon(ResourceLoader.loadImageIcon("/images/logo.png"));
 		logoLabel.setBounds(26, 11, 235, 71);
 		mainFrame.getContentPane().add(logoLabel);
 		mainFrame.getContentPane().add(menuPanel);
@@ -157,6 +152,15 @@ public class Main {
 				exportPanel.setVisible(false);
 				homePanel.setVisible(true);
 			}
+
+			@Override
+			public void onGraphClick() {
+				infoPanel.setVisible(false);
+				plotFilePanel.setVisible(false);
+				graphPanel.setVisible(true);
+				exportPanel.setVisible(false);
+				homePanel.setVisible(false);
+			}
 		});
 	}
 
@@ -167,6 +171,7 @@ public class Main {
 				graphPanel.setBlockSize(plotFilePanel.getBlockSize());
 				graphPanel.setPathToFile(plotFilePanel.getPathToFile());
 				graphPanel.addGraph();
+				menuPanel.showGraphBtn();
 				infoPanel.setVisible(false);
 				plotFilePanel.setVisible(false);
 				graphPanel.setVisible(true);
@@ -184,8 +189,6 @@ public class Main {
 				File file = fc.getSelectedFile();		
 				
 				plotFilePanel.setFilePathTextField(file.getAbsolutePath());
-				
-
 			}
 		});
 	}
