@@ -17,6 +17,7 @@ public class MenuPanel extends JPanel {
 	private JButton btnHome = new JButton("Home");
 	private JButton btnInfo = new JButton("Info");
 	private JButton btnPlotFile = new JButton("Plot File");
+	private JButton btnGraph = new JButton("Graph");
 	private OnMenuEventListener onMenuEventListener;
 	
 	public MenuPanel(){
@@ -29,10 +30,12 @@ public class MenuPanel extends JPanel {
 		btnHome.setBackground(SystemColor.menu);
 		btnPlotFile.setBackground(SystemColor.menu);
 		btnInfo.setBackground(SystemColor.menu);
+		btnGraph.setBackground(SystemColor.menu);
 		
 		this.add(btnHome);
 		this.add(btnPlotFile);
 		this.add(btnInfo);
+		this.add(btnGraph);
 	}
 	private void setButtonEventListeners(){
 		btnPlotFile.addActionListener(new ActionListener() {
@@ -40,6 +43,7 @@ public class MenuPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				btnHome.setBackground(SystemColor.menu);
 				btnInfo.setBackground(SystemColor.menu);
+				btnGraph.setBackground(SystemColor.menu);
 				btnPlotFile.setBackground(Color.WHITE);
 				onMenuEventListener.onPlotFileClick();
 			}
@@ -50,6 +54,7 @@ public class MenuPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				btnHome.setBackground(SystemColor.menu);
 				btnPlotFile.setBackground(SystemColor.menu);
+				btnGraph.setBackground(SystemColor.menu);
 				btnInfo.setBackground(Color.WHITE);
 				onMenuEventListener.onInfoClick();
 			}
@@ -60,12 +65,30 @@ public class MenuPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				btnPlotFile.setBackground(SystemColor.menu);
 				btnInfo.setBackground(SystemColor.menu);
+				btnGraph.setBackground(SystemColor.menu);
 				btnHome.setBackground(Color.WHITE);
 				onMenuEventListener.onHomeClick();
 			}
 		});
-		
+		btnGraph.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnPlotFile.setBackground(SystemColor.menu);
+				btnInfo.setBackground(SystemColor.menu);
+				btnHome.setBackground(SystemColor.menu);
+				btnGraph.setBackground(Color.WHITE);
+				onMenuEventListener.onGraphClick();
+			}
+		});
+		btnGraph.setVisible(false);
 		btnPlotFile.doClick();
+	}
+	public void showGraphBtn(){
+		btnGraph.setVisible(true);
+		btnPlotFile.setBackground(SystemColor.menu);
+		btnInfo.setBackground(SystemColor.menu);
+		btnHome.setBackground(SystemColor.menu);
+		btnGraph.setBackground(Color.WHITE);
 	}
 	/*
 	 * initializes the interface
@@ -82,5 +105,6 @@ public class MenuPanel extends JPanel {
 		public void onHomeClick();
 		public void onPlotFileClick();
 		public void onInfoClick();
+		public void onGraphClick();
 	}
 }
