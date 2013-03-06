@@ -170,7 +170,7 @@ public class Main {
 			public void showGraph() {
 				graphPanel.setBlockSize(plotFilePanel.getBlockSize());
 				graphPanel.setPathToFile(plotFilePanel.getPathToFile());
-				graphPanel.addGraph();
+				graphPanel.startCalculation();
 				menuPanel.showGraphBtn();
 				infoPanel.setVisible(false);
 				plotFilePanel.setVisible(false);
