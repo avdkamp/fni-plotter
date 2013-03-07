@@ -44,13 +44,6 @@ public class Main {
 				}
 			}
 		});
-
-		// System.out.println("MD5   (in hex format): " +
-		// HashChecksumGen.GenerateMD5(dataFile));
-		// System.out.println("SHA1  (in hex format): " +
-		// HashChecksumGen.GenerateSHA1(dataFile));
-		// System.out.println("SHA256(in hex format): " +
-		// HashChecksumGen.GenerateSHA256(dataFile));
 	}
 
 	/**
