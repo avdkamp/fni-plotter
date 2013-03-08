@@ -99,7 +99,8 @@ public class Main {
 							.getTransferable().getTransferData(
 									DataFlavor.javaFileListFlavor);
 					for (File file : droppedFiles) {
-						plotFilePanel.setFilePathTextField(file.getAbsolutePath());
+						plotFilePanel.setFilePathTextField(file
+								.getAbsolutePath());
 					}
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -161,26 +162,31 @@ public class Main {
 		plotFilePanel.setOnPlotFileEventListener(new OnPlotFileEventListener() {
 			@Override
 			public void showGraph() {
-				graphPanel.setBlockSize(plotFilePanel.getBlockSize());
-				graphPanel.setPathToFile(plotFilePanel.getPathToFile());
-				graphPanel.startCalculation();
-				menuPanel.showGraphBtn();
-				infoPanel.setVisible(false);
-				plotFilePanel.setVisible(false);
-				graphPanel.setVisible(true);
-				exportPanel.setVisible(false);
-				homePanel.setVisible(false);
+
+				if (!plotFilePanel.getPathToFile().isEmpty()) {
+					graphPanel.setBlockSize(plotFilePanel.getBlockSize());
+					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
+					graphPanel.startCalculation();
+					menuPanel.showGraphBtn();
+					infoPanel.setVisible(false);
+					plotFilePanel.setVisible(false);
+					graphPanel.setVisible(true);
+					exportPanel.setVisible(false);
+					homePanel.setVisible(false);
+				} else {
+					ErrorBox error = new ErrorBox(plotFilePanel,"Set a valid path!");
+				}
 			}
 
 			@Override
 			public void fileExplorerPanel() {
-				final JFileChooser fc = new JFileChooser();				
+				final JFileChooser fc = new JFileChooser();
 
 				fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-				fc.showOpenDialog(fc);				
+				fc.showOpenDialog(fc);
 				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				File file = fc.getSelectedFile();		
-				
+				File file = fc.getSelectedFile();
+
 				plotFilePanel.setFilePathTextField(file.getAbsolutePath());
 			}
 		});
