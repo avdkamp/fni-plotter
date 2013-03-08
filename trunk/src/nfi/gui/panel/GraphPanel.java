@@ -59,11 +59,6 @@ public class GraphPanel extends JPanel {
 		this.setBounds(10, 119, 874, 516);
 		this.setLayout(null);
 		
-		progressBar.setStringPainted(true);
-		progressBar.setString("Loading...");
-		progressBar.setBounds(10, 480, 854, 25);
-		this.add(progressBar);
-		
 		lblGraph.setOpaque(true);
 		lblGraph.setForeground(Color.WHITE);
 		lblGraph.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -74,6 +69,7 @@ public class GraphPanel extends JPanel {
 		
 		initGraph();
 		this.add(graphPanel);
+		graphPanel.setLayout(null);
 		
 		lblStatistics.setBounds(32, 0, 84, 23);
 		lblStatistics.setOpaque(true);
@@ -110,6 +106,11 @@ public class GraphPanel extends JPanel {
 			}
 		});
 		this.add(exportLabel);
+		
+		progressBar.setStringPainted(true);
+		progressBar.setString("Loading...");
+		progressBar.setBounds(10, 480, 854, 25);
+		this.add(progressBar);
 	}
 	
 	private void initGraph(){
@@ -143,6 +144,7 @@ public class GraphPanel extends JPanel {
         // force aliasing of the rendered content..
         chart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         chart.setBorderVisible(false);
+        
         chart.setBackgroundImageAlpha(100);
         
         XYPlot plot = (XYPlot) chart.getPlot();

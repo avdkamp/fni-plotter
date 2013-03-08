@@ -109,8 +109,9 @@ public class PlotFilePanel extends JPanel {
 		return blocksize;
 	}
 	public void setFilePathTextField(String path){
-		String str = path.replace("\\", "/");
-		this.filePathTextField.setText(str);
+		
+		String string = path.toLowerCase();
+		this.filePathTextField.setText(string);
 	}
 	public String getPathToFile(){
 		return filePathTextField.getText();
