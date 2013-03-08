@@ -162,7 +162,8 @@ public class Main {
 		plotFilePanel.setOnPlotFileEventListener(new OnPlotFileEventListener() {
 			@Override
 			public void showGraph() {
-
+//				String pattern = "^(?:[\\w]\\:|\\\\)(\\\\[a-z_\\-\\s0-9\\.]+)+\\.(?i)(txt|gif|pdf|doc|docx|xls|xlsx)$";
+//				if (!plotFilePanel.getPathToFile().isEmpty() && plotFilePanel.getPathToFile().matches(pattern)) {
 				if (!plotFilePanel.getPathToFile().isEmpty()) {
 					graphPanel.setBlockSize(plotFilePanel.getBlockSize());
 					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
@@ -174,6 +175,7 @@ public class Main {
 					exportPanel.setVisible(false);
 					homePanel.setVisible(false);
 				} else {
+					
 					ErrorBox error = new ErrorBox(plotFilePanel,"Set a valid path!");
 				}
 			}
