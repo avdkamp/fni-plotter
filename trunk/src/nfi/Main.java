@@ -184,9 +184,9 @@ public class Main {
 			public void fileExplorerPanel() {
 				final JFileChooser fc = new JFileChooser();
 
-				fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				fc.showOpenDialog(fc);
-				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				
 				File file = fc.getSelectedFile();
 
 				plotFilePanel.setFilePathTextField(file.getAbsolutePath());
