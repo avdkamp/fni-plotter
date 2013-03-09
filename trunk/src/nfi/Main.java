@@ -4,6 +4,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -175,8 +176,8 @@ public class Main {
 					exportPanel.setVisible(false);
 					homePanel.setVisible(false);
 				} else {
+					JOptionPane.showMessageDialog(plotFilePanel, "Set a valid path!");
 					
-					ErrorBox error = new ErrorBox(plotFilePanel,"Set a valid path!");
 				}
 			}
 
