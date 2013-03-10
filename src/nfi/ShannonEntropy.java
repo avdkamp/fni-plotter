@@ -123,7 +123,7 @@ public class ShannonEntropy {
 	 * @return all the results as double in an ArrayList
 	 */
 	public ArrayList<Double> getResults(){
-		if(allShannonResults.size() > 1){
+		if(allShannonResults.size() > 0){
 			return allShannonResults;
 		} else {
 			return null;
