@@ -5,6 +5,7 @@ import java.awt.RenderingHints;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
@@ -30,6 +31,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
+import javax.swing.JTextArea;
 
 public class GraphPanel extends JPanel {
 
@@ -50,8 +52,15 @@ public class GraphPanel extends JPanel {
 	private final JLabel exportLabel = new JLabel("");
 	private final JProgressBar progressBar = new JProgressBar();
 	
+	
 	private int blockSize;
 	private String pathToFile;
+	
+	private final JLabel lblGetSHA256 = new JLabel("");
+	private final JLabel lblGetFileSize = new JLabel("");
+	private final JLabel lblGetSHA1 = new JLabel("");
+	private final JLabel lblGetMD5 = new JLabel("");
+	
 	
 	public GraphPanel(){
 		this.setVisible(false);
@@ -84,21 +93,56 @@ public class GraphPanel extends JPanel {
 		statisticsPanel.setBorder(new LineBorder(CustomColor));
 		this.add(statisticsPanel);
 		
+		JLabel lblFileSize = new JLabel("File Size:");
+		lblFileSize.setBounds(10, 21, 46, 14);
+		statisticsPanel.add(lblFileSize);
+		
+		JLabel lblMd5 = new JLabel("MD5:");
+		lblMd5.setBounds(10, 46, 46, 14);
+		statisticsPanel.add(lblMd5);
+		
+		JLabel lblSha1 = new JLabel("SHA-1:");
+		lblSha1.setBounds(10, 71, 46, 14);
+		statisticsPanel.add(lblSha1);
+		
+		JLabel lblSha256 = new JLabel("SHA-256:");
+		lblSha256.setBounds(10, 96, 46, 14);
+		statisticsPanel.add(lblSha256);
+		
+		
+		lblGetFileSize.setBounds(66, 21, 166, 14);
+		statisticsPanel.add(lblGetFileSize);
+		
+		
+		lblGetMD5.setBounds(66, 46, 166, 14);
+		statisticsPanel.add(lblGetMD5);
+		
+		
+		lblGetSHA1.setBounds(66, 71, 166, 14);
+		statisticsPanel.add(lblGetSHA1);
+		lblGetSHA256.setBounds(66, 96, 166, 14);		
+		statisticsPanel.add(lblGetSHA256);
+		
+		
+		lblGetSHA1.setText(getSHA1());
+		lblGetMD5.setText(getMD5());
+		
+		
 		backLabel.setIcon(ResourceLoader.loadImageIcon("/images/back.png"));
-		backLabel.setBounds(33, 273, 53, 44);
+		backLabel.setBounds(32, 324, 53, 44);
 		
 		this.add(backLabel);
 		updateLabel.setIcon(ResourceLoader.loadImageIcon("/images/update.png"));
-		updateLabel.setBounds(108, 275, 48, 55);
+		updateLabel.setBounds(107, 326, 48, 55);
 		this.add(updateLabel);
 		
 		forwardLabel.setIcon(ResourceLoader.loadImageIcon("/images/forward.png"));
-		forwardLabel.setBounds(166, 274, 58, 41);
+		forwardLabel.setBounds(165, 325, 58, 41);
 		this.add(forwardLabel);
 		
 		
 		exportLabel.setIcon(ResourceLoader.loadImageIcon("/images/export.png"));
-		exportLabel.setBounds(108, 341, 50, 50);
+		exportLabel.setBounds(107, 392, 50, 50);
 		exportLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -218,6 +262,40 @@ public class GraphPanel extends JPanel {
 	}
 	public void setPathToFile(String pathToFile) {
 		this.pathToFile = pathToFile;
+	}
+	public void setMD5(String MD5) {
+		lblGetMD5.setText(MD5);
+	}
+	public void setSHA1(String SHA1) {
+		lblGetSHA1.setText(SHA1);
+	}
+	public void setSHA256(String SHA256) {
+		lblGetSHA256.setText(SHA256);
+	}
+	public void setDotsFilesize(File fz) {
+        long l = fz.length();
+        String filesz = Long.toString(l);
+        int count = 0;
+        for (int i = filesz.length(); i > 0; i--) {
+            if (count == 3) {
+                filesz = new StringBuffer(filesz).insert(i, ".").toString();
+                count = 0;
+            }
+            count++;
+        }
+        lblGetFileSize.setText(filesz+" Bytes");
+    }
+
+	
+	public String getMD5() {
+		
+		return lblGetMD5.getText();
+	}
+	public String getSHA1() {
+		return lblGetSHA1.getText();
+	}
+	public String getSHA256() {
+		return lblGetSHA256.getText();
 	}
 	/**
 	 * initializes the interface

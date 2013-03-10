@@ -13,6 +13,9 @@ import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import nfi.gui.panel.*;
@@ -168,6 +171,22 @@ public class Main {
 				if (!plotFilePanel.getPathToFile().isEmpty()) {
 					graphPanel.setBlockSize(plotFilePanel.getBlockSize());
 					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
+					String[] hashes = new String[2];
+					try {
+						hashes = HashChecksumGen.GenerateAllHashes(plotFilePanel.getPathToFile());
+						graphPanel.setMD5(hashes[0]);
+						graphPanel.getMD5();
+						
+						graphPanel.setSHA1(hashes[1]);
+						graphPanel.getSHA1();
+						graphPanel.setSHA256(hashes[2]);
+						graphPanel.getSHA256();
+						File f = new File(plotFilePanel.getPathToFile());
+						graphPanel.setDotsFilesize(f);
+					} catch (NoSuchAlgorithmException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					graphPanel.startCalculation();
 					menuPanel.showGraphBtn();
 					infoPanel.setVisible(false);
