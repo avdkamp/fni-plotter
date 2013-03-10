@@ -177,7 +177,7 @@ public class Main {
 						graphPanel.setMD5(hashes[0]);
 						graphPanel.setSHA1(hashes[1]);						
 						graphPanel.setSHA256(hashes[2]);
-						System.out.println(graphPanel.getSHA256());
+						
 						File f = new File(plotFilePanel.getPathToFile());
 						graphPanel.setDotsFilesize(f);
 					} catch (NoSuchAlgorithmException | IOException e) {
