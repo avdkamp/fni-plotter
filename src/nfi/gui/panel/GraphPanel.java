@@ -32,6 +32,9 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
 import javax.swing.JTextArea;
+import java.awt.TextArea;
+import javax.swing.JTextField;
+import java.awt.TextField;
 
 public class GraphPanel extends JPanel {
 
@@ -56,10 +59,10 @@ public class GraphPanel extends JPanel {
 	private int blockSize;
 	private String pathToFile;
 	
-	private final JLabel lblGetSHA256 = new JLabel("");
+	private final JTextField textFieldGetSHA256 = new JTextField("");
 	private final JLabel lblGetFileSize = new JLabel("");
-	private final JLabel lblGetSHA1 = new JLabel("");
-	private final JLabel lblGetMD5 = new JLabel("");
+	private final JTextField textFieldGetSHA1 = new JTextField("");
+	private final JTextField textFieldGetMD5 = new JTextField("");
 	
 	
 	public GraphPanel(){
@@ -94,7 +97,7 @@ public class GraphPanel extends JPanel {
 		this.add(statisticsPanel);
 		
 		JLabel lblFileSize = new JLabel("File Size:");
-		lblFileSize.setBounds(10, 21, 46, 14);
+		lblFileSize.setBounds(10, 21, 66, 14);
 		statisticsPanel.add(lblFileSize);
 		
 		JLabel lblMd5 = new JLabel("MD5:");
@@ -102,30 +105,30 @@ public class GraphPanel extends JPanel {
 		statisticsPanel.add(lblMd5);
 		
 		JLabel lblSha1 = new JLabel("SHA-1:");
-		lblSha1.setBounds(10, 71, 46, 14);
+		lblSha1.setBounds(10, 93, 46, 14);
 		statisticsPanel.add(lblSha1);
 		
 		JLabel lblSha256 = new JLabel("SHA-256:");
-		lblSha256.setBounds(10, 96, 46, 14);
+		lblSha256.setBounds(10, 136, 83, 14);
 		statisticsPanel.add(lblSha256);
 		
 		
-		lblGetFileSize.setBounds(66, 21, 166, 14);
+		lblGetFileSize.setBounds(86, 21, 146, 14);
 		statisticsPanel.add(lblGetFileSize);
 		
 		
-		lblGetMD5.setBounds(66, 46, 166, 14);
-		statisticsPanel.add(lblGetMD5);
+		textFieldGetMD5.setBounds(10, 68, 222, 20);
+		statisticsPanel.add(textFieldGetMD5);
 		
 		
-		lblGetSHA1.setBounds(66, 71, 166, 14);
-		statisticsPanel.add(lblGetSHA1);
-		lblGetSHA256.setBounds(66, 96, 166, 14);		
-		statisticsPanel.add(lblGetSHA256);
+		textFieldGetSHA1.setBounds(10, 114, 222, 20);
+		statisticsPanel.add(textFieldGetSHA1);
+		textFieldGetSHA256.setBounds(10, 161, 222, 20);		
+		statisticsPanel.add(textFieldGetSHA256);
 		
 		
-		lblGetSHA1.setText(getSHA1());
-		lblGetMD5.setText(getMD5());
+		textFieldGetSHA1.setText(getSHA1());
+		textFieldGetMD5.setText(getMD5());
 		
 		
 		backLabel.setIcon(ResourceLoader.loadImageIcon("/images/back.png"));
@@ -264,13 +267,13 @@ public class GraphPanel extends JPanel {
 		this.pathToFile = pathToFile;
 	}
 	public void setMD5(String MD5) {
-		lblGetMD5.setText(MD5);
+		textFieldGetMD5.setText(MD5);
 	}
 	public void setSHA1(String SHA1) {
-		lblGetSHA1.setText(SHA1);
+		textFieldGetSHA1.setText(SHA1);
 	}
 	public void setSHA256(String SHA256) {
-		lblGetSHA256.setText(SHA256);
+		textFieldGetSHA256.setText(SHA256);
 	}
 	public void setDotsFilesize(File fz) {
         long l = fz.length();
@@ -288,14 +291,13 @@ public class GraphPanel extends JPanel {
 
 	
 	public String getMD5() {
-		
-		return lblGetMD5.getText();
+		return textFieldGetMD5.getText();
 	}
 	public String getSHA1() {
-		return lblGetSHA1.getText();
+		return textFieldGetSHA1.getText();
 	}
 	public String getSHA256() {
-		return lblGetSHA256.getText();
+		return textFieldGetSHA256.getText();
 	}
 	/**
 	 * initializes the interface
