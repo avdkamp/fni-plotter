@@ -175,12 +175,9 @@ public class Main {
 					try {
 						hashes = HashChecksumGen.GenerateAllHashes(plotFilePanel.getPathToFile());
 						graphPanel.setMD5(hashes[0]);
-						graphPanel.getMD5();
-						
-						graphPanel.setSHA1(hashes[1]);
-						graphPanel.getSHA1();
+						graphPanel.setSHA1(hashes[1]);						
 						graphPanel.setSHA256(hashes[2]);
-						graphPanel.getSHA256();
+						
 						File f = new File(plotFilePanel.getPathToFile());
 						graphPanel.setDotsFilesize(f);
 					} catch (NoSuchAlgorithmException | IOException e) {
