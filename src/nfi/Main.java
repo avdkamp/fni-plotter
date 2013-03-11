@@ -166,9 +166,9 @@ public class Main {
 		plotFilePanel.setOnPlotFileEventListener(new OnPlotFileEventListener() {
 			@Override
 			public void showGraph() {
-//				String pattern = "^(?:[\\w]\\:|\\\\)(\\\\[a-z_\\-\\s0-9\\.]+)+\\.(?i)(txt|gif|pdf|doc|docx|xls|xlsx)$";
-//				if (!plotFilePanel.getPathToFile().isEmpty() && plotFilePanel.getPathToFile().matches(pattern)) {
-				if (!plotFilePanel.getPathToFile().isEmpty()) {
+				File f = new File(plotFilePanel.getPathToFile());
+			
+				if (!plotFilePanel.getPathToFile().isEmpty() && f.exists()) {				
 					graphPanel.setBlockSize(plotFilePanel.getBlockSize());
 					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
 					String[] hashes = new String[2];
@@ -177,8 +177,6 @@ public class Main {
 						graphPanel.setMD5(hashes[0]);
 						graphPanel.setSHA1(hashes[1]);						
 						graphPanel.setSHA256(hashes[2]);
-						
-						File f = new File(plotFilePanel.getPathToFile());
 						graphPanel.setDotsFilesize(f);
 					} catch (NoSuchAlgorithmException | IOException e) {
 						// TODO Auto-generated catch block
