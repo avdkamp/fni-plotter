@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import nfi.HashChecksumGen;
+import nfi.HashChecksumGen.OnHashCalculationEventListener;
 import nfi.ResourceLoader;
 import nfi.ShannonEntropy;
 import nfi.ShannonEntropy.OnShannonEntropyEventListener;
@@ -64,7 +65,7 @@ public class GraphPanel extends JPanel {
 	private String pathToFile;
 	
 	private final JTextField textFieldGetSHA256 = new JTextField("");
-	private final JLabel lblGetFileSize = new JLabel("");
+	private final JLabel textFieldFileSize = new JLabel("");
 	private final JTextField textFieldGetSHA1 = new JTextField("");
 	private final JTextField textFieldGetMD5 = new JTextField("");
 	
@@ -116,8 +117,8 @@ public class GraphPanel extends JPanel {
 		statisticsPanel.add(lblSha256);
 		
 		
-		lblGetFileSize.setBounds(86, 21, 146, 14);
-		statisticsPanel.add(lblGetFileSize);
+		textFieldFileSize.setBounds(86, 21, 146, 14);
+		statisticsPanel.add(textFieldFileSize);
 		
 		textFieldGetMD5.setBounds(10, 68, 222, 20);
 		statisticsPanel.add(textFieldGetMD5);
@@ -259,18 +260,19 @@ public class GraphPanel extends JPanel {
     }
 	
     public void setHashes(){
-    	try {
-			String[] hashes = HashChecksumGen.GenerateAllHashes(pathToFile);
-			textFieldGetMD5.setText(hashes[0]);
-			textFieldGetSHA1.setText(hashes[1]);
-			textFieldGetSHA256.setText(hashes[2]);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    	final HashChecksumGen hcg = new HashChecksumGen();
+    	hcg.GenerateAllHashes(pathToFile);
+    	hcg.setOnHashCalculationEventListener(new OnHashCalculationEventListener() {
+			@Override
+			public void doneCalculationAllHashes() {
+				String[] hashes = hcg.getAllHashes();
+				
+				textFieldGetMD5.setText(hashes[0]);
+				textFieldGetSHA1.setText(hashes[1]);
+				textFieldGetSHA256.setText(hashes[2]);
+				textFieldFileSize.setText("wtf");
+			}
+		});
     }
     
 	public void setBlockSize(int blockSize) {
@@ -279,8 +281,6 @@ public class GraphPanel extends JPanel {
 	public void setPathToFile(String pathToFile) {
 		this.pathToFile = pathToFile;
 	}
-	
-
 
 	public void setDotsFilesize(File fz) {
         long l = fz.length();
@@ -293,7 +293,7 @@ public class GraphPanel extends JPanel {
             }
             count++;
         }
-        lblGetFileSize.setText(filesz+" Bytes");
+        textFieldFileSize.setText(filesz+" Bytes");
     }
 
 	
