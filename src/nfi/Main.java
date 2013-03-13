@@ -171,18 +171,9 @@ public class Main {
 				if (!plotFilePanel.getPathToFile().isEmpty() && f.exists()) {				
 					graphPanel.setBlockSize(plotFilePanel.getBlockSize());
 					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
-					String[] hashes = new String[2];
-					try {
-						hashes = HashChecksumGen.GenerateAllHashes(plotFilePanel.getPathToFile());
-						graphPanel.setMD5(hashes[0]);
-						graphPanel.setSHA1(hashes[1]);						
-						graphPanel.setSHA256(hashes[2]);
-						graphPanel.setDotsFilesize(f);
-					} catch (NoSuchAlgorithmException | IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 					graphPanel.startCalculation();
+					//TODO: hashes generen moet optioneel worden
+					graphPanel.setHashes();
 					menuPanel.showGraphBtn();
 					infoPanel.setVisible(false);
 					plotFilePanel.setVisible(false);
@@ -191,7 +182,6 @@ public class Main {
 					homePanel.setVisible(false);
 				} else {
 					JOptionPane.showMessageDialog(plotFilePanel, "Set a valid path!");
-					
 				}
 			}
 
