@@ -8,6 +8,9 @@ import java.security.NoSuchAlgorithmException;
 
 public class HashChecksumGen {
 	
+	private static String[] allHashes = new String[3];
+	private OnHashCalculationEventListener onHashCalculationEventListener;
+	
 	public static String GenerateMD5(String pathToFile) throws NoSuchAlgorithmException, FileNotFoundException, IOException{
 		MessageDigest md = MessageDigest.getInstance("MD5");
 	    
@@ -34,14 +37,9 @@ public class HashChecksumGen {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public static String[] GenerateAllHashes(String pathToFile) throws NoSuchAlgorithmException, FileNotFoundException, IOException{
-		String[] hashes = new String[3];
+	public void GenerateAllHashes(String pathToFile){
 		
-		hashes[0] = GenerateMD5(pathToFile);
-		hashes[1] = GenerateSHA1(pathToFile);
-		hashes[2] = GenerateSHA256(pathToFile);
-		
-		return hashes;
+		new AllHashGenerator(pathToFile).start();
 	}
 	
 	private static String checkSumCreater(MessageDigest md, String pathToFile) throws NoSuchAlgorithmException, FileNotFoundException, IOException{
@@ -64,5 +62,46 @@ public class HashChecksumGen {
 		}
 		
 		return sb.toString();
+	}
+	
+	public String[] getAllHashes(){
+		return allHashes;
+	}
+	
+	private class AllHashGenerator extends Thread{
+		
+		String pathToFile;
+		
+		public AllHashGenerator(String pathToFile){
+			this.pathToFile = pathToFile;
+		}
+		
+		@Override
+		public void run(){
+			try {
+				allHashes[0] = GenerateMD5(pathToFile);
+				allHashes[1] = GenerateSHA1(pathToFile);
+				allHashes[2] = GenerateSHA256(pathToFile);
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			onHashCalculationEventListener.doneCalculationAllHashes();
+		}
+	}
+	/**
+	 * initializes the interface
+	 */
+	public void setOnHashCalculationEventListener(OnHashCalculationEventListener listener){
+		this.onHashCalculationEventListener = listener;
+	}
+	/**
+	 * Inner callback interface
+	 */
+	public static interface OnHashCalculationEventListener{
+		public void doneCalculationAllHashes();
 	}
 }

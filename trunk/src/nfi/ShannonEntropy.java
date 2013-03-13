@@ -35,14 +35,14 @@ public class ShannonEntropy {
 	 * Start the Thread worker.
 	 */
 	public void run(){
-		new Worker().start();
+		new Calculator().start();
 	}
 	/**
 	 * The worker which processes file in a different thread to prevent the GUI from freezing.
 	 * 
 	 * @author Albert
 	 */
-	private class Worker extends Thread{
+	private class Calculator extends Thread{
 		@SuppressWarnings("resource")
 		@Override
 		public void run(){
