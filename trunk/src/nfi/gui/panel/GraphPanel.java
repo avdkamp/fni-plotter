@@ -6,6 +6,9 @@ import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
@@ -13,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import nfi.HashChecksumGen;
 import nfi.ResourceLoader;
 import nfi.ShannonEntropy;
 import nfi.ShannonEntropy.OnShannonEntropyEventListener;
@@ -78,7 +82,6 @@ public class GraphPanel extends JPanel {
 		lblGraph.setBounds(284, 0, 84, 23);
 		this.add(lblGraph);
 		
-		
 		initGraph();
 		this.add(graphPanel);
 		graphPanel.setLayout(null);
@@ -116,20 +119,15 @@ public class GraphPanel extends JPanel {
 		lblGetFileSize.setBounds(86, 21, 146, 14);
 		statisticsPanel.add(lblGetFileSize);
 		
-		
 		textFieldGetMD5.setBounds(10, 68, 222, 20);
 		statisticsPanel.add(textFieldGetMD5);
 		
 		
 		textFieldGetSHA1.setBounds(10, 114, 222, 20);
 		statisticsPanel.add(textFieldGetSHA1);
+		
 		textFieldGetSHA256.setBounds(10, 161, 222, 20);		
 		statisticsPanel.add(textFieldGetSHA256);
-		
-		
-		textFieldGetSHA1.setText(getSHA1());
-		textFieldGetMD5.setText(getMD5());
-		
 		
 		backLabel.setIcon(ResourceLoader.loadImageIcon("/images/back.png"));
 		backLabel.setBounds(32, 324, 53, 44);
@@ -260,12 +258,29 @@ public class GraphPanel extends JPanel {
         }
     }
 	
+    public void setHashes(){
+    	try {
+			String[] hashes = HashChecksumGen.GenerateAllHashes(pathToFile);
+			textFieldGetMD5.setText(hashes[0]);
+			textFieldGetSHA1.setText(hashes[1]);
+			textFieldGetSHA256.setText(hashes[2]);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
 	public void setBlockSize(int blockSize) {
 		this.blockSize = blockSize;
 	}
 	public void setPathToFile(String pathToFile) {
 		this.pathToFile = pathToFile;
 	}
+	
+
 	public void setMD5(String MD5) {
 		textFieldGetMD5.setText(MD5);
 	}
