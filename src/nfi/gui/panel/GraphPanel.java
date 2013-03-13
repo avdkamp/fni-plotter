@@ -281,15 +281,7 @@ public class GraphPanel extends JPanel {
 	}
 	
 
-	public void setMD5(String MD5) {
-		textFieldGetMD5.setText(MD5);
-	}
-	public void setSHA1(String SHA1) {
-		textFieldGetSHA1.setText(SHA1);
-	}
-	public void setSHA256(String SHA256) {
-		textFieldGetSHA256.setText(SHA256);
-	}
+
 	public void setDotsFilesize(File fz) {
         long l = fz.length();
         String filesz = Long.toString(l);
