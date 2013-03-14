@@ -23,7 +23,10 @@ import nfi.gui.panel.MenuPanel.OnMenuEventListener;
 import nfi.gui.panel.PlotFilePanel.OnPlotFileEventListener;
 
 public class Main {
-
+	
+	
+	
+	private static final PdfExport pdf = new PdfExport("");
 	private static final InfoPanel infoPanel = new InfoPanel();
 	private static final HomePanel homePanel = new HomePanel();
 	private static final PlotFilePanel plotFilePanel = new PlotFilePanel();
