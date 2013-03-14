@@ -50,7 +50,9 @@ public class PdfExport {
 			//Set the author of the document
 			pdfDocument.addTitle("");
 			//Set the document date
-			
+			pdfDocument.addCreationDate();
+			//Set the document subject
+			pdfDocument.addSubject("Bestanden plotter");
 			// Set the title
 			pdfDocument.add(new Paragraph("test"));
 		} catch (DocumentException e) {
@@ -58,6 +60,14 @@ public class PdfExport {
 			e.printStackTrace();
 		}
 		
+	}
+	/**
+	 * Set the document footer
+	 * The footer is optional.
+	 *
+	 */
+	public void setFooter() {
+	
 	}
 	/**
 	 * End the document
