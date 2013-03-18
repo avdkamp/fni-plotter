@@ -12,8 +12,6 @@ import com.itextpdf.text.pdf.PdfWriter;
  */
 public class PdfExport {
 	
-	//Static final string voor het pad + bestands naam.
-	public static final String RESULT = "C://test2.pdf";
 	//Open het document
 	private Document pdfDocument = new Document();
 	
@@ -66,7 +64,7 @@ public class PdfExport {
 	
 	public void setDocumentContent() {
 		try {
-			pdfDocument.add(new Paragraph("test"));
+			pdfDocument.add(new Paragraph("Hashes :"));
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
