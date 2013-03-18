@@ -95,7 +95,14 @@ public class ExportPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String title = TitleTextField.getText();
 				String sin = SINtextField.getText();
-				onExportEventListener.exportToPDF(title, sin);
+				
+				if (AddInfoTextArea.getText().equals("")) {
+					String extraInfo = "Geen extra informatie beschikbaar.";
+				} else {
+					String extraInfo = AddInfoTextArea.getText();
+				}
+				
+				onExportEventListener.exportToPDF(title, sin, extraInfo);
 			}
 		});
 		ExportToPDFbutton.setForeground(Color.WHITE);
@@ -202,6 +209,6 @@ public class ExportPanel extends JPanel {
 	 * Inner callback interface
 	 */
 	public static interface OnExportEventListener{
-		public void exportToPDF(String title, String sin);
+		public void exportToPDF(String title, String sin, String extraInfo);
 	}
 }
