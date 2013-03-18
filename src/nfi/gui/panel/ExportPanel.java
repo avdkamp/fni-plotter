@@ -93,9 +93,10 @@ public class ExportPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				String extraInfo = new String();
 				String title = TitleTextField.getText();
 				String sin = SINtextField.getText();
-				String extraInfo = "";
+	
 				if (AddInfoTextArea.getText().equals("")) {
 					extraInfo = "Geen extra informatie beschikbaar.";
 				} else {
