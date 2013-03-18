@@ -39,7 +39,7 @@ public class PdfExport {
 	 */
 	private void openStream(String path) throws FileNotFoundException, DocumentException {
 		//Open de input stream
-		PdfWriter.getInstance(pdfDocument, new FileOutputStream(RESULT));
+		PdfWriter.getInstance(pdfDocument, new FileOutputStream(path));
 	}
 		
 	/**
