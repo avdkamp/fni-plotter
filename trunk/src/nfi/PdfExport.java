@@ -45,7 +45,7 @@ public class PdfExport {
 	/**
 	 * This is optional - the header contains the following information.
 	 */
-	public void setHeader(String title, String sin) {
+	public void setHeader(String title, String sin, String extraInfo) {
 		try {
 			//Set the author of the document
 			pdfDocument.addTitle(title);
