@@ -84,7 +84,7 @@ public class ExportPanel extends JPanel {
 		lblAdditionalInfo.setBounds(10, 114, 82, 14);
 		ExportToPDFpanel.add(lblAdditionalInfo);
 		
-		JTextArea AddInfoTextArea = new JTextArea();
+		final JTextArea AddInfoTextArea = new JTextArea();
 		AddInfoTextArea.setBounds(110, 109, 440, 83);
 		ExportToPDFpanel.add(AddInfoTextArea);
 		
