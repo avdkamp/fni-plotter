@@ -26,7 +26,6 @@ public class Main {
 	
 	
 	
-	private static final PdfExport pdf = new PdfExport("");
 	private static final InfoPanel infoPanel = new InfoPanel();
 	private static final HomePanel homePanel = new HomePanel();
 	private static final PlotFilePanel plotFilePanel = new PlotFilePanel();
@@ -37,7 +36,7 @@ public class Main {
 	private static final FooterPanel footerPanel = new FooterPanel();
 
 	public static void main(String[] args) throws Exception {
-
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -213,10 +212,14 @@ public class Main {
 	}
 
 	private void exportEventListeners() {
+		
 		exportPanel.setOnExportEventListener(new OnExportEventListener() {
 			@Override
 			public void exportToPDF() {
-				// TODO: call PDF generate class here.
+				final PdfExport pdf = new PdfExport("C://test3.pdf");
+				pdf.setHeader();
+				pdf.setFooter();
+				pdf.endDocument();
 			}
 		});
 	}

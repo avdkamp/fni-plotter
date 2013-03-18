@@ -2,6 +2,8 @@ package nfi.gui.panel;
 
 import java.awt.Color;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -87,10 +89,18 @@ public class ExportPanel extends JPanel {
 		ExportToPDFpanel.add(AddInfoTextArea);
 		
 		JButton ExportToPDFbutton = new JButton("Export");
+		ExportToPDFbutton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				onExportEventListener.exportToPDF();
+							}
+		});
 		ExportToPDFbutton.setForeground(Color.WHITE);
 		ExportToPDFbutton.setBackground(new Color(21, 66, 115));
 		ExportToPDFbutton.setBounds(441, 203, 109, 33);
 		ExportToPDFpanel.add(ExportToPDFbutton);
+		
 		
 		JLabel ExportToImageLabel = new JLabel(" Export to Image");
 		ExportToImageLabel.setOpaque(true);
