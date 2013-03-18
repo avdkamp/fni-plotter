@@ -217,8 +217,9 @@ public class Main {
 		exportPanel.setOnExportEventListener(new OnExportEventListener() {
 			@Override
 			public void exportToPDF(String title, String sin, String extraInfo) {
-				final PdfExport pdf = new PdfExport("C://test3.pdf");
+				final PdfExport pdf = new PdfExport("C://test4.pdf");
 				pdf.setHeader(title, sin, extraInfo);
+				pdf.setDocumentContent();
 				pdf.setFooter();
 				pdf.endDocument();
 			}
