@@ -95,11 +95,11 @@ public class ExportPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String title = TitleTextField.getText();
 				String sin = SINtextField.getText();
-				
+				String extraInfo = "";
 				if (AddInfoTextArea.getText().equals("")) {
-					String extraInfo = "Geen extra informatie beschikbaar.";
+					extraInfo = "Geen extra informatie beschikbaar.";
 				} else {
-					String extraInfo = AddInfoTextArea.getText();
+					extraInfo = AddInfoTextArea.getText();
 				}
 				
 				onExportEventListener.exportToPDF(title, sin, extraInfo);
