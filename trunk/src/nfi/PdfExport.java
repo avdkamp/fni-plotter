@@ -56,7 +56,7 @@ public class PdfExport {
 			//Set the document subject
 			pdfDocument.addSubject("Bestanden plotter");
 			// Set the title
-			pdfDocument.add(new Paragraph("test"));
+			pdfDocument.add(new Paragraph("Extra informatie :  "+ extraInfo));
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
