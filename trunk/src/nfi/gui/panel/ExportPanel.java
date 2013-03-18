@@ -94,7 +94,7 @@ public class ExportPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				onExportEventListener.exportToPDF();
-							}
+			}
 		});
 		ExportToPDFbutton.setForeground(Color.WHITE);
 		ExportToPDFbutton.setBackground(new Color(21, 66, 115));
