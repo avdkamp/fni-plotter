@@ -210,17 +210,20 @@ public class Main {
 			}
 		});
 	}
-
+/**
+ * Call methods for export
+ */
 	private void exportEventListeners() {
-		
 		exportPanel.setOnExportEventListener(new OnExportEventListener() {
 			@Override
-			public void exportToPDF() {
+			public void exportToPDF(String title, String sin) {
 				final PdfExport pdf = new PdfExport("C://test3.pdf");
-				pdf.setHeader();
+				pdf.setHeader(title, sin);
 				pdf.setFooter();
 				pdf.endDocument();
 			}
+
+		
 		});
 	}
 }

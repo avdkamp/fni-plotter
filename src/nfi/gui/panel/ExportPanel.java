@@ -93,7 +93,9 @@ public class ExportPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				onExportEventListener.exportToPDF();
+				String title = TitleTextField.getText();
+				String sin = SINtextField.getText();
+				onExportEventListener.exportToPDF(title, sin);
 			}
 		});
 		ExportToPDFbutton.setForeground(Color.WHITE);
@@ -200,6 +202,6 @@ public class ExportPanel extends JPanel {
 	 * Inner callback interface
 	 */
 	public static interface OnExportEventListener{
-		public void exportToPDF();
+		public void exportToPDF(String title, String sin);
 	}
 }
