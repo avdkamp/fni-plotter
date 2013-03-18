@@ -45,12 +45,14 @@ public class PdfExport {
 	/**
 	 * This is optional - the header contains the following information.
 	 */
-	public void setHeader() {
+	public void setHeader(String title, String sin) {
 		try {
 			//Set the author of the document
-			pdfDocument.addTitle("");
+			pdfDocument.addTitle(title);
 			//Set the document date
 			pdfDocument.addCreationDate();
+			//Set SIN number
+			pdfDocument.add(new Paragraph("SIN nummer : " + sin));
 			//Set the document subject
 			pdfDocument.addSubject("Bestanden plotter");
 			// Set the title
@@ -60,6 +62,15 @@ public class PdfExport {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void setDocumentContent() {
+		try {
+			pdfDocument.add(new Paragraph("test"));
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * Set the document footer
