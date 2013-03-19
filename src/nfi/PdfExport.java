@@ -43,28 +43,23 @@ public class PdfExport {
 	/**
 	 * This is optional - the header contains the following information.
 	 */
-	public void setHeader(String title, String sin, String extraInfo) {
+	public void setHeader(String title) {
+		//Set the author of the document
+		pdfDocument.addTitle(title);
+		//Set the document date
+		pdfDocument.addCreationDate();
+	}
+	
+	public void setDocumentContent(String Title, String sin, String extraInfo, String[] hashes) {
 		try {
-			//Set the author of the document
-			pdfDocument.addTitle(title);
-			//Set the document date
-			pdfDocument.addCreationDate();
 			//Set SIN number
 			pdfDocument.add(new Paragraph("SIN nummer : " + sin));
 			//Set the document subject
 			pdfDocument.addSubject("Bestanden plotter");
 			// Set the title
 			pdfDocument.add(new Paragraph("Extra informatie :  "+ extraInfo));
-		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	
-	public void setDocumentContent() {
-		try {
-			pdfDocument.add(new Paragraph("Hashes :"));
+			pdfDocument.add(new Paragraph("Hashes"));
+			
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,6 +84,7 @@ public class PdfExport {
 			e.printStackTrace();
 		}
 	}
+	
 	
 
 }
