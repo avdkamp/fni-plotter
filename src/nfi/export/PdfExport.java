@@ -20,8 +20,8 @@ public class PdfExport {
 	//Set the document font family
 	//TODO : correct font setting!
 	private static Font titleFont = new Font(Font.FontFamily.COURIER, 18, Font.BOLD);
-	private static Font fontFam = new Font(Font.FontFamily.COURIER, 14,Font.NORMAL);
-	private static Font footerFam = new Font(Font.FontFamily.COURIER, 11, Font.NORMAL);
+	private static Font fontFam = new Font(Font.FontFamily.COURIER, 11,Font.NORMAL);
+	private static Font footerFam = new Font(Font.FontFamily.COURIER, 9, Font.NORMAL);
 	
 	public PdfExport(String path){
 		//Set 
@@ -104,9 +104,9 @@ public class PdfExport {
 	 * @throws DocumentException 
 	 */
 	public void setGraphImg(String imgPath) throws MalformedURLException, IOException, DocumentException {
-		String imageUrl = imgPath;
+//		String imageUrl = "C:bier.JPG";
 		//Set the img object
-        Image graphImage = Image.getInstance(new URL(imgPath));
+        Image graphImage = Image.getInstance(imgPath);
         //Add the img to the document.
         pdfDocument.add(graphImage);
  	}
