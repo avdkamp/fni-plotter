@@ -254,6 +254,12 @@ public class GraphPanel extends JPanel {
         }
     }
 	
+    public  void clearHashTextAreas(){
+    	textFieldGetMD5.setText("");
+		textFieldGetSHA1.setText("");
+		textFieldGetSHA256.setText("");
+    }
+    
     public void setHashes(){
     	final HashChecksumGen hcg = new HashChecksumGen();
     	hcg.GenerateAllHashes(pathToFile);
@@ -265,7 +271,9 @@ public class GraphPanel extends JPanel {
 				textFieldGetMD5.setText(hashes[0]);
 				textFieldGetSHA1.setText(hashes[1]);
 				textFieldGetSHA256.setText(hashes[2]);
-				textFieldFileSize.setText("wtf");
+				
+				File f = new File(pathToFile);
+				textFieldFileSize.setText(f.length() + " Bytes");
 			}
 		});
     }

@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import nfi.ResourceLoader;
+import javax.swing.JCheckBox;
 
 public class PlotFilePanel extends JPanel {
 
@@ -29,6 +30,7 @@ public class PlotFilePanel extends JPanel {
 	private JLabel lblOr = new JLabel("Or");
 	private JComboBox<?> BlockSizeComboBox = new JComboBox<Object>(PlotOptions);
 	private JTextField filePathTextField;
+	private JCheckBox chckbxCalculateHashes = new JCheckBox("");
 	private OnPlotFileEventListener onPlotFileEventListener;
 	private int blocksize;
 	
@@ -50,7 +52,7 @@ public class PlotFilePanel extends JPanel {
 		JPanel PlotOptionPanel = new JPanel();
 		PlotOptionPanel.setBackground(SystemColor.menu);
 		PlotOptionPanel.setBorder(new LineBorder(CustomColor));
-		PlotOptionPanel.setBounds(10, 11, 507, 272);
+		PlotOptionPanel.setBounds(10, 11, 507, 329);
 		PlotOptionPanel.setLayout(null);
 		this.add(PlotOptionPanel);
 		lblBlockSize.setBounds(10, 37, 84, 14);
@@ -69,7 +71,7 @@ public class PlotFilePanel extends JPanel {
 			}
 		});
 		
-		btnPlotEntropy.setBounds(387, 226, 109, 33);
+		btnPlotEntropy.setBounds(387, 285, 109, 33);
 		PlotOptionPanel.add(btnPlotEntropy);
 		btnPlotEntropy.setBackground(CustomColor);
 		btnPlotEntropy.setForeground(Color.white);
@@ -87,27 +89,40 @@ public class PlotFilePanel extends JPanel {
 		PlotOptionPanel.add(btnBrowse);
 		btnBrowse.setBackground(CustomColor);
 		btnBrowse.setForeground(Color.white);
-		DragNDrop.setBounds(104, 90, 209, 104);
+		DragNDrop.setBounds(118, 90, 209, 104);
 		PlotOptionPanel.add(DragNDrop);
 		
 		DragNDrop.setIcon(ResourceLoader.loadImageIcon("/images/DragAndDrop.png"));
-		lblOr.setBounds(337, 135, 40, 14);
+		lblOr.setBounds(337, 135, 29, 14);
 		PlotOptionPanel.add(lblOr);
 		
 		filePathTextField = new JTextField();
-		filePathTextField.setBounds(104, 205, 209, 20);
+		filePathTextField.setBounds(114, 205, 209, 20);
 		PlotOptionPanel.add(filePathTextField);
 		filePathTextField.setColumns(10);
 		
-		BlockSizeComboBox.setBounds(104, 34, 209, 20);
+		BlockSizeComboBox.setBounds(118, 34, 209, 20);
 		BlockSizeComboBox.setEditable(true);
 		BlockSizeComboBox.setSelectedIndex(3);
 		PlotOptionPanel.add(BlockSizeComboBox);
+		
+		JLabel lblCalculateHashes = new JLabel("Calculate Hashes");
+		lblCalculateHashes.setBounds(10, 255, 114, 14);
+		PlotOptionPanel.add(lblCalculateHashes);
+		
+		
+		chckbxCalculateHashes.setBounds(115, 255, 97, 14);
+		PlotOptionPanel.add(chckbxCalculateHashes);
 		
 	}
 	public int getBlockSize(){
 		return blocksize;
 	}
+	
+	public boolean getCalcHashes(){
+		return chckbxCalculateHashes.isSelected();
+	}
+	
 	public void setFilePathTextField(String path){
 		
 		String string = path.toLowerCase();

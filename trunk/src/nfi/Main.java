@@ -173,8 +173,10 @@ public class Main {
 					graphPanel.setBlockSize(plotFilePanel.getBlockSize());
 					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
 					graphPanel.startCalculation();
-					//TODO: hashes generen moet optioneel worden
-//					graphPanel.setHashes();
+					graphPanel.clearHashTextAreas();
+					if(plotFilePanel.getCalcHashes()){
+						graphPanel.setHashes();
+					}
 					menuPanel.showGraphBtn();
 					infoPanel.setVisible(false);
 					plotFilePanel.setVisible(false);
