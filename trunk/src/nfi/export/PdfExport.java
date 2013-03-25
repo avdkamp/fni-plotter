@@ -64,7 +64,7 @@ public class PdfExport {
 	 * @param hashes
 	 * @throws DocumentException
 	 */
-	public void setDocumentContent(String Title, String sin, String extraInfo, String[] hashes) throws DocumentException {
+	public void setDocumentContent(String Title, String sin, String extraInfo, String[] hashes, String fileSize, String filePath) throws DocumentException {
 			Paragraph line = new Paragraph("", fontFam);
 			//Add title to the document.
 			line.add(new Paragraph("Titel : " + Title));
@@ -74,6 +74,13 @@ public class PdfExport {
 			line.add(new Paragraph("SIN nummer : " + sin));
 			line.add(new Paragraph(" "));
 			
+			//Set the fileSize
+			line.add(new Paragraph("Bestandsgrootte : " + fileSize));
+			line.add(new Paragraph(" "));
+			
+			//Set the filePath
+			line.add(new Paragraph("Bestandsnaam en pad : " + filePath));
+			line.add(new Paragraph(" "));
 			// Set the extra info
 			line.add(new Paragraph("Extra informatie :  "+ extraInfo));
 			line.add(new Paragraph(" "));

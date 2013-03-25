@@ -299,7 +299,7 @@ public class GraphPanel extends JPanel {
         textFieldFileSize.setText(filesz+" Bytes");
     }
 
-	
+	//Start Get methods for use in the export class - added by Mats Odolphij
 	public String getMD5() {
 		return textFieldGetMD5.getText();
 	}
@@ -309,6 +309,14 @@ public class GraphPanel extends JPanel {
 	public String getSHA256() {
 		return textFieldGetSHA256.getText();
 	}
+	public String getFileSize() {
+		return textFieldFileSize.getText();
+	}
+	public String getFilePath(){
+		return pathToFile;
+	}
+	//End get methods for use in the export class - added by Mats Odolphij
+	
 	/**
 	 * initializes the interface
 	 */
