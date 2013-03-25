@@ -240,13 +240,15 @@ public class Main {
 				
 				pdf.setHeader(title);
 				
+				//Call the setDocumentContent method with all the parameters
 				try {
 					pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filePath);
 				} catch (DocumentException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
+				//Set the footer - this is optional
+				//TODO: set this to optional
 				try {
 					pdf.setFooter();
 				} catch (DocumentException e) {
