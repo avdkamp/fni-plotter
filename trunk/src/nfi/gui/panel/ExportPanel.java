@@ -30,6 +30,7 @@ public class ExportPanel extends JPanel {
 	private JTextField ImageHeightTextField;
 	private JTextField textField;
 	private JTextField textField_1;
+	//TODO: add a go back to graph button
 	
 	public ExportPanel(){
 		this.setVisible(false);
