@@ -30,8 +30,6 @@ import nfi.gui.panel.PlotFilePanel.OnPlotFileEventListener;
 
 public class Main {
 	
-	
-	
 	private static final InfoPanel infoPanel = new InfoPanel();
 	private static final HomePanel homePanel = new HomePanel();
 	private static final PlotFilePanel plotFilePanel = new PlotFilePanel();
@@ -225,7 +223,7 @@ public class Main {
 			public void exportToPDF(String title, String sin, String extraInfo) {
 				//Beide velden moeten ingevuld zijn!
 				if (!title.isEmpty() && !sin.isEmpty()) {
-								
+					//TODO: moet nog dynamisch ingesteld kunnen worden			
 					final PdfExport pdf = new PdfExport("C://" + title + ".pdf");
 		
 					// Create container for the hashes
@@ -245,17 +243,15 @@ public class Main {
 					String filePath = graphPanel.getFilePath();
 					
 					//Set the img
+					//TODO: moet nog dynamisch ingesteld kunnen worden
 					String pathTest = "C:\\Bier.JPG";
 					try {
 						pdf.setGraphImg(pathTest);
 					} catch (MalformedURLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (DocumentException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					
@@ -265,7 +261,6 @@ public class Main {
 					try {
 						pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filePath);
 					} catch (DocumentException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					//Set the footer - this is optional
@@ -273,7 +268,6 @@ public class Main {
 					try {
 						pdf.setFooter();
 					} catch (DocumentException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					//Close the document, The document can't be written to after this statement.

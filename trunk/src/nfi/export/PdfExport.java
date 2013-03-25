@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 //Itext imports
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -89,6 +88,7 @@ public class PdfExport {
 			line.add(new Paragraph("Hashes", fontFam));
 			
 		    List list = new List(true, false, 10);
+		    //TODO: hashes kunne optioneel zijn
 		    list.add(new ListItem("MD5     : " + hashes[0], fontFam ));
 		    list.add(new ListItem("SHA256  : " + hashes[1], fontFam ));
 		    list.add(new ListItem("SHA1    : " + hashes[2], fontFam ));
