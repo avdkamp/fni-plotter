@@ -235,6 +235,7 @@ public class Main {
 				//Set the fileSize
 				String fileSize = graphPanel.getFileSize();
 				
+				
 				//Set the filepath name
 				String filePath = graphPanel.getFilePath();
 				
