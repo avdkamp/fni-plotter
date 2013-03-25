@@ -12,13 +12,12 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
-import nfi.export.PdfExport;
 import nfi.gui.panel.*;
+
+import nfi.export.*;
 
 import nfi.gui.panel.ExportPanel.OnExportEventListener;
 import nfi.gui.panel.GraphPanel.OnGraphEventListener;
@@ -90,7 +89,7 @@ public class Main {
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setBounds(314, 416, -114, -67);
 		mainFrame.getContentPane().add(layeredPane);
-		
+
 		// TODO: is windows only op het moment, moet ook compatible met linux
 		// zijn
 		mainFrame.setDropTarget(new DropTarget() {
@@ -169,14 +168,13 @@ public class Main {
 			@Override
 			public void showGraph() {
 				File f = new File(plotFilePanel.getPathToFile());
+			
 				if (!plotFilePanel.getPathToFile().isEmpty() && f.exists()) {				
 					graphPanel.setBlockSize(plotFilePanel.getBlockSize());
 					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
 					graphPanel.startCalculation();
-					graphPanel.clearHashTextAreas();
-					if(plotFilePanel.getCalcHashes()){
-						graphPanel.setHashes();
-					}
+					//TODO: hashes generen moet optioneel worden
+					graphPanel.setHashes();
 					menuPanel.showGraphBtn();
 					infoPanel.setVisible(false);
 					plotFilePanel.setVisible(false);
@@ -191,20 +189,17 @@ public class Main {
 			@Override
 			public void fileExplorerPanel() {
 				final JFileChooser fc = new JFileChooser();
+
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-				if(OSchecker.isWindows()){
-					fc.setCurrentDirectory(new File("C:\\"));
-				}
 				fc.showOpenDialog(fc);
 				
-				if(fc.getSelectedFile() != null){
-					File file = fc.getSelectedFile();
-					plotFilePanel.setFilePathTextField(file.getAbsolutePath());
-				}
+				File file = fc.getSelectedFile();
+
+				plotFilePanel.setFilePathTextField(file.getAbsolutePath());
 			}
 		});
 	}
-
+	
 	private void graphEventListeners() {
 		graphPanel.setOnGraphEventListener(new OnGraphEventListener() {
 			@Override
@@ -224,14 +219,23 @@ public class Main {
 		exportPanel.setOnExportEventListener(new OnExportEventListener() {
 			@Override
 			public void exportToPDF(String title, String sin, String extraInfo) {
-				final PdfExport pdf = new PdfExport("C://test4.pdf");
-//				pdf.setHeader(title, sin, extraInfo);
-//				pdf.setDocumentContent();
+				final PdfExport pdf = new PdfExport("C://" + title + ".pdf");
+	
+				// Create container for the hashes
+				String[] hashes;
+				hashes = new String[3];
+
+				//Set the md5 hash
+				hashes[0] = graphPanel.getMD5();
+				hashes[1] = graphPanel.getSHA256();
+				hashes[2] = graphPanel.getSHA1();
+				
+				pdf.setHeader(title);
+				pdf.setDocumentContent(title, sin, extraInfo, hashes);
+
 				pdf.setFooter();
 				pdf.endDocument();
 			}
-
-		
 		});
 	}
 }
