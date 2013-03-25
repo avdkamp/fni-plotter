@@ -6,6 +6,8 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 
+import com.itextpdf.text.DocumentException;
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.datatransfer.DataFlavor;
@@ -231,9 +233,21 @@ public class Main {
 				hashes[2] = graphPanel.getSHA1();
 				
 				pdf.setHeader(title);
-				pdf.setDocumentContent(title, sin, extraInfo, hashes);
+				
+				try {
+					pdf.setDocumentContent(title, sin, extraInfo, hashes);
+				} catch (DocumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
-				pdf.setFooter();
+				try {
+					pdf.setFooter();
+				} catch (DocumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				//Close the document, The document can't be written to after this statement.
 				pdf.endDocument();
 			}
 		});
