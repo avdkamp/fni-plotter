@@ -1,4 +1,4 @@
-package nfi;
+package nfi.calc;
 
 import java.util.BitSet;
 

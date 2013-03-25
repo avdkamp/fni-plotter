@@ -13,11 +13,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-import nfi.HashChecksumGen;
-import nfi.HashChecksumGen.OnHashCalculationEventListener;
 import nfi.ResourceLoader;
-import nfi.ShannonEntropy;
-import nfi.ShannonEntropy.OnShannonEntropyEventListener;
+import nfi.calc.HashChecksumGen;
+import nfi.calc.ShannonEntropy;
+import nfi.calc.HashChecksumGen.OnHashCalculationEventListener;
+import nfi.calc.ShannonEntropy.OnShannonEntropyEventListener;
+
 import javax.swing.JProgressBar;
 
 import org.jfree.chart.ChartFactory;
