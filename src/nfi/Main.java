@@ -12,9 +12,12 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
+import nfi.export.PdfExport;
 import nfi.gui.panel.*;
 
 import nfi.gui.panel.ExportPanel.OnExportEventListener;
@@ -87,7 +90,7 @@ public class Main {
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setBounds(314, 416, -114, -67);
 		mainFrame.getContentPane().add(layeredPane);
-
+		
 		// TODO: is windows only op het moment, moet ook compatible met linux
 		// zijn
 		mainFrame.setDropTarget(new DropTarget() {
@@ -166,13 +169,12 @@ public class Main {
 			@Override
 			public void showGraph() {
 				File f = new File(plotFilePanel.getPathToFile());
-			
 				if (!plotFilePanel.getPathToFile().isEmpty() && f.exists()) {				
 					graphPanel.setBlockSize(plotFilePanel.getBlockSize());
 					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
 					graphPanel.startCalculation();
 					//TODO: hashes generen moet optioneel worden
-					graphPanel.setHashes();
+//					graphPanel.setHashes();
 					menuPanel.showGraphBtn();
 					infoPanel.setVisible(false);
 					plotFilePanel.setVisible(false);
@@ -187,13 +189,16 @@ public class Main {
 			@Override
 			public void fileExplorerPanel() {
 				final JFileChooser fc = new JFileChooser();
-
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				if(OSchecker.isWindows()){
+					fc.setCurrentDirectory(new File("C:\\"));
+				}
 				fc.showOpenDialog(fc);
 				
-				File file = fc.getSelectedFile();
-
-				plotFilePanel.setFilePathTextField(file.getAbsolutePath());
+				if(fc.getSelectedFile() != null){
+					File file = fc.getSelectedFile();
+					plotFilePanel.setFilePathTextField(file.getAbsolutePath());
+				}
 			}
 		});
 	}
@@ -218,8 +223,8 @@ public class Main {
 			@Override
 			public void exportToPDF(String title, String sin, String extraInfo) {
 				final PdfExport pdf = new PdfExport("C://test4.pdf");
-				pdf.setHeader(title, sin, extraInfo);
-				pdf.setDocumentContent();
+//				pdf.setHeader(title, sin, extraInfo);
+//				pdf.setDocumentContent();
 				pdf.setFooter();
 				pdf.endDocument();
 			}

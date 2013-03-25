@@ -1,4 +1,4 @@
-package nfi;
+package nfi.export;
 //Io imports
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -20,10 +20,8 @@ public class PdfExport {
 		try {
 			openStream(path);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//open het document zodat het kan worden opgebouwd
@@ -61,7 +59,6 @@ public class PdfExport {
 			pdfDocument.add(new Paragraph("Hashes"));
 			
 		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
