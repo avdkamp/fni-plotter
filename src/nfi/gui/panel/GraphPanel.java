@@ -6,6 +6,7 @@ import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ import javax.swing.JProgressBar;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.TickUnitSource;
@@ -63,6 +65,7 @@ public class GraphPanel extends JPanel {
 	private final JLabel textFieldFileSize = new JLabel("");
 	private final JTextField textFieldGetSHA1 = new JTextField("");
 	private final JTextField textFieldGetMD5 = new JTextField("");
+	
 	
 	
 	public GraphPanel(){
@@ -158,6 +161,7 @@ public class GraphPanel extends JPanel {
 		
 		dataSet = new DefaultXYDataset();
 		
+	
 		final JFreeChart chart = ChartFactory.createScatterPlot(null, 
         			"X", 
         			"y", 
@@ -166,6 +170,8 @@ public class GraphPanel extends JPanel {
         			false, 
         			true, 
         			false);
+		
+
 		chart.addProgressListener(new ChartProgressListener() {
 			
 			@Override
@@ -181,6 +187,7 @@ public class GraphPanel extends JPanel {
 					progressBar.setString(cpe.getPercent() + "% - Drawing Chart");
 				}
 			}
+			
 		});
         // force aliasing of the rendered content..
         chart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -213,6 +220,14 @@ public class GraphPanel extends JPanel {
         graphPanel.setBackground(SystemColor.menu);
         graphPanel.setBorder(new LineBorder(CustomColor));
         graphPanel.setBounds(263, 13, 601, 465);
+       
+        //Set the chart for saving.
+        try {
+			saveTempImage(chart);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
 	}
 	public void startCalculation(){
@@ -314,6 +329,10 @@ public class GraphPanel extends JPanel {
 	}
 	public String getFilePath(){
 		return pathToFile;
+	}
+
+	public void saveTempImage(JFreeChart chart) throws IOException {
+		ChartUtilities.saveChartAsPNG(new File("testVier.png"), chart, 400, 400);
 	}
 	//End get methods for use in the export class - added by Mats Odolphij
 	
