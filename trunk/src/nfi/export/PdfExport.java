@@ -104,7 +104,6 @@ public class PdfExport {
 	 * @throws DocumentException 
 	 */
 	public void setGraphImg(String imgPath) throws MalformedURLException, IOException, DocumentException {
-//		String imageUrl = "C:bier.JPG";
 		//Set the img object
         Image graphImage = Image.getInstance(imgPath);
         //Add the img to the document.

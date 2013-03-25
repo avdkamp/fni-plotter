@@ -223,58 +223,65 @@ public class Main {
 		exportPanel.setOnExportEventListener(new OnExportEventListener() {
 			@Override
 			public void exportToPDF(String title, String sin, String extraInfo) {
-				final PdfExport pdf = new PdfExport("C://" + title + ".pdf");
+				//Beide velden moeten ingevuld zijn!
+				if (!title.isEmpty() && !sin.isEmpty()) {
+								
+					final PdfExport pdf = new PdfExport("C://" + title + ".pdf");
+		
+					// Create container for the hashes
+					String[] hashes;
+					hashes = new String[3];
 	
-				// Create container for the hashes
-				String[] hashes;
-				hashes = new String[3];
-
-				//Set the md5 hash
-				hashes[0] = graphPanel.getMD5();
-				hashes[1] = graphPanel.getSHA256();
-				hashes[2] = graphPanel.getSHA1();
-				
-				//Set the fileSize
-				String fileSize = graphPanel.getFileSize();
-				
-				
-				//Set the filepath name
-				String filePath = graphPanel.getFilePath();
-				
-				//Set the img
-				String pathTest = "C:\\Bier.JPG";
-				try {
-					pdf.setGraphImg(pathTest);
-				} catch (MalformedURLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DocumentException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					//Set the md5 hash
+					hashes[0] = graphPanel.getMD5();
+					hashes[1] = graphPanel.getSHA256();
+					hashes[2] = graphPanel.getSHA1();
+					
+					//Set the fileSize
+					String fileSize = graphPanel.getFileSize();
+					
+					
+					//Set the filepath name
+					String filePath = graphPanel.getFilePath();
+					
+					//Set the img
+					String pathTest = "C:\\Bier.JPG";
+					try {
+						pdf.setGraphImg(pathTest);
+					} catch (MalformedURLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (DocumentException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					pdf.setHeader(title);
+					
+					//Call the setDocumentContent method with all the parameters
+					try {
+						pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filePath);
+					} catch (DocumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					//Set the footer - this is optional
+					//TODO: set this to optional
+					try {
+						pdf.setFooter();
+					} catch (DocumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					//Close the document, The document can't be written to after this statement.
+					pdf.endDocument();
+				} else {
+					JOptionPane.showMessageDialog(graphPanel, "The Title and SIN number fields are required!");
 				}
 				
-				pdf.setHeader(title);
-				
-				//Call the setDocumentContent method with all the parameters
-				try {
-					pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filePath);
-				} catch (DocumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				//Set the footer - this is optional
-				//TODO: set this to optional
-				try {
-					pdf.setFooter();
-				} catch (DocumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				//Close the document, The document can't be written to after this statement.
-				pdf.endDocument();
 			}
 		});
 	}
