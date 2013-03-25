@@ -9,8 +9,9 @@ import java.util.Map;
 /**
  * Calculates the Shannon entropy values of unsigned bytes of the given blocksize.
  * 
- * @author Albert
+ * @author Albert van de Kamp
  * @version 1.2
+ * @since 23-02-2013
  */
 public class ShannonEntropy {
 	
@@ -35,14 +36,15 @@ public class ShannonEntropy {
 	 * Start the Thread worker.
 	 */
 	public void run(){
-		new Calculator().start();
+		new CalculateEntropy().start();
 	}
 	/**
 	 * The worker which processes file in a different thread to prevent the GUI from freezing.
 	 * 
-	 * @author Albert
+	 * @author Albert van de Kamp
+	 * @since 23-02-2013
 	 */
-	private class Calculator extends Thread{
+	private class CalculateEntropy extends Thread{
 		@SuppressWarnings("resource")
 		@Override
 		public void run(){
@@ -50,18 +52,19 @@ public class ShannonEntropy {
 				// use RandomAccessFile because it supports readFully()
 				RandomAccessFile in = new RandomAccessFile(pathToFile, "r");
 				in.seek(0L);
-				while (in.getFilePointer() < in.length())
-				{
+				while (in.getFilePointer() < in.length()){
+					// set max read length in bytes, prevents a Perm Space error.
 				    int readSize = (int)Math.min(1000000, in.length() - in.getFilePointer());
-				    bytes = new byte[readSize];
-				    in.readFully(bytes);
+				    bytes = new byte[readSize];  //creates new byte array.
+				    in.readFully(bytes); //puts file bytes in the array.
 				    
 		        	int[] values = ByteConverter.fromUnsignedBytesToIntegers(bytes);
+		        	//creates a contained for the integer in blocks, +1 is done because an integer always rounds a digit down.
 					int[][] blockedValues = new int[values.length/blockSize+1][blockSize];
 					
 					int block = 0;
 					int blockPos = 0;
-					
+					//fill multidimensional array according to the assigned block sizes. 
 					for (int value: values) {
 						blockedValues[block][blockPos++] = value;
 						if(blockPos >= blockSize){
@@ -69,12 +72,12 @@ public class ShannonEntropy {
 							blockPos = 0;
 						}
 					}
-					
+					//adds the calculated values to the ArrayList
 					for (int i = 0; i < blockedValues.length; i++) {
 						allShannonResults.add(entropy(blockedValues[i]));
 					}
-					progress = (int) ((in.getFilePointer()*100)/in.length());
-					shannonEntropyEventListener.onProgressUpdate();
+					//update the progress in %
+					shannonEntropyEventListener.onProgressUpdate((int) ((in.getFilePointer()*100)/in.length()));
 				}
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -87,19 +90,20 @@ public class ShannonEntropy {
 	/**
 	 * Calculates the Shannon value of unsigned bytes.
 	 * 
+	 * @see http://whaticode.com/2010/05/24/a-java-implementation-for-shannon-entropy/
 	 * @param values - Array of unsigned byte values as integers.
 	 * @return Shannon value of the given values.
 	 */
 	private static double entropy(int[] values) {	 
 		final Map<Integer, Long> valueOccurances = new HashMap<Integer, Long>();
-		
+		//count the occurences of each value
 		for (Integer value : values) {
 			Long valueOccurance = valueOccurances.get(value);
 			valueOccurances.put(value, valueOccurance == null ? 1L : ++valueOccurance);
 		}	
 		
 		double combinedEntropy = 0.0d;
-		
+		//calculate the entropy
 		for (Integer value : valueOccurances.keySet()) {
 			double entropy = valueOccurances.get(value) / (double) values.length;
 			combinedEntropy += entropy * (Math.log(entropy) / Math.log(2));
@@ -142,9 +146,9 @@ public class ShannonEntropy {
 	 */
 	public static interface OnShannonEntropyEventListener{
 		/**
-		 * Called when there is a progres update of the worker.
+		 * Called when there is a progress update of the worker.
 		 */
-		public void onProgressUpdate();
+		public void onProgressUpdate(int progress);
 		/**
 		 * Called when the worker has completed its task.
 		 */

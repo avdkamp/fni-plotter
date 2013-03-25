@@ -5,7 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
+/**
+ * 
+ * 
+ * @author Albert van de Kamp
+ * @version 1.0
+ * @since 20-02-2013 
+ */
 public class HashChecksumGen {
 	
 	private static String[] allHashes = new String[3];
@@ -29,13 +35,7 @@ public class HashChecksumGen {
 		return checkSumCreater(md, pathToFile);
 	}
 	/**
-	 * @param pathToFile
-	 * 
-	 * @return hashes, [0] = MD5, [1] = SHA1, [2] = SHA256 
-	 * 
-	 * @throws NoSuchAlgorithmException
-	 * @throws FileNotFoundException
-	 * @throws IOException
+	 * @param path to the file
 	 */
 	public void GenerateAllHashes(String pathToFile){
 		
@@ -63,7 +63,9 @@ public class HashChecksumGen {
 		
 		return sb.toString();
 	}
-	
+	/**
+	 * @return hashes in String array- [0] = MD5, [1] = SHA1, [2] = SHA256 
+	 */
 	public String[] getAllHashes(){
 		return allHashes;
 	}

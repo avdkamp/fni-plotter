@@ -42,31 +42,26 @@ public class GraphPanel extends JPanel {
 
 	private static final long serialVersionUID = 7518936767614981258L;
 	private OnGraphEventListener onGraphEventListener;
-	
 	private Color CustomColor = new Color(21,66,115);
 	private ShannonEntropy se;
 	private DefaultXYDataset dataSet;
 	private double[][] data;
+	private int blockSize;
+	private String pathToFile;
+	private ChartPanel graphPanel;
+	
 	private final JLabel lblStatistics = new JLabel(" Statistics");
 	private final JPanel statisticsPanel = new JPanel();
-	private ChartPanel graphPanel;
 	private final JLabel lblGraph = new JLabel("Graph");
 	private final JLabel backLabel = new JLabel("");
 	private final JLabel updateLabel = new JLabel("");
 	private final JLabel forwardLabel = new JLabel("Forward");
 	private final JLabel exportLabel = new JLabel("");
-	private final JProgressBar progressBar = new JProgressBar();
-	
-	
-	private int blockSize;
-	private String pathToFile;
-	
-	private final JTextField textFieldGetSHA256 = new JTextField("");
 	private final JLabel textFieldFileSize = new JLabel("");
+	private final JProgressBar progressBar = new JProgressBar();
+	private final JTextField textFieldGetSHA256 = new JTextField("");
 	private final JTextField textFieldGetSHA1 = new JTextField("");
 	private final JTextField textFieldGetMD5 = new JTextField("");
-	
-	
 	
 	public GraphPanel(){
 		this.setVisible(false);
@@ -114,13 +109,11 @@ public class GraphPanel extends JPanel {
 		lblSha256.setBounds(10, 136, 83, 14);
 		statisticsPanel.add(lblSha256);
 		
-		
 		textFieldFileSize.setBounds(86, 21, 146, 14);
 		statisticsPanel.add(textFieldFileSize);
 		
 		textFieldGetMD5.setBounds(10, 68, 222, 20);
 		statisticsPanel.add(textFieldGetMD5);
-		
 		
 		textFieldGetSHA1.setBounds(10, 114, 222, 20);
 		statisticsPanel.add(textFieldGetSHA1);
@@ -225,7 +218,6 @@ public class GraphPanel extends JPanel {
         try {
 			saveTempImage(chart);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         
@@ -244,9 +236,9 @@ public class GraphPanel extends JPanel {
 			}
 			
 			@Override
-			public void onProgressUpdate() {
-				progressBar.setValue(se.getProgress());
-				progressBar.setString(se.getProgress()+ "% - Calculating Entropy");
+			public void onProgressUpdate(int progress) {
+				progressBar.setValue(progress);
+				progressBar.setString(progress + "% - Calculating Entropy");
 			}
 		});
         se.run();

@@ -5,8 +5,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-
-
+/**
+ * @author Albert van de Kamp
+ * @version 1.0
+ * @since 01-03-2013
+ */
 public class ResourceLoader {
 	
 	public static Image loadImage(String pathToFile){
