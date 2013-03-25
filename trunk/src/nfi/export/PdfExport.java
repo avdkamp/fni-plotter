@@ -2,6 +2,9 @@ package nfi.export;
 //Io imports
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 //Itext imports
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -96,10 +99,17 @@ public class PdfExport {
 	}
 	/**
 	 * Add img to the document.
+	 * @throws IOException 
+	 * @throws MalformedURLException 
+	 * @throws DocumentException 
 	 */
-	public void setGraphImg() {
-		
-	}
+	public void setGraphImg(String imgPath) throws MalformedURLException, IOException, DocumentException {
+		String imageUrl = imgPath;
+		//Set the img object
+        Image graphImage = Image.getInstance(new URL(imgPath));
+        //Add the img to the document.
+        pdfDocument.add(graphImage);
+ 	}
 	/**
 	 * Set the document footer
 	 * The footer is optional.
