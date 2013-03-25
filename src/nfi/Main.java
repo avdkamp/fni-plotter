@@ -232,10 +232,16 @@ public class Main {
 				hashes[1] = graphPanel.getSHA256();
 				hashes[2] = graphPanel.getSHA1();
 				
+				//Set the fileSize
+				String fileSize = graphPanel.getFileSize();
+				
+				//Set the filepath name
+				String filePath = graphPanel.getFilePath();
+				
 				pdf.setHeader(title);
 				
 				try {
-					pdf.setDocumentContent(title, sin, extraInfo, hashes);
+					pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filePath);
 				} catch (DocumentException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

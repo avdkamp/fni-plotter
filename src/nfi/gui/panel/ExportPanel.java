@@ -94,6 +94,7 @@ public class ExportPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String extraInfo = new String();
+				//TODO: sin and title are required!!!!!
 				String title = TitleTextField.getText();
 				String sin = SINtextField.getText();
 	
