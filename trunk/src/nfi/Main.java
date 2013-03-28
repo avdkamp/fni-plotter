@@ -241,6 +241,16 @@ public class Main {
 					
 					//Set the filepath name
 					String filePath = graphPanel.getFilePath();
+					//set the header
+					pdf.setHeader(title);
+					
+					//Call the setDocumentContent method with all the parameters
+					try {
+						pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filePath);
+					} catch (DocumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					
 					//Set the img
 					//TODO: moet nog dynamisch ingesteld kunnen worden
@@ -255,14 +265,6 @@ public class Main {
 						e1.printStackTrace();
 					}
 					
-					pdf.setHeader(title);
-					
-					//Call the setDocumentContent method with all the parameters
-					try {
-						pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filePath);
-					} catch (DocumentException e) {
-						e.printStackTrace();
-					}
 					//Set the footer - this is optional
 					//TODO: set this to optional
 					try {
