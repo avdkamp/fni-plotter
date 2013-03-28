@@ -62,6 +62,7 @@ public class GraphPanel extends JPanel {
 	private final JTextField textFieldGetSHA256 = new JTextField("");
 	private final JTextField textFieldGetSHA1 = new JTextField("");
 	private final JTextField textFieldGetMD5 = new JTextField("");
+	private JFreeChart chart;
 	
 	public GraphPanel(){
 		this.setVisible(false);
@@ -155,7 +156,7 @@ public class GraphPanel extends JPanel {
 		dataSet = new DefaultXYDataset();
 		
 	
-		final JFreeChart chart = ChartFactory.createScatterPlot(null, 
+	 chart = ChartFactory.createScatterPlot(null, 
         			"X", 
         			"y", 
         			dataSet, 
@@ -215,12 +216,8 @@ public class GraphPanel extends JPanel {
         graphPanel.setBounds(263, 13, 601, 465);
        
         //Set the chart for saving.
-        try {
-			ChartUtilities.saveChartAsJPEG(new File("testVier.png"), chart, 2000, 2000);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+      
         
 	}
 	public void startCalculation(){
@@ -324,8 +321,12 @@ public class GraphPanel extends JPanel {
 		return pathToFile;
 	}
 
-	public void saveTempImage(JFreeChart chart) throws IOException {
+
+	public JFreeChart getChart() {
+		System.out.println("wut?");
+		return chart;
 		
+
 	}
 	//End get methods for use in the export class - added by Mats Odolphij
 	
