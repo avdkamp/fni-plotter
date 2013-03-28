@@ -6,6 +6,9 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+
 import com.itextpdf.text.DocumentException;
 
 import java.awt.Color;
@@ -226,6 +229,17 @@ public class Main {
 					//TODO: moet nog dynamisch ingesteld kunnen worden			
 					final PdfExport pdf = new PdfExport("C://" + title + ".pdf");
 		
+					
+					
+					JFreeChart ch = graphPanel.getChart();
+					
+					 try {
+						 
+						 ChartUtilities.saveChartAsPNG(new File("testVier.png"), ch, 400, 400);
+							
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 					// Create container for the hashes
 					String[] hashes;
 					hashes = new String[3];
@@ -254,7 +268,7 @@ public class Main {
 					
 					//Set the img
 					//TODO: moet nog dynamisch ingesteld kunnen worden
-					String pathTest = "C:\\Bier.JPG";
+					String pathTest = filePath;
 					try {
 						pdf.setGraphImg(pathTest);
 					} catch (MalformedURLException e1) {
