@@ -216,8 +216,9 @@ public class GraphPanel extends JPanel {
        
         //Set the chart for saving.
         try {
-			saveTempImage(chart);
+			ChartUtilities.saveChartAsJPEG(new File("testVier.png"), chart, 2000, 2000);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         
@@ -324,7 +325,7 @@ public class GraphPanel extends JPanel {
 	}
 
 	public void saveTempImage(JFreeChart chart) throws IOException {
-		ChartUtilities.saveChartAsPNG(new File("testVier.png"), chart, 400, 400);
+		
 	}
 	//End get methods for use in the export class - added by Mats Odolphij
 	
