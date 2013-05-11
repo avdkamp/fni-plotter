@@ -111,95 +111,95 @@ public class ExportPanel extends JPanel {
 		ExportToPDFbutton.setBackground(new Color(21, 66, 115));
 		ExportToPDFbutton.setBounds(441, 203, 109, 33);
 		ExportToPDFpanel.add(ExportToPDFbutton);
-		
-		
-		JLabel ExportToImageLabel = new JLabel(" Export to Image");
-		ExportToImageLabel.setOpaque(true);
-		ExportToImageLabel.setForeground(Color.WHITE);
-		ExportToImageLabel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		ExportToImageLabel.setBackground(new Color(21, 66, 115));
-		ExportToImageLabel.setBounds(32, 269, 84, 23);
-		this.add(ExportToImageLabel);
-		
-		JPanel ExportToImagePanel = new JPanel();
-		ExportToImagePanel.setLayout(null);
-		ExportToImagePanel.setBorder(new LineBorder(CustomColor));
-		ExportToImagePanel.setBackground(SystemColor.menu);
-		ExportToImagePanel.setBounds(10, 280, 417, 182);
-		this.add(ExportToImagePanel);
-		
-		JLabel lblWidth = new JLabel("Width");
-		lblWidth.setBounds(10, 27, 46, 14);
-		ExportToImagePanel.add(lblWidth);
-		
-		JLabel lblHeight = new JLabel("Height");
-		lblHeight.setBounds(10, 52, 46, 14);
-		ExportToImagePanel.add(lblHeight);
-		
-		imageWidthTextField = new JTextField();
-		imageWidthTextField.setBounds(112, 24, 154, 20);
-		ExportToImagePanel.add(imageWidthTextField);
-		imageWidthTextField.setColumns(10);
-		
-		ImageHeightTextField = new JTextField();
-		ImageHeightTextField.setBounds(112, 49, 154, 20);
-		ExportToImagePanel.add(ImageHeightTextField);
-		ImageHeightTextField.setColumns(10);
-		
-		
-		JComboBox<?> ExportToImageComboBox = new JComboBox<Object>(ImageOptions);
-		ExportToImageComboBox.setBounds(112, 80, 154, 20);
-		ExportToImagePanel.add(ExportToImageComboBox);
-		
-		JButton ExportToImageButton = new JButton("Export");
-		ExportToImageButton.setForeground(Color.WHITE);
-		ExportToImageButton.setBackground(new Color(21, 66, 115));
-		ExportToImageButton.setBounds(278, 123, 109, 33);
-		ExportToImagePanel.add(ExportToImageButton);
-		
-		JLabel ExportZoomedImageLabel = new JLabel(" Export Zoomed Image");
-		ExportZoomedImageLabel.setOpaque(true);
-		ExportZoomedImageLabel.setForeground(Color.WHITE);
-		ExportZoomedImageLabel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		ExportZoomedImageLabel.setBackground(new Color(21, 66, 115));
-		ExportZoomedImageLabel.setBounds(469, 269, 116, 23);
-		this.add(ExportZoomedImageLabel);
-		
-		JPanel ExportZoomedImagePanel = new JPanel();
-		ExportZoomedImagePanel.setBorder(new LineBorder(CustomColor));
-		ExportZoomedImagePanel.setLayout(null);
-		ExportZoomedImagePanel.setBackground(SystemColor.menu);
-		ExportZoomedImagePanel.setBounds(447, 280, 417, 182);
-		this.add(ExportZoomedImagePanel);
-		
-		JButton ExportZoomedImageButton = new JButton("Export");
-		ExportZoomedImageButton.setForeground(Color.WHITE);
-		ExportZoomedImageButton.setBackground(new Color(21, 66, 115));
-		ExportZoomedImageButton.setBounds(278, 123, 109, 33);
-		ExportZoomedImagePanel.add(ExportZoomedImageButton);
-		
-		
-		JComboBox<?> ExportZoomedImageComboBox = new JComboBox<Object>(ImageOptions);
-		ExportZoomedImageComboBox.setBounds(112, 80, 154, 20);
-		ExportZoomedImagePanel.add(ExportZoomedImageComboBox);
-		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(112, 49, 154, 20);
-		ExportZoomedImagePanel.add(textField);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(112, 24, 154, 20);
-		ExportZoomedImagePanel.add(textField_1);
-		
-		JLabel label = new JLabel("Width");
-		label.setBounds(10, 27, 46, 14);
-		ExportZoomedImagePanel.add(label);
-		
-		JLabel label_1 = new JLabel("Height");
-		label_1.setBounds(10, 52, 46, 14);
-		ExportZoomedImagePanel.add(label_1);
+//		
+//		
+//		JLabel ExportToImageLabel = new JLabel(" Export to Image");
+//		ExportToImageLabel.setOpaque(true);
+//		ExportToImageLabel.setForeground(Color.WHITE);
+//		ExportToImageLabel.setBorder(new LineBorder(new Color(0, 0, 0)));
+//		ExportToImageLabel.setBackground(new Color(21, 66, 115));
+//		ExportToImageLabel.setBounds(32, 269, 84, 23);
+//		this.add(ExportToImageLabel);
+//		
+//		JPanel ExportToImagePanel = new JPanel();
+//		ExportToImagePanel.setLayout(null);
+//		ExportToImagePanel.setBorder(new LineBorder(CustomColor));
+//		ExportToImagePanel.setBackground(SystemColor.menu);
+//		ExportToImagePanel.setBounds(10, 280, 417, 182);
+//		this.add(ExportToImagePanel);
+//		
+//		JLabel lblWidth = new JLabel("Width");
+//		lblWidth.setBounds(10, 27, 46, 14);
+//		ExportToImagePanel.add(lblWidth);
+//		
+//		JLabel lblHeight = new JLabel("Height");
+//		lblHeight.setBounds(10, 52, 46, 14);
+//		ExportToImagePanel.add(lblHeight);
+//		
+//		imageWidthTextField = new JTextField();
+//		imageWidthTextField.setBounds(112, 24, 154, 20);
+//		ExportToImagePanel.add(imageWidthTextField);
+//		imageWidthTextField.setColumns(10);
+//		
+//		ImageHeightTextField = new JTextField();
+//		ImageHeightTextField.setBounds(112, 49, 154, 20);
+//		ExportToImagePanel.add(ImageHeightTextField);
+//		ImageHeightTextField.setColumns(10);
+//		
+//		
+//		JComboBox<?> ExportToImageComboBox = new JComboBox<Object>(ImageOptions);
+//		ExportToImageComboBox.setBounds(112, 80, 154, 20);
+//		ExportToImagePanel.add(ExportToImageComboBox);
+//		
+//		JButton ExportToImageButton = new JButton("Export");
+//		ExportToImageButton.setForeground(Color.WHITE);
+//		ExportToImageButton.setBackground(new Color(21, 66, 115));
+//		ExportToImageButton.setBounds(278, 123, 109, 33);
+//		ExportToImagePanel.add(ExportToImageButton);
+//		
+//		JLabel ExportZoomedImageLabel = new JLabel(" Export Zoomed Image");
+//		ExportZoomedImageLabel.setOpaque(true);
+//		ExportZoomedImageLabel.setForeground(Color.WHITE);
+//		ExportZoomedImageLabel.setBorder(new LineBorder(new Color(0, 0, 0)));
+//		ExportZoomedImageLabel.setBackground(new Color(21, 66, 115));
+//		ExportZoomedImageLabel.setBounds(469, 269, 116, 23);
+//		this.add(ExportZoomedImageLabel);
+//		
+//		JPanel ExportZoomedImagePanel = new JPanel();
+//		ExportZoomedImagePanel.setBorder(new LineBorder(CustomColor));
+//		ExportZoomedImagePanel.setLayout(null);
+//		ExportZoomedImagePanel.setBackground(SystemColor.menu);
+//		ExportZoomedImagePanel.setBounds(447, 280, 417, 182);
+//		this.add(ExportZoomedImagePanel);
+//		
+//		JButton ExportZoomedImageButton = new JButton("Export");
+//		ExportZoomedImageButton.setForeground(Color.WHITE);
+//		ExportZoomedImageButton.setBackground(new Color(21, 66, 115));
+//		ExportZoomedImageButton.setBounds(278, 123, 109, 33);
+//		ExportZoomedImagePanel.add(ExportZoomedImageButton);
+//		
+//		
+//		JComboBox<?> ExportZoomedImageComboBox = new JComboBox<Object>(ImageOptions);
+//		ExportZoomedImageComboBox.setBounds(112, 80, 154, 20);
+//		ExportZoomedImagePanel.add(ExportZoomedImageComboBox);
+//		
+//		textField = new JTextField();
+//		textField.setColumns(10);
+//		textField.setBounds(112, 49, 154, 20);
+//		ExportZoomedImagePanel.add(textField);
+//		
+//		textField_1 = new JTextField();
+//		textField_1.setColumns(10);
+//		textField_1.setBounds(112, 24, 154, 20);
+//		ExportZoomedImagePanel.add(textField_1);
+//		
+//		JLabel label = new JLabel("Width");
+//		label.setBounds(10, 27, 46, 14);
+//		ExportZoomedImagePanel.add(label);
+//		
+//		JLabel label_1 = new JLabel("Height");
+//		label_1.setBounds(10, 52, 46, 14);
+//		ExportZoomedImagePanel.add(label_1);
 	}
 	/**
 	 * initializes the interface
