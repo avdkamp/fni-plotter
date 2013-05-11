@@ -321,12 +321,11 @@ public class GraphPanel extends JPanel {
 		return pathToFile;
 	}
 
-
+	/*
+	 * getChart() - added with Robert (mats).
+	 */
 	public JFreeChart getChart() {
-		System.out.println("wut?");
 		return chart;
-		
-
 	}
 	//End get methods for use in the export class - added by Mats Odolphij
 	

@@ -223,31 +223,33 @@ public class Main {
 	private void exportEventListeners() {
 		exportPanel.setOnExportEventListener(new OnExportEventListener() {
 			@Override
-			public void exportToPDF(String title, String sin, String extraInfo) {
+			public void exportToPDF(String title, String sin, String extraInfo, boolean isHashSelected) {
 				//Beide velden moeten ingevuld zijn!
 				if (!title.isEmpty() && !sin.isEmpty()) {
 					//TODO: moet nog dynamisch ingesteld kunnen worden			
 					final PdfExport pdf = new PdfExport("C://" + title + ".pdf");
-		
-					
-					
+					//Initialize chart		
 					JFreeChart ch = graphPanel.getChart();
 					
-					 try {
-						 
-						 ChartUtilities.saveChartAsPNG(new File("testVier.png"), ch, 400, 400);
-							
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
+					try {
+						ChartUtilities.saveChartAsPNG(new File("images/" + title + ".png"), ch, 400, 400);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 					// Create container for the hashes
 					String[] hashes;
 					hashes = new String[3];
 	
-					//Set the md5 hash
-					hashes[0] = graphPanel.getMD5();
-					hashes[1] = graphPanel.getSHA256();
-					hashes[2] = graphPanel.getSHA1();
+					if (isHashSelected) {
+						//Set the md5 hash
+						hashes[0] = graphPanel.getMD5();
+						hashes[1] = graphPanel.getSHA256();
+						hashes[2] = graphPanel.getSHA1();	
+					} else {
+						hashes[0] = "";
+						hashes[1] = "";
+						hashes[2] = "";
+					}
 					
 					//Set the fileSize
 					String fileSize = graphPanel.getFileSize();
@@ -268,7 +270,7 @@ public class Main {
 					
 					//Set the img
 					//TODO: moet nog dynamisch ingesteld kunnen worden
-					String pathTest = filePath;
+					String pathTest = "images/" + title + ".png";
 					try {
 						pdf.setGraphImg(pathTest);
 					} catch (MalformedURLException e1) {

@@ -29,6 +29,7 @@ public class ExportPanel extends JPanel {
 	private JTextField imageWidthTextField;
 	private JTextField ImageHeightTextField;
 	private JTextField textField;
+	private final JCheckBox chckbxHashes;
 	private JTextField textField_1;
 	//TODO: add a go back to graph button
 	
@@ -69,7 +70,7 @@ public class ExportPanel extends JPanel {
 		ExportToPDFpanel.add(SINtextField);
 		SINtextField.setColumns(10);
 		
-		JCheckBox chckbxHashes = new JCheckBox("Hashes");
+		chckbxHashes = new JCheckBox("Hashes");
 		chckbxHashes.setBounds(110, 79, 97, 23);
 		ExportToPDFpanel.add(chckbxHashes);
 		
@@ -95,6 +96,8 @@ public class ExportPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String extraInfo = new String();
+				boolean isHashSelected = chckbxHashes.isSelected();
+				
 				//TODO: sin and title are required!!!!!
 				String title = TitleTextField.getText();
 				String sin = SINtextField.getText();
@@ -105,7 +108,7 @@ public class ExportPanel extends JPanel {
 					extraInfo = AddInfoTextArea.getText();
 				}
 				
-				onExportEventListener.exportToPDF(title, sin, extraInfo);
+				onExportEventListener.exportToPDF(title, sin, extraInfo, isHashSelected);
 			}
 		});
 		ExportToPDFbutton.setForeground(Color.WHITE);
@@ -212,6 +215,6 @@ public class ExportPanel extends JPanel {
 	 * Inner callback interface
 	 */
 	public static interface OnExportEventListener{
-		public void exportToPDF(String title, String sin, String extraInfo);
+		public void exportToPDF(String title, String sin, String extraInfo, boolean isHashSelected);
 	}
 }
