@@ -20,17 +20,17 @@ public class ExportPanel extends JPanel {
 	private OnExportEventListener onExportEventListener;
 	
 	private Color CustomColor=new Color(21,66,115);
-	private String[] ImageOptions = {"1024x768", "800x600", "1920x1080" ,"Screen size"};
+//	private String[] ImageOptions = {"1024x768", "800x600", "1920x1080" ,"Screen size"};
 	private final JPanel ExportToPDFpanel = new JPanel();
 	private final JLabel lblExportToPdf = new JLabel(" Export to PDF");
 	private final JLabel lblTitle = new JLabel("Title");
 	private JTextField TitleTextField;
 	private JTextField SINtextField;
-	private JTextField imageWidthTextField;
-	private JTextField ImageHeightTextField;
-	private JTextField textField;
+//	private JTextField imageWidthTextField;
+//	private JTextField ImageHeightTextField;
+//	private JTextField textField;
 	private final JCheckBox chckbxHashes;
-	private JTextField textField_1;
+//	private JTextField textField_1;
 	//TODO: add a go back to graph button
 	
 	public ExportPanel(){
