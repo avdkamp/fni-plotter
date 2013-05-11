@@ -30,6 +30,7 @@ public class ExportPanel extends JPanel {
 //	private JTextField ImageHeightTextField;
 //	private JTextField textField;
 	private final JCheckBox chckbxHashes;
+	private final JCheckBox chckbxFooter;
 //	private JTextField textField_1;
 	//TODO: add a go back to graph button
 	
@@ -74,7 +75,7 @@ public class ExportPanel extends JPanel {
 		chckbxHashes.setBounds(110, 79, 97, 23);
 		ExportToPDFpanel.add(chckbxHashes);
 		
-		JCheckBox chckbxFooter = new JCheckBox("Footer");
+		chckbxFooter = new JCheckBox("Footer");
 		chckbxFooter.setBounds(224, 79, 97, 23);
 		ExportToPDFpanel.add(chckbxFooter);
 		
@@ -92,7 +93,11 @@ public class ExportPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String extraInfo = new String();
+				
+				//Check wether the user selected this feature
 				boolean isHashSelected = chckbxHashes.isSelected();
+				//Check wether the user selected this feature
+				boolean isFooterSelected = chckbxFooter.isSelected();
 				
 				//TODO: sin and title are required!!!!!
 				String title = TitleTextField.getText();
@@ -104,7 +109,7 @@ public class ExportPanel extends JPanel {
 					extraInfo = AddInfoTextArea.getText();
 				}
 				
-				onExportEventListener.exportToPDF(title, sin, extraInfo, isHashSelected);
+				onExportEventListener.exportToPDF(title, sin, extraInfo, isHashSelected, isFooterSelected);
 			}
 		});
 		ExportToPDFbutton.setForeground(Color.WHITE);
@@ -211,6 +216,6 @@ public class ExportPanel extends JPanel {
 	 * Inner callback interface
 	 */
 	public static interface OnExportEventListener{
-		public void exportToPDF(String title, String sin, String extraInfo, boolean isHashSelected);
+		public void exportToPDF(String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected);
 	}
 }

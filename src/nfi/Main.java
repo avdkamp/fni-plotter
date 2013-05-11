@@ -223,7 +223,7 @@ public class Main {
 	private void exportEventListeners() {
 		exportPanel.setOnExportEventListener(new OnExportEventListener() {
 			@Override
-			public void exportToPDF(String title, String sin, String extraInfo, boolean isHashSelected) {
+			public void exportToPDF(String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected) {
 				//Beide velden moeten ingevuld zijn!
 				if (!title.isEmpty() && !sin.isEmpty()) {
 					//TODO: moet nog dynamisch ingesteld kunnen worden			
@@ -282,11 +282,14 @@ public class Main {
 					}
 					
 					//Set the footer - this is optional
-					//TODO: set this to optional
-					try {
-						pdf.setFooter();
-					} catch (DocumentException e) {
-						e.printStackTrace();
+					if(isFooterSelected) {
+						try {
+							pdf.setFooter();
+						} catch (DocumentException e) {
+							e.printStackTrace();
+						}
+					} else {
+						//Do-nothing
 					}
 					//Close the document, The document can't be written to after this statement.
 					pdf.endDocument();
