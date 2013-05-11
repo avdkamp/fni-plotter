@@ -293,6 +293,7 @@ public class Main {
 					}
 					//Close the document, The document can't be written to after this statement.
 					pdf.endDocument();
+					JOptionPane.showMessageDialog(graphPanel, "The PDF has been exported.");
 				} else {
 					JOptionPane.showMessageDialog(graphPanel, "The Title and SIN number fields are required!");
 				}
