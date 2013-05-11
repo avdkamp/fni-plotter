@@ -78,10 +78,6 @@ public class ExportPanel extends JPanel {
 		chckbxFooter.setBounds(224, 79, 97, 23);
 		ExportToPDFpanel.add(chckbxFooter);
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Zoomed Image");
-		chckbxNewCheckBox.setBounds(345, 79, 97, 23);
-		ExportToPDFpanel.add(chckbxNewCheckBox);
-		
 		JLabel lblAdditionalInfo = new JLabel("Additional Info");
 		lblAdditionalInfo.setBounds(10, 114, 82, 14);
 		ExportToPDFpanel.add(lblAdditionalInfo);

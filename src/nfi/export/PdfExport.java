@@ -88,11 +88,15 @@ public class PdfExport {
 			line.add(new Paragraph("Hashes", fontFam));
 			
 		    List list = new List(true, false, 10);
-		    //TODO: hashes kunne optioneel zijn
-		    list.add(new ListItem("MD5     : " + hashes[0], fontFam ));
-		    list.add(new ListItem("SHA256  : " + hashes[1], fontFam ));
-		    list.add(new ListItem("SHA1    : " + hashes[2], fontFam ));
-		    line.add(list);
+		    if (hashes[0].isEmpty() & hashes[1].isEmpty() & hashes[2].isEmpty()) {
+		    	//do nothing
+		    } else {
+		    	list.add(new ListItem("MD5     : " + hashes[0], fontFam ));
+			    list.add(new ListItem("SHA256  : " + hashes[1], fontFam ));
+			    list.add(new ListItem("SHA1    : " + hashes[2], fontFam ));
+			    line.add(list);	
+		    }
+		    
 					    
 		    //And finally add all the lines to the document.
 			pdfDocument.add(line);		
