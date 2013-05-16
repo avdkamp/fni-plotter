@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -93,13 +95,22 @@ public class ExportPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String extraInfo = new String();
+				//Set the export directory for the pdf
+				JFileChooser exportDirectory = new JFileChooser("Select export directory");
+				exportDirectory.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				exportDirectory.setAcceptAllFileFilterUsed(false);
+				exportDirectory.showOpenDialog(null);
+				
+				//String Export directory path
+				File exportPath = exportDirectory.getCurrentDirectory();
+				System.out.print("Directory path" + exportPath);
 				
 				//Check wether the user selected this feature
 				boolean isHashSelected = chckbxHashes.isSelected();
 				//Check wether the user selected this feature
 				boolean isFooterSelected = chckbxFooter.isSelected();
 				
-				//TODO: sin and title are required!!!!!
+				//sin and title are required!!!!!
 				String title = TitleTextField.getText();
 				String sin = SINtextField.getText();
 	
@@ -109,7 +120,7 @@ public class ExportPanel extends JPanel {
 					extraInfo = AddInfoTextArea.getText();
 				}
 				
-				onExportEventListener.exportToPDF(title, sin, extraInfo, isHashSelected, isFooterSelected);
+				onExportEventListener.exportToPDF(title, sin, extraInfo, isHashSelected, isFooterSelected, exportPath);
 			}
 		});
 		ExportToPDFbutton.setForeground(Color.WHITE);
@@ -216,6 +227,6 @@ public class ExportPanel extends JPanel {
 	 * Inner callback interface
 	 */
 	public static interface OnExportEventListener{
-		public void exportToPDF(String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected);
+		public void exportToPDF(String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected, File exportPath);
 	}
 }

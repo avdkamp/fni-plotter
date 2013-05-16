@@ -223,11 +223,13 @@ public class Main {
 	private void exportEventListeners() {
 		exportPanel.setOnExportEventListener(new OnExportEventListener() {
 			@Override
-			public void exportToPDF(String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected) {
+			public void exportToPDF(String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected, File exportPath) {
 				//Beide velden moeten ingevuld zijn!
 				if (!title.isEmpty() && !sin.isEmpty()) {
-					//TODO: moet nog dynamisch ingesteld kunnen worden			
-					final PdfExport pdf = new PdfExport("C://" + title + ".pdf");
+					//TODO: moet nog dynamisch ingesteld kunnen worden
+					String path = exportPath.toString() + "\\" + title + ".pdf";
+					System.out.println("test 2"+path);
+					final PdfExport pdf = new PdfExport(path +  title + ".pdf");
 					//Initialize chart		
 					JFreeChart ch = graphPanel.getChart();
 					
