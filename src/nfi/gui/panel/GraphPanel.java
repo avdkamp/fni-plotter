@@ -37,6 +37,9 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
 import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class GraphPanel extends JPanel {
 
@@ -51,17 +54,17 @@ public class GraphPanel extends JPanel {
 	private ChartPanel graphPanel;
 	
 	private final JLabel lblStatistics = new JLabel(" Statistics");
+	private final JLabel lblExporteren = new JLabel("Exporteren");
 	private final JPanel statisticsPanel = new JPanel();
 	private final JLabel lblGraph = new JLabel("Graph");
-	private final JLabel backLabel = new JLabel("");
-	private final JLabel updateLabel = new JLabel("");
-	private final JLabel forwardLabel = new JLabel("Forward");
 	private final JLabel exportLabel = new JLabel("");
 	private final JLabel textFieldFileSize = new JLabel("");
+	private final JButton btnShowGetallen = new JButton("Show numbers");
 	private final JProgressBar progressBar = new JProgressBar();
 	private final JTextField textFieldGetSHA256 = new JTextField("");
 	private final JTextField textFieldGetSHA1 = new JTextField("");
 	private final JTextField textFieldGetMD5 = new JTextField("");
+	private final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, true);;
 	private JFreeChart chart;
 	
 	public GraphPanel(){
@@ -122,21 +125,9 @@ public class GraphPanel extends JPanel {
 		textFieldGetSHA256.setBounds(10, 161, 222, 20);		
 		statisticsPanel.add(textFieldGetSHA256);
 		
-		backLabel.setIcon(ResourceLoader.loadImageIcon("/images/back.png"));
-		backLabel.setBounds(32, 324, 53, 44);
-		
-		this.add(backLabel);
-		updateLabel.setIcon(ResourceLoader.loadImageIcon("/images/update.png"));
-		updateLabel.setBounds(107, 326, 48, 55);
-		this.add(updateLabel);
-		
-		forwardLabel.setIcon(ResourceLoader.loadImageIcon("/images/forward.png"));
-		forwardLabel.setBounds(165, 325, 58, 41);
-		this.add(forwardLabel);
-		
 		
 		exportLabel.setIcon(ResourceLoader.loadImageIcon("/images/export.png"));
-		exportLabel.setBounds(107, 392, 50, 50);
+		exportLabel.setBounds(103, 327, 50, 50);
 		exportLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -149,6 +140,23 @@ public class GraphPanel extends JPanel {
 		progressBar.setString("Loading...");
 		progressBar.setBounds(10, 480, 854, 25);
 		this.add(progressBar);
+		
+		
+		btnShowGetallen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(renderer.getBaseItemLabelsVisible()){
+					renderer.setBaseItemLabelsVisible(false);
+				} else {
+					renderer.setBaseItemLabelsVisible(true);
+				}
+			}
+		});
+		btnShowGetallen.setBounds(83, 264, 117, 23);
+		add(btnShowGetallen);
+		
+		
+		lblExporteren.setBounds(88, 388, 65, 14);
+		add(lblExporteren);
 	}
 	
 	private void initGraph(){
@@ -199,22 +207,21 @@ public class GraphPanel extends JPanel {
         NumberAxis range = (NumberAxis) plot.getRangeAxis();
         range.setStandardTickUnits(ticks);
         
-        final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, true);
         plot.setRenderer(renderer);
         renderer.setBaseShapesVisible(true);
         renderer.setBaseShapesFilled(true);
-     // label the points
-        NumberFormat format = NumberFormat.getNumberInstance();
-        format.setMaximumFractionDigits(2);
-        XYItemLabelGenerator generator = new StandardXYItemLabelGenerator(StandardXYItemLabelGenerator.DEFAULT_ITEM_LABEL_FORMAT, format, format);
-        renderer.setBaseItemLabelGenerator(generator);
-        renderer.setBaseItemLabelsVisible(true);
         
         graphPanel = new ChartPanel(chart, true);
         graphPanel.setBackground(SystemColor.menu);
         graphPanel.setBorder(new LineBorder(CustomColor));
         graphPanel.setBounds(263, 13, 601, 465);
-       
+        
+        // label the points
+        NumberFormat format = NumberFormat.getNumberInstance();
+        format.setMaximumFractionDigits(2);
+        XYItemLabelGenerator generator = new StandardXYItemLabelGenerator(StandardXYItemLabelGenerator.DEFAULT_ITEM_LABEL_FORMAT, format, format);
+        renderer.setBaseItemLabelGenerator(generator);
+        
         //Set the chart for saving.
 
       
