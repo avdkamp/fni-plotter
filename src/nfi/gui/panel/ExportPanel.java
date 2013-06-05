@@ -97,9 +97,10 @@ public class ExportPanel extends JPanel {
 				String extraInfo = new String();
 				//Set the export directory for the pdf
 				JFileChooser exportDirectory = new JFileChooser("Select export directory");
-				exportDirectory.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				exportDirectory.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 				exportDirectory.setAcceptAllFileFilterUsed(false);
-				exportDirectory.showOpenDialog(null);
+				exportDirectory.showSaveDialog(null);
+				String filename = exportDirectory.getSelectedFile().getName();
 				
 				//String Export directory path
 				File exportPath = exportDirectory.getCurrentDirectory();
@@ -120,7 +121,7 @@ public class ExportPanel extends JPanel {
 					extraInfo = AddInfoTextArea.getText();
 				}
 				
-				onExportEventListener.exportToPDF(title, sin, extraInfo, isHashSelected, isFooterSelected, exportPath);
+				onExportEventListener.exportToPDF(title, sin, extraInfo, isHashSelected, isFooterSelected, exportPath, filename);
 			}
 		});
 		ExportToPDFbutton.setForeground(Color.WHITE);
@@ -227,6 +228,6 @@ public class ExportPanel extends JPanel {
 	 * Inner callback interface
 	 */
 	public static interface OnExportEventListener{
-		public void exportToPDF(String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected, File exportPath);
+		public void exportToPDF(String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected, File exportPath, String filename);
 	}
 }
