@@ -1,5 +1,6 @@
 package nfi.gui.panel;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.RenderingHints;
 import java.awt.SystemColor;
@@ -67,6 +68,10 @@ public class GraphPanel extends JPanel {
 	private final JTextField textFieldGetMD5 = new JTextField("");
 	private final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, true);
 	private JFreeChart chart;
+	private NumberAxis domain;
+	private NumberAxis range;
+	private  XYPlot plot;
+	
 	
 	public GraphPanel(){
 		this.setVisible(false);
@@ -77,7 +82,7 @@ public class GraphPanel extends JPanel {
 		initGraph();
 		
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(361, 0, 781, 635);
+		layeredPane.setBounds(361, 0, 781, 640);
 		
 		add(layeredPane);
 		lblGraph.setBounds(34, 0, 84, 23);
@@ -90,7 +95,7 @@ public class GraphPanel extends JPanel {
 		
 		
 		graphPanel = new ChartPanel(chart, true);
-		graphPanel.setBounds(0, 15, 781, 615);
+		graphPanel.setBounds(0, 23, 781, 615);
 		layeredPane.add(graphPanel);
 		graphPanel.setBackground(SystemColor.menu);
 		graphPanel.setBorder(new LineBorder(CustomColor));
@@ -199,7 +204,7 @@ public class GraphPanel extends JPanel {
         			true, 
         			false);
 		
-
+	 
 		chart.addProgressListener(new ChartProgressListener() {
 			
 			@Override
@@ -223,16 +228,17 @@ public class GraphPanel extends JPanel {
         
         chart.setBackgroundImageAlpha(100);
         
-        XYPlot plot = (XYPlot) chart.getPlot();
-   
+        plot = (XYPlot) chart.getPlot();
+        
         plot.setDomainGridlinesVisible(true);
 
         // set the plot's axes to display integers
         TickUnitSource ticks = NumberAxis.createIntegerTickUnits();
-        NumberAxis domain = (NumberAxis) plot.getDomainAxis();
+        domain = (NumberAxis) plot.getDomainAxis();
+        
         domain.setStandardTickUnits(ticks);
-        NumberAxis range = (NumberAxis) plot.getRangeAxis();
-        range.setStandardTickUnits(ticks);
+        range = (NumberAxis) plot.getRangeAxis();        
+        range.setRange(0, 8);
         
         plot.setRenderer(renderer);
         renderer.setBaseShapesVisible(true);
@@ -308,8 +314,7 @@ public class GraphPanel extends JPanel {
 				textFieldGetSHA256.setEnabled(true);
 				textFieldGetSHA256.setText(hashes[2]);				
 				
-				File f = new File(pathToFile);
-				textFieldFileSize.setText(f.length() + " Bytes");
+				
 			}
 		});
     }
@@ -376,6 +381,9 @@ public class GraphPanel extends JPanel {
 		public void exportResults();
 	}
 	public void enableButtons(Boolean hashes){
+
+        graphPanel.restoreAutoBounds();
+
 		if(hashes){
 		textFieldGetMD5.setEnabled(true);
 		textFieldGetSHA1.setEnabled(true);
