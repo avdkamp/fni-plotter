@@ -153,7 +153,7 @@ public class Main {
 					if(hashes){
 					graphPanel.setHashes();
 					}
-
+					graphPanel.setDotsFilesize(f);
 					plotFilePanel.setVisible(true);
 					graphPanel.setVisible(true);
 					exportPanel.setVisible(false);
