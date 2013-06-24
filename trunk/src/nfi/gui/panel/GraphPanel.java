@@ -374,6 +374,14 @@ public class GraphPanel extends JPanel {
 		textFieldGetSHA1.setEnabled(true);
 		textFieldGetSHA256.setEnabled(true);
 		}
+		textFieldGetMD5.setEnabled(false);
+		textFieldGetSHA1.setEnabled(false);
+		textFieldGetSHA256.setEnabled(false);
+		
+		textFieldGetMD5.setText("");
+		textFieldGetSHA1.setText("");
+		textFieldGetSHA256.setText("");
+		
 		btnShowGetallen.setVisible(true);
 		exportLabel.setVisible(true);
 		lblExporteren.setVisible(true);
