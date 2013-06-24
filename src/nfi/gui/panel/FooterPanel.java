@@ -18,7 +18,7 @@ public class FooterPanel extends JPanel {
 		this.setBounds(0, 646, 900, 25);
 		this.setLayout(null);
 		hvaLabel.setIcon(ResourceLoader.loadImageIcon("/images/hva.png"));
-		hvaLabel.setBounds(859, 0, 31, 25);
+		hvaLabel.setBounds(1100, 0, 31, 25);
 		
 		this.add(hvaLabel);
 	}

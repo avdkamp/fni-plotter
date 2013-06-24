@@ -54,9 +54,9 @@ public class GraphPanel extends JPanel {
 	private ChartPanel graphPanel;
 	
 	private final JLabel lblStatistics = new JLabel(" Statistics");
-	private final JLabel lblExporteren = new JLabel("Exporteren");
+	private final JLabel lblExporteren = new JLabel("Export");
 	private final JPanel statisticsPanel = new JPanel();
-	private final JLabel lblGraph = new JLabel("Graph");
+	private final JLabel lblGraph = new JLabel(" Graph");
 	private final JLabel exportLabel = new JLabel("");
 	private final JLabel textFieldFileSize = new JLabel("");
 	private final JButton btnShowGetallen = new JButton("Show numbers");
@@ -70,31 +70,32 @@ public class GraphPanel extends JPanel {
 	public GraphPanel(){
 		this.setVisible(false);
 		this.setBackground(Color.WHITE);
-		this.setBounds(10, 119, 874, 516);
+		this.setBounds(0, 119, 1152, 683);
 		this.setLayout(null);
 		
 		lblGraph.setOpaque(true);
 		lblGraph.setForeground(Color.WHITE);
 		lblGraph.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblGraph.setBackground(new Color(21, 66, 115));
-		lblGraph.setBounds(284, 0, 84, 23);
+		lblGraph.setBounds(381, 0, 84, 23);
 		this.add(lblGraph);
 		
 		initGraph();
 		this.add(graphPanel);
 		graphPanel.setLayout(null);
 		
-		lblStatistics.setBounds(32, 0, 84, 23);
+		lblStatistics.setBounds(32, 345, 84, 23);
 		lblStatistics.setOpaque(true);
 		lblStatistics.setForeground(Color.WHITE);
 		lblStatistics.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblStatistics.setBackground(new Color(21, 66, 115));
 		this.add(lblStatistics);
 		
-		statisticsPanel.setBounds(10, 11, 242, 221);
+		statisticsPanel.setBounds(10, 356, 341, 221);
 		statisticsPanel.setLayout(null);
 		statisticsPanel.setBackground(SystemColor.menu);
 		statisticsPanel.setBorder(new LineBorder(CustomColor));
+		
 		this.add(statisticsPanel);
 		
 		JLabel lblFileSize = new JLabel("File Size:");
@@ -116,31 +117,39 @@ public class GraphPanel extends JPanel {
 		textFieldFileSize.setBounds(86, 21, 146, 14);
 		statisticsPanel.add(textFieldFileSize);
 		
-		textFieldGetMD5.setBounds(10, 68, 222, 20);
+		textFieldGetMD5.setBounds(10, 68, 321, 20);
 		statisticsPanel.add(textFieldGetMD5);
+		textFieldGetMD5.setEnabled(false);
 		
-		textFieldGetSHA1.setBounds(10, 114, 222, 20);
+		textFieldGetSHA1.setBounds(10, 114, 321, 20);
 		statisticsPanel.add(textFieldGetSHA1);
+		textFieldGetSHA1.setEnabled(false);
 		
-		textFieldGetSHA256.setBounds(10, 161, 222, 20);		
+		textFieldGetSHA256.setBounds(10, 161, 321, 20);		
 		statisticsPanel.add(textFieldGetSHA256);
+		textFieldGetSHA256.setEnabled(false);
 		
 		
 		exportLabel.setIcon(ResourceLoader.loadImageIcon("/images/export.png"));
-		exportLabel.setBounds(103, 327, 50, 50);
+		exportLabel.setBounds(10, 622, 50, 50);
+		exportLabel.setVisible(false);
+		
 		exportLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				onGraphEventListener.exportResults();
+				 
+					onGraphEventListener.exportResults();
+		      
+				
 			}
 		});
 		this.add(exportLabel);
 		
 		progressBar.setStringPainted(true);
 		progressBar.setString("Loading...");
-		progressBar.setBounds(10, 480, 854, 25);
+		progressBar.setBounds(359, 647, 783, 25);
 		this.add(progressBar);
-		
+		progressBar.setVisible(false);
 		
 		btnShowGetallen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -151,11 +160,17 @@ public class GraphPanel extends JPanel {
 				}
 			}
 		});
-		btnShowGetallen.setBounds(83, 264, 117, 23);
+		btnShowGetallen.setBounds(213, 628, 136, 44);
+		
+		btnShowGetallen.setForeground(Color.WHITE);
+		
+		btnShowGetallen.setBackground(CustomColor);
+		btnShowGetallen.setVisible(false);
 		add(btnShowGetallen);
 		
 		
-		lblExporteren.setBounds(88, 388, 65, 14);
+		lblExporteren.setBounds(64, 639, 65, 14);
+		lblExporteren.setVisible(false);
 		add(lblExporteren);
 	}
 	
@@ -214,7 +229,8 @@ public class GraphPanel extends JPanel {
         graphPanel = new ChartPanel(chart, true);
         graphPanel.setBackground(SystemColor.menu);
         graphPanel.setBorder(new LineBorder(CustomColor));
-        graphPanel.setBounds(263, 13, 601, 465);
+        graphPanel.setBounds(361, 22, 781, 615);
+        
         
         // label the points
         NumberFormat format = NumberFormat.getNumberInstance();
@@ -266,11 +282,7 @@ public class GraphPanel extends JPanel {
         }
     }
 	
-    public  void clearHashTextAreas(){
-    	textFieldGetMD5.setText("");
-		textFieldGetSHA1.setText("");
-		textFieldGetSHA256.setText("");
-    }
+    
     
     public void setHashes(){
     	final HashChecksumGen hcg = new HashChecksumGen();
@@ -280,9 +292,14 @@ public class GraphPanel extends JPanel {
 			public void doneCalculationAllHashes() {
 				String[] hashes = hcg.getAllHashes();
 				
-				textFieldGetMD5.setText(hashes[0]);
-				textFieldGetSHA1.setText(hashes[1]);
-				textFieldGetSHA256.setText(hashes[2]);
+				textFieldGetMD5.setEnabled(true);
+				textFieldGetMD5.setText(hashes[0]);				
+				
+				textFieldGetSHA1.setEnabled(true);
+				textFieldGetSHA1.setText(hashes[1]);				
+				
+				textFieldGetSHA256.setEnabled(true);
+				textFieldGetSHA256.setText(hashes[2]);				
 				
 				File f = new File(pathToFile);
 				textFieldFileSize.setText(f.length() + " Bytes");
@@ -311,14 +328,17 @@ public class GraphPanel extends JPanel {
         textFieldFileSize.setText(filesz+" Bytes");
     }
 
-	//Start Get methods for use in the export class - added by Mats Odolphij
+	//Start Get methods for use in the export class - added by Robert Ruizendaal
 	public String getMD5() {
+		
 		return textFieldGetMD5.getText();
 	}
 	public String getSHA1() {
+		
 		return textFieldGetSHA1.getText();
 	}
 	public String getSHA256() {
+	
 		return textFieldGetSHA256.getText();
 	}
 	public String getFileSize() {
@@ -347,5 +367,16 @@ public class GraphPanel extends JPanel {
 	 */
 	public static interface OnGraphEventListener{
 		public void exportResults();
+	}
+	public void enableButtons(Boolean hashes){
+		if(hashes){
+		textFieldGetMD5.setEnabled(true);
+		textFieldGetSHA1.setEnabled(true);
+		textFieldGetSHA256.setEnabled(true);
+		}
+		btnShowGetallen.setVisible(true);
+		exportLabel.setVisible(true);
+		lblExporteren.setVisible(true);
+		progressBar.setVisible(true);
 	}
 }

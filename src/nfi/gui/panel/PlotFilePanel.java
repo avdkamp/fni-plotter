@@ -38,7 +38,7 @@ public class PlotFilePanel extends JPanel {
 		
 		this.setVisible(false);		
 		this.setBackground(Color.WHITE);
-		this.setBounds(10, 119, 874, 516);
+		this.setBounds(0, 119, 360, 310);
 		this.setPreferredSize(new java.awt.Dimension(1300, 700));
         
 		this.setLayout(null);
@@ -52,14 +52,14 @@ public class PlotFilePanel extends JPanel {
 		JPanel PlotOptionPanel = new JPanel();
 		PlotOptionPanel.setBackground(SystemColor.menu);
 		PlotOptionPanel.setBorder(new LineBorder(CustomColor));
-		PlotOptionPanel.setBounds(10, 11, 507, 329);
+		PlotOptionPanel.setBounds(10, 11, 341, 292);
 		PlotOptionPanel.setLayout(null);
 		this.add(PlotOptionPanel);
-		lblBlockSize.setBounds(10, 37, 84, 14);
+		lblBlockSize.setBounds(10, 30, 84, 14);
 		PlotOptionPanel.add(lblBlockSize);
-		lblFile.setBounds(10, 90, 84, 14);
+		lblFile.setBounds(10, 55, 84, 14);
 		PlotOptionPanel.add(lblFile);
-		lblFilePath.setBounds(10, 208, 94, 14);
+		lblFilePath.setBounds(10, 215, 94, 14);
 		PlotOptionPanel.add(lblFilePath);
 		
 		JButton btnPlotEntropy = new JButton("Plot Entropy");
@@ -67,11 +67,12 @@ public class PlotFilePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				blocksize = Integer.valueOf((String)BlockSizeComboBox.getSelectedItem());
-				onPlotFileEventListener.showGraph();
+				
+				onPlotFileEventListener.showGraph(getCalcHashes());
 			}
 		});
 		
-		btnPlotEntropy.setBounds(387, 285, 109, 33);
+		btnPlotEntropy.setBounds(218, 243, 109, 33);
 		PlotOptionPanel.add(btnPlotEntropy);
 		btnPlotEntropy.setBackground(CustomColor);
 		btnPlotEntropy.setForeground(Color.white);
@@ -85,33 +86,33 @@ public class PlotFilePanel extends JPanel {
 				
 			}
 		});
-		btnBrowse.setBounds(387, 126, 109, 33);
+		btnBrowse.setBounds(157, 170, 170, 33);
 		PlotOptionPanel.add(btnBrowse);
 		btnBrowse.setBackground(CustomColor);
 		btnBrowse.setForeground(Color.white);
-		DragNDrop.setBounds(118, 90, 209, 104);
+		DragNDrop.setBounds(118, 55, 209, 104);
 		PlotOptionPanel.add(DragNDrop);
 		
 		DragNDrop.setIcon(ResourceLoader.loadImageIcon("/images/DragAndDrop.png"));
-		lblOr.setBounds(337, 135, 29, 14);
+		lblOr.setBounds(118, 179, 29, 14);
 		PlotOptionPanel.add(lblOr);
 		
 		filePathTextField = new JTextField();
-		filePathTextField.setBounds(114, 205, 209, 20);
+		filePathTextField.setBounds(114, 212, 213, 20);
 		PlotOptionPanel.add(filePathTextField);
 		filePathTextField.setColumns(10);
 		
-		BlockSizeComboBox.setBounds(118, 34, 209, 20);
+		BlockSizeComboBox.setBounds(118, 24, 209, 20);
 		BlockSizeComboBox.setEditable(true);
 		BlockSizeComboBox.setSelectedIndex(3);
 		PlotOptionPanel.add(BlockSizeComboBox);
 		
 		JLabel lblCalculateHashes = new JLabel("Calculate Hashes");
-		lblCalculateHashes.setBounds(10, 255, 114, 14);
+		lblCalculateHashes.setBounds(10, 240, 114, 14);
 		PlotOptionPanel.add(lblCalculateHashes);
 		
 		
-		chckbxCalculateHashes.setBounds(115, 255, 97, 14);
+		chckbxCalculateHashes.setBounds(115, 240, 97, 14);
 		PlotOptionPanel.add(chckbxCalculateHashes);
 		
 	}
@@ -141,7 +142,8 @@ public class PlotFilePanel extends JPanel {
 	 * Inner callback interface
 	 */
 	public static interface OnPlotFileEventListener{
-		public void showGraph();
+		public void showGraph(Boolean hashes);
 		public void fileExplorerPanel();
 	}
+	
 }

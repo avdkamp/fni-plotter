@@ -229,5 +229,6 @@ public class ExportPanel extends JPanel {
 	 */
 	public static interface OnExportEventListener{
 		public void exportToPDF(String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected, File exportPath, String filename);
+		
 	}
 }
