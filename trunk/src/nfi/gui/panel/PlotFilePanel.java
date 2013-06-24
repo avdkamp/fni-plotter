@@ -52,7 +52,7 @@ public class PlotFilePanel extends JPanel {
 		JPanel PlotOptionPanel = new JPanel();
 		PlotOptionPanel.setBackground(SystemColor.menu);
 		PlotOptionPanel.setBorder(new LineBorder(CustomColor));
-		PlotOptionPanel.setBounds(10, 11, 341, 292);
+		PlotOptionPanel.setBounds(10, 15, 341, 292);
 		PlotOptionPanel.setLayout(null);
 		this.add(PlotOptionPanel);
 		lblBlockSize.setBounds(10, 30, 84, 14);
