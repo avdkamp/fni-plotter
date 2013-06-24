@@ -65,7 +65,7 @@ public class GraphPanel extends JPanel {
 	private final JTextField textFieldGetSHA256 = new JTextField("");
 	private final JTextField textFieldGetSHA1 = new JTextField("");
 	private final JTextField textFieldGetMD5 = new JTextField("");
-	private final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, true);;
+	private final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, true);
 	private JFreeChart chart;
 	
 	public GraphPanel(){
@@ -224,6 +224,7 @@ public class GraphPanel extends JPanel {
         chart.setBackgroundImageAlpha(100);
         
         XYPlot plot = (XYPlot) chart.getPlot();
+   
         plot.setDomainGridlinesVisible(true);
 
         // set the plot's axes to display integers
