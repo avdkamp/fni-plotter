@@ -40,6 +40,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLayeredPane;
 
 public class GraphPanel extends JPanel {
 
@@ -73,16 +74,26 @@ public class GraphPanel extends JPanel {
 		this.setBounds(0, 119, 1152, 683);
 		this.setLayout(null);
 		
+		initGraph();
+		
+		JLayeredPane layeredPane = new JLayeredPane();
+		layeredPane.setBounds(361, 0, 781, 635);
+		
+		add(layeredPane);
+		lblGraph.setBounds(34, 0, 84, 23);
+		layeredPane.add(lblGraph, new Integer(1), 0);
+		
 		lblGraph.setOpaque(true);
 		lblGraph.setForeground(Color.WHITE);
 		lblGraph.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblGraph.setBackground(new Color(21, 66, 115));
-		lblGraph.setBounds(381, 0, 84, 23);
-		this.add(lblGraph);
 		
-		initGraph();
-		this.add(graphPanel);
-		graphPanel.setLayout(null);
+		
+		graphPanel = new ChartPanel(chart, true);
+		graphPanel.setBounds(0, 15, 781, 615);
+		layeredPane.add(graphPanel);
+		graphPanel.setBackground(SystemColor.menu);
+		graphPanel.setBorder(new LineBorder(CustomColor));
 		
 		lblStatistics.setBounds(32, 345, 84, 23);
 		lblStatistics.setOpaque(true);
@@ -91,7 +102,7 @@ public class GraphPanel extends JPanel {
 		lblStatistics.setBackground(new Color(21, 66, 115));
 		this.add(lblStatistics);
 		
-		statisticsPanel.setBounds(10, 356, 341, 221);
+		statisticsPanel.setBounds(10, 360, 341, 221);
 		statisticsPanel.setLayout(null);
 		statisticsPanel.setBackground(SystemColor.menu);
 		statisticsPanel.setBorder(new LineBorder(CustomColor));
@@ -225,11 +236,6 @@ public class GraphPanel extends JPanel {
         plot.setRenderer(renderer);
         renderer.setBaseShapesVisible(true);
         renderer.setBaseShapesFilled(true);
-        
-        graphPanel = new ChartPanel(chart, true);
-        graphPanel.setBackground(SystemColor.menu);
-        graphPanel.setBorder(new LineBorder(CustomColor));
-        graphPanel.setBounds(361, 22, 781, 615);
         
         
         // label the points
