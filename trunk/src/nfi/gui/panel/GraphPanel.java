@@ -267,6 +267,7 @@ public class GraphPanel extends JPanel {
 					dataSet.removeSeries("Series0");
 				}
 				dataSet.addSeries("Series0", data);
+				
 			}
 			
 			@Override
