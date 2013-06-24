@@ -32,18 +32,17 @@ import nfi.gui.panel.MenuPanel.OnMenuEventListener;
 import nfi.gui.panel.PlotFilePanel.OnPlotFileEventListener;
 
 public class Main {
-	
-	private static final InfoPanel infoPanel = new InfoPanel();
-	private static final HomePanel homePanel = new HomePanel();
+
 	private static final PlotFilePanel plotFilePanel = new PlotFilePanel();
 	private static final ExportPanel exportPanel = new ExportPanel();
 	private static final GraphPanel graphPanel = new GraphPanel();
 	private static final MenuPanel menuPanel = new MenuPanel();
 	private static final HeaderPanel headerPanel = new HeaderPanel();
 	private static final FooterPanel footerPanel = new FooterPanel();
+	private final JLayeredPane layeredPane = new JLayeredPane();
 
 	public static void main(String[] args) throws Exception {
-		
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -73,27 +72,18 @@ public class Main {
 		mainFrame.setTitle("Plotting Entropy");
 		mainFrame.setIconImage(ResourceLoader.loadImage("/images/icon.png"));
 		mainFrame.getContentPane().setBackground(Color.WHITE);
-		mainFrame.setBounds(100, 100, 900, 700);
+		mainFrame.setBounds(100, 100, 1152, 864);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.getContentPane().setLayout(null);
-
-		mainFrame.getContentPane().add(headerPanel);
+		layeredPane.setBounds(0, 0, 1152, 864);
+		mainFrame.getContentPane().add(layeredPane);
+		headerPanel.setBounds(0, 0, 1146, 25);
+		layeredPane.add(headerPanel);
 
 		JLabel logoLabel = new JLabel("");
+		logoLabel.setBounds(0, 0, 235, 71);
+		layeredPane.add(logoLabel);
 		logoLabel.setIcon(ResourceLoader.loadImageIcon("/images/logo.png"));
-		logoLabel.setBounds(26, 11, 235, 71);
-		mainFrame.getContentPane().add(logoLabel);
-		mainFrame.getContentPane().add(menuPanel);
-		mainFrame.getContentPane().add(homePanel);
-		mainFrame.getContentPane().add(plotFilePanel);
-		mainFrame.getContentPane().add(infoPanel);
-		mainFrame.getContentPane().add(graphPanel);
-		mainFrame.getContentPane().add(exportPanel);
-		mainFrame.getContentPane().add(footerPanel);
-
-		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(314, 416, -114, -67);
-		mainFrame.getContentPane().add(layeredPane);
 
 		// TODO: is windows only op het moment, moet ook compatible met linux
 		// zijn
@@ -129,65 +119,48 @@ public class Main {
 	}
 
 	private void menuEventListeners() {
+		menuPanel.setBounds(0, 72, 1146, 25);
+		layeredPane.add(menuPanel);
 		menuPanel.setOnMenuEventListener(new OnMenuEventListener() {
 			@Override
 			public void onPlotFileClick() {
-				homePanel.setVisible(false);
-				infoPanel.setVisible(false);
+
 				exportPanel.setVisible(false);
 				plotFilePanel.setVisible(true);
-				graphPanel.setVisible(false);
-			}
-
-			@Override
-			public void onInfoClick() {
-				homePanel.setVisible(false);
-				plotFilePanel.setVisible(false);
-				exportPanel.setVisible(false);
-				infoPanel.setVisible(true);
-				graphPanel.setVisible(false);
-			}
-
-			@Override
-			public void onHomeClick() {
-				infoPanel.setVisible(false);
-				plotFilePanel.setVisible(false);
-				graphPanel.setVisible(false);
-				exportPanel.setVisible(false);
-				homePanel.setVisible(true);
-			}
-
-			@Override
-			public void onGraphClick() {
-				infoPanel.setVisible(false);
-				plotFilePanel.setVisible(false);
 				graphPanel.setVisible(true);
-				exportPanel.setVisible(false);
-				homePanel.setVisible(false);
 			}
+
+			
+
+			
 		});
 	}
 
 	private void plotFileEventListeners() {
+		plotFilePanel.setBounds(0, 119, 360, 310);
+		layeredPane.add(plotFilePanel, new Integer(1), 0);
 		plotFilePanel.setOnPlotFileEventListener(new OnPlotFileEventListener() {
 			@Override
-			public void showGraph() {
+			public void showGraph(Boolean hashes) {
 				File f = new File(plotFilePanel.getPathToFile());
-			
-				if (!plotFilePanel.getPathToFile().isEmpty() && f.exists()) {				
+
+				if (!plotFilePanel.getPathToFile().isEmpty() && f.exists()) {
 					graphPanel.setBlockSize(plotFilePanel.getBlockSize());
 					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
 					graphPanel.startCalculation();
-					//TODO: hashes generen moet optioneel worden
+					// TODO: hashes generen moet optioneel worden
+					graphPanel.enableButtons(hashes);
+					if(hashes){
 					graphPanel.setHashes();
-					menuPanel.showGraphBtn();
-					infoPanel.setVisible(false);
-					plotFilePanel.setVisible(false);
+					}
+
+					plotFilePanel.setVisible(true);
 					graphPanel.setVisible(true);
 					exportPanel.setVisible(false);
-					homePanel.setVisible(false);
+
 				} else {
-					JOptionPane.showMessageDialog(plotFilePanel, "Set a valid path!");
+					JOptionPane.showMessageDialog(plotFilePanel,
+							"Set a valid path!");
 				}
 			}
 
@@ -197,82 +170,100 @@ public class Main {
 
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				fc.showOpenDialog(fc);
-				
+
 				File file = fc.getSelectedFile();
 
 				plotFilePanel.setFilePathTextField(file.getAbsolutePath());
 			}
 		});
+		
+		
 	}
-	
+
 	private void graphEventListeners() {
+		graphPanel.setBounds(0, 119, 1152, 683);
+		layeredPane.add(graphPanel);
 		graphPanel.setOnGraphEventListener(new OnGraphEventListener() {
 			@Override
 			public void exportResults() {
-				homePanel.setVisible(false);
+
 				plotFilePanel.setVisible(false);
-				infoPanel.setVisible(false);
+
 				graphPanel.setVisible(false);
 				exportPanel.setVisible(true);
 			}
 		});
 	}
-/**
- * Call methods for export
- */
+
+	/**
+	 * Call methods for export
+	 */
 	private void exportEventListeners() {
+		footerPanel.setBounds(0, 812, 1146, 25);
+		layeredPane.add(footerPanel);
+		exportPanel.setBounds(0, 119, 874, 516);
+		layeredPane.add(exportPanel);
 		exportPanel.setOnExportEventListener(new OnExportEventListener() {
+			
 			@Override
-			public void exportToPDF(String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected, File exportPath, String filename) {
-				//Beide velden moeten ingevuld zijn!
+			public void exportToPDF(String title, String sin, String extraInfo,
+					boolean isHashSelected, boolean isFooterSelected,
+					File exportPath, String filename) {
+				// Beide velden moeten ingevuld zijn!
 				if (!title.isEmpty() && !sin.isEmpty()) {
-					//TODO: moet nog dynamisch ingesteld kunnen worden
-					String path = exportPath.toString()+"\\"+filename;
-					System.out.println("test 2"+path);
+					// TODO: moet nog dynamisch ingesteld kunnen worden
+					String path = exportPath.toString() + "\\" + filename;
+					System.out.println("test 2" + path);
 					final PdfExport pdf = new PdfExport(path + ".pdf");
-					//Initialize chart		
+					// Initialize chart
 					JFreeChart ch = graphPanel.getChart();
-					
+
 					try {
-						ChartUtilities.saveChartAsPNG(new File("images/" + title + ".png"), ch, 400, 400);
+						ChartUtilities.saveChartAsPNG(new File("images/Graph.png"), ch, 400, 400);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+					
+					
 					// Create container for the hashes
 					String[] hashes;
 					hashes = new String[3];
-	
+
 					if (isHashSelected) {
-						//Set the md5 hash
+						// TO DO  voor wanneer er in eerste instantie geen hashes zijn aangemaakt en tijdens het exporteren er wel voor word gekozen
+						//moet wachten op thread waardoor je de hashes niet kan krijgen
+						//graphPanel.setHashes();
+						
 						hashes[0] = graphPanel.getMD5();
 						hashes[1] = graphPanel.getSHA256();
-						hashes[2] = graphPanel.getSHA1();	
+						hashes[2] = graphPanel.getSHA1();
 					} else {
 						hashes[0] = "";
 						hashes[1] = "";
 						hashes[2] = "";
 					}
-					
-					//Set the fileSize
+
+					// Set the fileSize
 					String fileSize = graphPanel.getFileSize();
-					
-					
-					//Set the filepath name
+
+					// Set the filepath name
 					String filePath = graphPanel.getFilePath();
-					//set the header
+					// set the header
 					pdf.setHeader(title);
-					
-					//Call the setDocumentContent method with all the parameters
+
+					// Call the setDocumentContent method with all the
+					// parameters
 					try {
-						pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filePath);
+						pdf.setDocumentContent(title, sin, extraInfo, hashes,
+								fileSize, filePath);
 					} catch (DocumentException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
-					//Set the img
-					//TODO: moet nog dynamisch ingesteld kunnen worden
-					String pathTest = "images/" + title + ".png";
+
+					// Set the img
+					// TODO: moet nog dynamisch ingesteld kunnen worden
+					String pathTest = "images/Graph.png";
 					try {
 						pdf.setGraphImg(pathTest);
 					} catch (MalformedURLException e1) {
@@ -282,24 +273,27 @@ public class Main {
 					} catch (DocumentException e1) {
 						e1.printStackTrace();
 					}
-					
-					//Set the footer - this is optional
-					if(isFooterSelected) {
+
+					// Set the footer - this is optional
+					if (isFooterSelected) {
 						try {
 							pdf.setFooter();
 						} catch (DocumentException e) {
 							e.printStackTrace();
 						}
 					} else {
-						//Do-nothing
+						// Do-nothing
 					}
-					//Close the document, The document can't be written to after this statement.
+					// Close the document, The document can't be written to
+					// after this statement.
 					pdf.endDocument();
-					JOptionPane.showMessageDialog(graphPanel, "The PDF has been exported.");
+					JOptionPane.showMessageDialog(graphPanel,
+							"The PDF has been exported.");
 				} else {
-					JOptionPane.showMessageDialog(graphPanel, "The Title and SIN number fields are required!");
+					JOptionPane.showMessageDialog(graphPanel,
+							"The Title and SIN number fields are required!");
 				}
-				
+
 			}
 		});
 	}
