@@ -20,6 +20,8 @@ public class ShannonEntropy {
 	private int progress;
 	private String pathToFile;
 	private byte[] bytes;
+	//if this is not null then it is the last block
+	private int containsLastBlock;
 	private OnShannonEntropyEventListener shannonEntropyEventListener;
 	/**
 	 * Initialize the class
@@ -53,14 +55,24 @@ public class ShannonEntropy {
 				RandomAccessFile in = new RandomAccessFile(pathToFile, "r");
 				in.seek(0L);
 				while (in.getFilePointer() < in.length()){
+					//makes sure that the amount that is read is 0 when devided with the blocksize
+					int minus = (1000000%blockSize);
 					// set max read length in bytes, prevents a Perm Space error.
-				    int readSize = (int)Math.min(1000000, in.length() - in.getFilePointer());
+				    int readSize = (int)Math.min(1000000-minus, in.length() - in.getFilePointer());
+				    
 				    bytes = new byte[readSize];  //creates new byte array.
 				    in.readFully(bytes); //puts file bytes in the array.
 				    
 		        	int[] values = ByteConverter.fromUnsignedBytesToIntegers(bytes);
 		        	//creates a contained for the integer in blocks, +1 is done because an integer always rounds a digit down.
-					int[][] blockedValues = new int[values.length/blockSize+1][blockSize];
+		        	int[][] blockedValues = null;
+		        	
+		        	containsLastBlock = readSize%blockSize;
+		        	if(containsLastBlock == 0){
+		        		blockedValues = new int[values.length/blockSize][blockSize];
+		        	} else {
+		        		blockedValues = new int[values.length/blockSize+1][blockSize];
+		        	}
 					
 					int block = 0;
 					int blockPos = 0;
@@ -74,7 +86,11 @@ public class ShannonEntropy {
 					}
 					//adds the calculated values to the ArrayList
 					for (int i = 0; i < blockedValues.length; i++) {
-						allShannonResults.add(entropy(blockedValues[i]));
+						if(containsLastBlock != 0 && (i == blockedValues.length-1)){
+							allShannonResults.add(entropy(blockedValues[i], containsLastBlock));
+						} else {
+							allShannonResults.add(entropy(blockedValues[i], 0));
+						}
 					}
 					//update the progress in %
 					shannonEntropyEventListener.onProgressUpdate((int) ((in.getFilePointer()*100)/in.length()));
@@ -89,23 +105,26 @@ public class ShannonEntropy {
 	}
 	/**
 	 * Calculates the Shannon value of unsigned bytes.
+	 * This is altered because the last memory block is almost never 100% filled
 	 * 
 	 * @see http://whaticode.com/2010/05/24/a-java-implementation-for-shannon-entropy/
 	 * @param values - Array of unsigned byte values as integers.
 	 * @return Shannon value of the given values.
-	 */
-	private static double entropy(int[] values) {	 
+	 */	
+	private static double entropy(int[] values, int isLast) {	 
 		final Map<Integer, Long> valueOccurances = new HashMap<Integer, Long>();
+		//it is the last block if it is another value than 0
+		int length = (isLast == 0) ? values.length : isLast; 
 		//count the occurences of each value
-		for (Integer value : values) {
-			Long valueOccurance = valueOccurances.get(value);
-			valueOccurances.put(value, valueOccurance == null ? 1L : ++valueOccurance);
-		}	
+		for (int i = 0; i < length; i++) {
+			Long valueOccurance = valueOccurances.get(values[i]);
+			valueOccurances.put(values[i], valueOccurance == null ? 1L : ++valueOccurance);
+		}
 		
 		double combinedEntropy = 0.0d;
 		//calculate the entropy
 		for (Integer value : valueOccurances.keySet()) {
-			double entropy = valueOccurances.get(value) / (double) values.length;
+			double entropy = valueOccurances.get(value) / (double) length;
 			combinedEntropy += entropy * (Math.log(entropy) / Math.log(2));
 		}
 		return -combinedEntropy;
