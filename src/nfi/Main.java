@@ -151,10 +151,9 @@ public class Main {
 					graphPanel.setBlockSize(plotFilePanel.getBlockSize());
 					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
 					graphPanel.startCalculation();
-					// TODO: hashes generen moet optioneel worden
 					graphPanel.enableButtons(hashes);
 					if(hashes){
-					graphPanel.setHashes();
+						graphPanel.setHashes();
 					}
 					graphPanel.setDotsFilesize(f);
 					plotFilePanel.setVisible(true);
@@ -220,7 +219,7 @@ public class Main {
 					JFreeChart ch = graphPanel.getChart();
 
 					try {
-						ChartUtilities.saveChartAsPNG(new File("images/Graph.png"), ch, 400, 400);
+						ChartUtilities.saveChartAsPNG(new File("images/graph.png"), ch, 500, 400);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -266,7 +265,7 @@ public class Main {
 			//String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected, File exportPath, String filename
 			// Set the img
 			// TODO: moet nog dynamisch ingesteld kunnen worden
-			String pathTest = "images/Graph.png";
+			String pathTest = "images/graph.png";
 			pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filePath, pathTest);
 		} catch (DocumentException e) {
 			e.printStackTrace();
