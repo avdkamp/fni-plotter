@@ -95,7 +95,6 @@ public class GraphPanel extends JPanel {
 		lblGraph.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblGraph.setBackground(new Color(21, 66, 115));
 		
-		
 		graphPanel = new ChartPanel(chart, true);
 		graphPanel.setBounds(0, 23, 781, 615);
 		layeredPane.add(graphPanel);
@@ -147,7 +146,6 @@ public class GraphPanel extends JPanel {
 		statisticsPanel.add(textFieldGetSHA256);
 		textFieldGetSHA256.setEnabled(false);
 		
-		
 		exportLabel.setIcon(ResourceLoader.loadImageIcon("/images/export.png"));
 		exportLabel.setBounds(10, 622, 50, 50);
 		exportLabel.setVisible(false);
@@ -157,8 +155,6 @@ public class GraphPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				 
 					onGraphEventListener.exportResults();
-		      
-				
 			}
 		});
 		this.add(exportLabel);
@@ -186,7 +182,6 @@ public class GraphPanel extends JPanel {
 		btnShowGetallen.setVisible(false);
 		add(btnShowGetallen);
 		
-		
 		lblExporteren.setBounds(64, 639, 65, 14);
 		lblExporteren.setVisible(false);
 		add(lblExporteren);
@@ -195,7 +190,6 @@ public class GraphPanel extends JPanel {
 	private void initGraph(){
 		
 		dataSet = new DefaultXYDataset();
-		
 	
 		chart = ChartFactory.createScatterPlot(null, 
         			"data-block", 
@@ -205,7 +199,6 @@ public class GraphPanel extends JPanel {
         			false, 
         			true, 
         			false);
-		
 	 
 		chart.addProgressListener(new ChartProgressListener() {
 			
@@ -245,19 +238,13 @@ public class GraphPanel extends JPanel {
         plot.setRenderer(renderer);
         renderer.setBaseShapesVisible(true);
         renderer.setBaseShapesFilled(true);
-        
-        
         // label the points
         NumberFormat format = NumberFormat.getNumberInstance();
         format.setMaximumFractionDigits(2);
         XYItemLabelGenerator generator = new StandardXYItemLabelGenerator(StandardXYItemLabelGenerator.DEFAULT_ITEM_LABEL_FORMAT, format, format);
         renderer.setBaseItemLabelGenerator(generator);
-        
-        //Set the chart for saving.
-
-      
-        
 	}
+	
 	public void startCalculation(Boolean plainTxtOutput){
 		this.plainTxtOutput = plainTxtOutput;
 		se = new ShannonEntropy(pathToFile, blockSize);
