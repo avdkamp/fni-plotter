@@ -213,7 +213,6 @@ public class Main {
 				if (!title.isEmpty() && !sin.isEmpty()) {
 					// TODO: moet nog dynamisch ingesteld kunnen worden
 					String path = exportPath.toString() + "\\" + filename;
-					System.out.println("test 2" + path);
 					final PdfExport pdf = new PdfExport(path + ".pdf");
 					// Initialize chart
 					JFreeChart ch = graphPanel.getChart();
@@ -263,8 +262,7 @@ public class Main {
 		// parameters
 		try {
 			//String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected, File exportPath, String filename
-			// Set the img
-			// TODO: moet nog dynamisch ingesteld kunnen worden
+			// Set the temp img value
 			String pathTest = "images/graph.png";
 			pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filePath, pathTest);
 		} catch (DocumentException e) {
@@ -281,6 +279,9 @@ public class Main {
 		// Close the document, The document can't be written to
 		// after this statement.
 		pdf.endDocument();
+		//delete the temp image
+		File f = new File("images/graph.png");
+		f.delete();
 		JOptionPane.showMessageDialog(graphPanel, "The PDF has been exported.");
 	}
 }
