@@ -4,8 +4,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+
+import nfi.ResourceLoader;
 //Itext imports
-import com.itextpdf.text.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.List;
+import com.itextpdf.text.ListItem;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 /**
@@ -16,13 +24,19 @@ public class PdfExport {
 	
 	//Open het document
 	private Document pdfDocument = new Document();
-	//Set the document font family
-	//TODO : correct font setting!
-	private static Font titleFont = new Font(Font.FontFamily.COURIER, 18, Font.BOLD);
-	private static Font fontFam = new Font(Font.FontFamily.COURIER, 11,Font.NORMAL);
-	private static Font footerFam = new Font(Font.FontFamily.COURIER, 9, Font.NORMAL);
+	private static Font titleFont;
+	private static Font subTitleFont;
+	private static Font fontFam;
+	private static Font footerFam;
+	private static Font extraInfoFam;
 	
 	public PdfExport(String path){
+		//Set the document font family
+		titleFont = ResourceLoader.loadTrueTypeFont("/fonts/Verdana Bold.ttf", 11);
+		subTitleFont = ResourceLoader.loadTrueTypeFont("/fonts/Verdana Bold.ttf", 9);
+		fontFam = ResourceLoader.loadTrueTypeFont("/fonts/Consolas.ttf", 10);
+		extraInfoFam = ResourceLoader.loadTrueTypeFont("/fonts/Verdana.ttf", 10);
+		footerFam = ResourceLoader.loadTrueTypeFont("/fonts/Times New Roman.ttf", 10);
 		//Set 
 		try {
 			openStream(path);
@@ -67,52 +81,58 @@ public class PdfExport {
 	 * @param hashes
 	 * @throws DocumentException
 	 */
-	public void setDocumentContent(String Title, String sin, String extraInfo, String[] hashes, String fileSize, String filePath) throws DocumentException {
-			Paragraph line = new Paragraph();
+	public void setDocumentContent(String Title, String sin, String extraInfo, String[] hashes, String fileSize, String filePath, String imgPath) throws DocumentException {
+			Paragraph topParagraph = new Paragraph();
 			//Add title to the document.
-			line.add(new Paragraph(Title, titleFont));
+			topParagraph.add(new Paragraph(Title, titleFont));
+			topParagraph.add(new Paragraph());
+			topParagraph.add(new Paragraph("Bestandsgegevens", subTitleFont));
 			
 			//Set SIN number
-			line.add(new Paragraph("SIN nummer : " + sin, fontFam));
+			topParagraph.add(new Paragraph("SIN nummer :         " + sin, fontFam));
 			
 			//Set the fileSize
-			line.add(new Paragraph("Bestandsgrootte : " + fileSize, fontFam));
+			topParagraph.add(new Paragraph("Bestandsgrootte :    " + fileSize, fontFam));
 			
 			//Set the filePath
-			line.add(new Paragraph("Bestandsnaam en pad : " + filePath, fontFam));
-
-			// Set the extra info
-			line.add(new Paragraph("Extra informatie :  "+ extraInfo, fontFam));
-
+			topParagraph.add(new Paragraph("Bestandsnaam en pad: " + filePath, fontFam));
+			topParagraph.add(new Paragraph());
 			//Set the hashes when selected
-			line.add(new Paragraph("Hashes", fontFam));
+			topParagraph.add(new Paragraph("Hashes", subTitleFont));
 			
 		    List list = new List(true, false, 10);
 		    if (hashes[0].isEmpty() & hashes[1].isEmpty() & hashes[2].isEmpty()) {
 		    	//do nothing
 		    } else {
-		    	list.add(new ListItem("MD5     : " + hashes[0], fontFam ));
-			    list.add(new ListItem("SHA256  : " + hashes[1], fontFam ));
-			    list.add(new ListItem("SHA1    : " + hashes[2], fontFam ));
-			    line.add(list);	
+		    	list.add(new ListItem("MD5:      " + hashes[0], fontFam ));
+			    list.add(new ListItem("SHA256:   " + hashes[1], fontFam ));
+			    list.add(new ListItem("SHA1:     " + hashes[2], fontFam ));
+			    topParagraph.add(list);	
 		    }
+		    topParagraph.add(new Paragraph());
 		    
+		    Image graphImage = null;
+			try {
+				graphImage = Image.getInstance(imgPath);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			//And finally add all the lines to the document.
+			pdfDocument.add(topParagraph);
+		    pdfDocument.add(graphImage);
+		    Paragraph bottomParagraph = new Paragraph();
+		    bottomParagraph.add(new Paragraph());
+		    // Set the extra info
+		    bottomParagraph.add(new Paragraph("Extra informatie:", subTitleFont));
+		    bottomParagraph.add(new Paragraph(extraInfo, extraInfoFam));
+		    bottomParagraph.add(new Paragraph("", extraInfoFam));
+		    bottomParagraph.add(new Paragraph("", extraInfoFam));
 					    
 		    //And finally add all the lines to the document.
-			pdfDocument.add(line);		
+			pdfDocument.add(bottomParagraph);		
 	}
-	/**
-	 * Add img to the document.
-	 * @throws IOException 
-	 * @throws MalformedURLException 
-	 * @throws DocumentException 
-	 */
-	public void setGraphImg(String imgPath) throws MalformedURLException, IOException, DocumentException {
-		//Set the img object
-        Image graphImage = Image.getInstance(imgPath);
-        //Add the img to the document.
-        pdfDocument.add(graphImage);
- 	}
 	/**
 	 * Set the document footer
 	 * The footer is optional.
@@ -122,6 +142,8 @@ public class PdfExport {
 	public void setFooter() throws DocumentException {
 		//Set the new paragraph
 		Paragraph footer = new Paragraph();
+		footer.add(new Paragraph());
+		footer.add(new Paragraph("------------------------------------------------------------------------------------------------------------------------------"));
 		//Add text to the paragraph
 		footer.add(new Paragraph("In de informatietheorie is (Shannon-)entropie een maat voor de informatiedichtheid van een bericht (of een bestand). Een bepaald soort bestandheeft een vaak typerende entropie. Bij bijvoorbeeld veel tekstdocumenten is de entropie vrij laag, terwijl de entropie van versleutelde of gecomprimeerde bestanden meestal zeer hoog is.", footerFam));
 		//And finaly add the line to the document.
@@ -134,7 +156,4 @@ public class PdfExport {
 		//Close the document
 		pdfDocument.close();	
 	}
-	
-	
-
 }
