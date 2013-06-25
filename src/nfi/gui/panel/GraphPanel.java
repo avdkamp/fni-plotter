@@ -155,6 +155,7 @@ public class GraphPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				 
 					onGraphEventListener.exportResults();
+					
 			}
 		});
 		this.add(exportLabel);

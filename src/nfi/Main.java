@@ -133,7 +133,6 @@ public class Main {
 			}
 
 			
-
 			
 		});
 	}
@@ -187,7 +186,7 @@ public class Main {
 		graphPanel.setOnGraphEventListener(new OnGraphEventListener() {
 			@Override
 			public void exportResults() {
-
+				menuPanel.showExportBtn();
 				plotFilePanel.setVisible(false);
 
 				graphPanel.setVisible(false);
