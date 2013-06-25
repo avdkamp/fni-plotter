@@ -24,6 +24,8 @@ import java.util.List;
 
 import nfi.gui.panel.*;
 
+import nfi.calc.HashChecksumGen;
+import nfi.calc.HashChecksumGen.OnHashCalculationEventListener;
 import nfi.export.*;
 
 import nfi.gui.panel.ExportPanel.OnExportEventListener;
@@ -40,6 +42,7 @@ public class Main {
 	private static final HeaderPanel headerPanel = new HeaderPanel();
 	private static final FooterPanel footerPanel = new FooterPanel();
 	private final JLayeredPane layeredPane = new JLayeredPane();
+	private String[] hashes;
 
 	public static void main(String[] args) throws Exception {
 
@@ -206,9 +209,7 @@ public class Main {
 		exportPanel.setOnExportEventListener(new OnExportEventListener() {
 			
 			@Override
-			public void exportToPDF(String title, String sin, String extraInfo,
-					boolean isHashSelected, boolean isFooterSelected,
-					File exportPath, String filename) {
+			public void exportToPDF(final String title, final String sin, final String extraInfo, boolean isHashSelected, final boolean isFooterSelected, File exportPath, String filename) {
 				// Beide velden moeten ingevuld zijn!
 				if (!title.isEmpty() && !sin.isEmpty()) {
 					// TODO: moet nog dynamisch ingesteld kunnen worden
@@ -224,77 +225,63 @@ public class Main {
 						e.printStackTrace();
 					}
 					
-					
-					// Create container for the hashes
-					String[] hashes;
-					hashes = new String[3];
-
-					if (isHashSelected) {
-						// TO DO  voor wanneer er in eerste instantie geen hashes zijn aangemaakt en tijdens het exporteren er wel voor word gekozen
-						//moet wachten op thread waardoor je de hashes niet kan krijgen
-						//graphPanel.setHashes();
-						
-						hashes[0] = graphPanel.getMD5();
-						hashes[1] = graphPanel.getSHA256();
-						hashes[2] = graphPanel.getSHA1();
-					} else {
-						hashes[0] = "";
-						hashes[1] = "";
-						hashes[2] = "";
-					}
-
-					// Set the fileSize
-					String fileSize = graphPanel.getFileSize();
-
-					// Set the filepath name
-					String filePath = graphPanel.getFilePath();
 					// set the header
 					pdf.setHeader(title);
-
-					// Call the setDocumentContent method with all the
-					// parameters
-					try {
-						pdf.setDocumentContent(title, sin, extraInfo, hashes,
-								fileSize, filePath);
-					} catch (DocumentException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					// Set the img
-					// TODO: moet nog dynamisch ingesteld kunnen worden
-					String pathTest = "images/Graph.png";
-					try {
-						pdf.setGraphImg(pathTest);
-					} catch (MalformedURLException e1) {
-						e1.printStackTrace();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					} catch (DocumentException e1) {
-						e1.printStackTrace();
-					}
-
-					// Set the footer - this is optional
-					if (isFooterSelected) {
-						try {
-							pdf.setFooter();
-						} catch (DocumentException e) {
-							e.printStackTrace();
-						}
+					
+					if (isHashSelected) {
+						final HashChecksumGen hcg = new HashChecksumGen();
+				    	hcg.GenerateAllHashes(graphPanel.getFilePath());
+				    	hcg.setOnHashCalculationEventListener(new OnHashCalculationEventListener() {
+							@Override
+							public void doneCalculationAllHashes() {
+								hashes = hcg.getAllHashes();
+								exportLastPart(title, sin, extraInfo, pdf, isFooterSelected, graphPanel.getFilePath(), graphPanel.getFileSize());
+							}
+						});
 					} else {
-						// Do-nothing
+						hashes = new String[]{"", "", ""};
+						exportLastPart(title, sin, extraInfo, pdf, isFooterSelected, graphPanel.getFilePath(), graphPanel.getFileSize());
 					}
-					// Close the document, The document can't be written to
-					// after this statement.
-					pdf.endDocument();
-					JOptionPane.showMessageDialog(graphPanel,
-							"The PDF has been exported.");
 				} else {
 					JOptionPane.showMessageDialog(graphPanel,
 							"The Title and SIN number fields are required!");
 				}
-
 			}
 		});
+	}
+	/**
+	 * 
+	 * @param title
+	 * @param sin
+	 * @param extraInfo
+	 * @param pdf
+	 * @param isFooterSelected
+	 * @param filePath
+	 * @param fileSize
+	 */
+	private void exportLastPart(String title, String sin, String extraInfo, PdfExport pdf, boolean isFooterSelected, String filePath, String fileSize){
+		// Call the setDocumentContent method with all the
+		// parameters
+		try {
+			//String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected, File exportPath, String filename
+			// Set the img
+			// TODO: moet nog dynamisch ingesteld kunnen worden
+			String pathTest = "images/Graph.png";
+			pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filePath, pathTest);
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+		// Set the footer - this is optional
+		if (isFooterSelected) {
+			try {
+				pdf.setFooter();
+			} catch (DocumentException e) {
+				e.printStackTrace();
+			}
+		}
+		// Close the document, The document can't be written to
+		// after this statement.
+		pdf.endDocument();
+		JOptionPane.showMessageDialog(graphPanel, "The PDF has been exported.");
 	}
 }
