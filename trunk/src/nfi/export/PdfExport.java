@@ -101,13 +101,11 @@ public class PdfExport {
 			topParagraph.add(new Paragraph("Hashes", subTitleFont));
 			
 		    List list = new List(true, false, 10);
-		    if (hashes[0].isEmpty() & hashes[1].isEmpty() & hashes[2].isEmpty()) {
-		    	//do nothing
-		    } else {
-		    	list.add(new ListItem("MD5:      " + hashes[0], fontFam ));
-			    list.add(new ListItem("SHA256:   " + hashes[1], fontFam ));
-			    list.add(new ListItem("SHA1:     " + hashes[2], fontFam ));
-			    topParagraph.add(list);	
+		    if (!hashes[0].isEmpty() & !hashes[1].isEmpty() & !hashes[2].isEmpty()) {
+		    	list.add(new ListItem("MD5:    " + hashes[0], fontFam ));
+		    	list.add(new ListItem("SHA1:   " + hashes[1], fontFam ));
+		    	list.add(new ListItem("SHA256: " + hashes[2], fontFam ));
+		    	topParagraph.add(list);	
 		    }
 		    topParagraph.add(new Paragraph());
 		    
@@ -127,8 +125,6 @@ public class PdfExport {
 		    // Set the extra info
 		    bottomParagraph.add(new Paragraph("Extra informatie:", subTitleFont));
 		    bottomParagraph.add(new Paragraph(extraInfo, extraInfoFam));
-		    bottomParagraph.add(new Paragraph("", extraInfoFam));
-		    bottomParagraph.add(new Paragraph("", extraInfoFam));
 					    
 		    //And finally add all the lines to the document.
 			pdfDocument.add(bottomParagraph);		
@@ -142,7 +138,6 @@ public class PdfExport {
 	public void setFooter() throws DocumentException {
 		//Set the new paragraph
 		Paragraph footer = new Paragraph();
-		footer.add(new Paragraph());
 		footer.add(new Paragraph("------------------------------------------------------------------------------------------------------------------------------"));
 		//Add text to the paragraph
 		footer.add(new Paragraph("In de informatietheorie is (Shannon-)entropie een maat voor de informatiedichtheid van een bericht (of een bestand). Een bepaald soort bestandheeft een vaak typerende entropie. Bij bijvoorbeeld veel tekstdocumenten is de entropie vrij laag, terwijl de entropie van versleutelde of gecomprimeerde bestanden meestal zeer hoog is.", footerFam));
@@ -154,6 +149,7 @@ public class PdfExport {
 	 */
 	public void endDocument(){
 		//Close the document
-		pdfDocument.close();	
+		pdfDocument.close();
+		
 	}
 }
