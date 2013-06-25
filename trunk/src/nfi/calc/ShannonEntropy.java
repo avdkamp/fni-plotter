@@ -64,9 +64,8 @@ public class ShannonEntropy {
 				    in.readFully(bytes); //puts file bytes in the array.
 				    
 		        	int[] values = ByteConverter.fromUnsignedBytesToIntegers(bytes);
-		        	//creates a contained for the integer in blocks, +1 is done because an integer always rounds a digit down.
-		        	int[][] blockedValues = null;
 		        	
+		        	int[][] blockedValues = null;
 		        	containsLastBlock = readSize%blockSize;
 		        	if(containsLastBlock == 0){
 		        		blockedValues = new int[values.length/blockSize][blockSize];

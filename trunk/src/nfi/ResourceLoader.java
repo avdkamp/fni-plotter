@@ -35,7 +35,6 @@ public class ResourceLoader {
 	
 	public static Font loadTrueTypeFont(String pathToFile, int size){
 		
-//		URL fontpath = ResourceLoader.class.getResource(pathToFile);
 		Font font = null;
 		BaseFont customfont;
 		try {

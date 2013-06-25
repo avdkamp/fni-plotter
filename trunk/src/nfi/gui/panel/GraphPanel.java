@@ -221,19 +221,16 @@ public class GraphPanel extends JPanel {
         // force aliasing of the rendered content..
         chart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         chart.setBorderVisible(false);
-        
         chart.setBackgroundImageAlpha(100);
         
         plot = (XYPlot) chart.getPlot();
-        
         plot.setDomainGridlinesVisible(true);
 
         // set the plot's axes to display integers
         TickUnitSource ticks = NumberAxis.createIntegerTickUnits();
         domain = (NumberAxis) plot.getDomainAxis();
-        
         domain.setStandardTickUnits(ticks);
-        range = (NumberAxis) plot.getRangeAxis();        
+        range = (NumberAxis) plot.getRangeAxis();
         range.setRange(0, 8);
         
         plot.setRenderer(renderer);
@@ -241,7 +238,7 @@ public class GraphPanel extends JPanel {
         renderer.setBaseShapesFilled(true);
         // label the points
         NumberFormat format = NumberFormat.getNumberInstance();
-        format.setMaximumFractionDigits(2);
+        format.setMaximumFractionDigits(5);
         XYItemLabelGenerator generator = new StandardXYItemLabelGenerator(StandardXYItemLabelGenerator.DEFAULT_ITEM_LABEL_FORMAT, format, format);
         renderer.setBaseItemLabelGenerator(generator);
 	}
