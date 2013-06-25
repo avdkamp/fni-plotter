@@ -19,7 +19,6 @@ import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 import nfi.gui.panel.*;
@@ -144,13 +143,13 @@ public class Main {
 		layeredPane.add(plotFilePanel, new Integer(1), 0);
 		plotFilePanel.setOnPlotFileEventListener(new OnPlotFileEventListener() {
 			@Override
-			public void showGraph(Boolean hashes) {
+			public void showGraph(Boolean hashes, Boolean plainTxtOutput) {
 				File f = new File(plotFilePanel.getPathToFile());
 
 				if (!plotFilePanel.getPathToFile().isEmpty() && f.exists()) {
 					graphPanel.setBlockSize(plotFilePanel.getBlockSize());
 					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
-					graphPanel.startCalculation();
+					graphPanel.startCalculation(plainTxtOutput);
 					graphPanel.enableButtons(hashes);
 					if(hashes){
 						graphPanel.setHashes();
@@ -211,7 +210,6 @@ public class Main {
 			public void exportToPDF(final String title, final String sin, final String extraInfo, boolean isHashSelected, final boolean isFooterSelected, File exportPath, String filename) {
 				// Beide velden moeten ingevuld zijn!
 				if (!title.isEmpty() && !sin.isEmpty()) {
-					// TODO: moet nog dynamisch ingesteld kunnen worden
 					String path = exportPath.toString() + "\\" + filename;
 					final PdfExport pdf = new PdfExport(path + ".pdf");
 					// Initialize chart

@@ -1,19 +1,21 @@
 package nfi.gui.panel;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.RenderingHints;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileSystemView;
 
 import nfi.ResourceLoader;
 import nfi.calc.HashChecksumGen;
@@ -25,7 +27,6 @@ import javax.swing.JProgressBar;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.TickUnitSource;
@@ -54,6 +55,7 @@ public class GraphPanel extends JPanel {
 	private int blockSize;
 	private String pathToFile;
 	private ChartPanel graphPanel;
+	private boolean plainTxtOutput;
 	
 	private final JLabel lblStatistics = new JLabel(" Statistics");
 	private final JLabel lblExporteren = new JLabel("Export");
@@ -70,7 +72,7 @@ public class GraphPanel extends JPanel {
 	private JFreeChart chart;
 	private NumberAxis domain;
 	private NumberAxis range;
-	private  XYPlot plot;
+	private XYPlot plot;
 	
 	
 	public GraphPanel(){
@@ -195,9 +197,9 @@ public class GraphPanel extends JPanel {
 		dataSet = new DefaultXYDataset();
 		
 	
-	 chart = ChartFactory.createScatterPlot(null, 
-        			"X", 
-        			"y", 
+		chart = ChartFactory.createScatterPlot(null, 
+        			"data-block", 
+        			"entropy", 
         			dataSet, 
         			PlotOrientation.VERTICAL, 
         			false, 
@@ -256,7 +258,8 @@ public class GraphPanel extends JPanel {
       
         
 	}
-	public void startCalculation(){
+	public void startCalculation(Boolean plainTxtOutput){
+		this.plainTxtOutput = plainTxtOutput;
 		se = new ShannonEntropy(pathToFile, blockSize);
         se.setOnShannonEntropyEventListener(new OnShannonEntropyEventListener() {
 			
@@ -267,7 +270,6 @@ public class GraphPanel extends JPanel {
 					dataSet.removeSeries("Series0");
 				}
 				dataSet.addSeries("Series0", data);
-				
 			}
 			
 			@Override
@@ -286,17 +288,35 @@ public class GraphPanel extends JPanel {
     	 * data[0][float] = x
     	 * data[1][float] = y
     	 */
+    	PrintWriter output = null;
+    	if(plainTxtOutput){
+			FileSystemView filesys = FileSystemView.getFileSystemView();
+			File file = new File(filesys.getHomeDirectory() + "\\" + "Entropy Plotter.txt");
+			FileWriter writer = null;
+			try {
+				file.createNewFile();
+				writer = new FileWriter(file, false);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}  
+			output = new PrintWriter(writer);  
+			output.println("blocksize# " + blockSize);
+    	}
     	progressBar.setValue(progressBar.getMinimum());
     	this.data = new double[2][values.size()];
         for (int i = 0; i < values.size(); i++) {
             this.data[0][i] = i;
-            this.data[1][i] = (float) values.get(i).floatValue();
+            this.data[1][i] = values.get(i);
+            if(plainTxtOutput){
+            	output.println(i + " - " + values.get(i));
+            }
             progressBar.setValue((i*100)/values.size());
             progressBar.setString(((i*100)/values.size())+ "% - Processing Data");
         }
+        if(plainTxtOutput){
+        	output.close();
+        }
     }
-	
-    
     
     public void setHashes(){
     	final HashChecksumGen hcg = new HashChecksumGen();

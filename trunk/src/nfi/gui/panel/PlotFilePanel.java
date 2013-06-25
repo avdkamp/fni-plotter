@@ -31,6 +31,7 @@ public class PlotFilePanel extends JPanel {
 	private JComboBox<?> BlockSizeComboBox = new JComboBox<Object>(PlotOptions);
 	private JTextField filePathTextField;
 	private JCheckBox chckbxCalculateHashes = new JCheckBox("");
+	private JCheckBox plainTXToutput;
 	private OnPlotFileEventListener onPlotFileEventListener;
 	private int blocksize;
 	
@@ -68,7 +69,7 @@ public class PlotFilePanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				blocksize = Integer.valueOf((String)BlockSizeComboBox.getSelectedItem());
 				
-				onPlotFileEventListener.showGraph(getCalcHashes());
+				onPlotFileEventListener.showGraph(getCalcHashes(), plainTXToutput.isSelected());
 			}
 		});
 		
@@ -112,8 +113,16 @@ public class PlotFilePanel extends JPanel {
 		PlotOptionPanel.add(lblCalculateHashes);
 		
 		
-		chckbxCalculateHashes.setBounds(115, 240, 97, 14);
+		chckbxCalculateHashes.setBounds(175, 240, 37, 14);
 		PlotOptionPanel.add(chckbxCalculateHashes);
+		
+		JLabel lblPlainTxtOutput = new JLabel("Plain TXT output (desktop)");
+		lblPlainTxtOutput.setBounds(10, 262, 170, 14);
+		PlotOptionPanel.add(lblPlainTxtOutput);
+		
+		plainTXToutput = new JCheckBox("");
+		plainTXToutput.setBounds(175, 262, 37, 14);
+		PlotOptionPanel.add(plainTXToutput);
 		
 	}
 	public int getBlockSize(){
@@ -142,8 +151,7 @@ public class PlotFilePanel extends JPanel {
 	 * Inner callback interface
 	 */
 	public static interface OnPlotFileEventListener{
-		public void showGraph(Boolean hashes);
+		public void showGraph(Boolean hashes, Boolean plainTxtOutput);
 		public void fileExplorerPanel();
 	}
-	
 }

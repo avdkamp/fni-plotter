@@ -107,8 +107,7 @@ public class ShannonEntropy {
 		for (Integer value : valueOccurances.keySet()) {
 			double entropy = valueOccurances.get(value) / (double) values.length;
 			combinedEntropy += entropy * (Math.log(entropy) / Math.log(2));
-		} 
-		
+		}
 		return -combinedEntropy;
 	}
 	/**
