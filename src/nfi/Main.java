@@ -6,7 +6,6 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 
-import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 
 import com.itextpdf.text.DocumentException;
@@ -17,8 +16,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import nfi.gui.panel.*;
@@ -194,7 +193,9 @@ public class Main {
 			}
 		});
 	}
-
+	
+	
+	private BufferedImage objBufferedImage;
 	/**
 	 * Call methods for export
 	 */
@@ -214,11 +215,17 @@ public class Main {
 					// Initialize chart
 					JFreeChart ch = graphPanel.getChart();
 
-					try {
-						ChartUtilities.saveChartAsPNG(new File("images/graph.png"), ch, 500, 400);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+						objBufferedImage=ch.createBufferedImage(500,400);
+//						ByteArrayOutputStream bas = new ByteArrayOutputStream();
+//						        try {
+//						            ImageIO.write(objBufferedImage, "png", bas);
+//						        } catch (IOException e) {
+//						            e.printStackTrace();
+//						        }
+//
+//						byte[] byteArray=bas.toByteArray();
+						
+//						"/tmp/graph.png")(new File(), ch, 500, 400);
 					
 					// set the header
 					pdf.setHeader(title);
@@ -260,8 +267,8 @@ public class Main {
 		try {
 			//String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected, File exportPath, String filename
 			// Set the temp img value
-			String pathTest = "images/graph.png";
-			pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filePath, pathTest);
+//			String pathTest = "/tmp/graph.png";
+			pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filePath, objBufferedImage);
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		}
@@ -276,9 +283,6 @@ public class Main {
 		// Close the document, The document can't be written to
 		// after this statement.
 		pdf.endDocument();
-		//delete the temp image
-		File f = new File("images/graph.png");
-		f.delete();
 		JOptionPane.showMessageDialog(graphPanel, "The PDF has been exported.");
 	}
 }

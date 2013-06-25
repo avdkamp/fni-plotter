@@ -1,9 +1,10 @@
 package nfi.export;
 //Io imports
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import nfi.ResourceLoader;
 //Itext imports
@@ -81,7 +82,7 @@ public class PdfExport {
 	 * @param hashes
 	 * @throws DocumentException
 	 */
-	public void setDocumentContent(String Title, String sin, String extraInfo, String[] hashes, String fileSize, String filePath, String imgPath) throws DocumentException {
+	public void setDocumentContent(String Title, String sin, String extraInfo, String[] hashes, String fileSize, String filePath, BufferedImage objBufferedImage) throws DocumentException {
 			Paragraph topParagraph = new Paragraph();
 			//Add title to the document.
 			topParagraph.add(new Paragraph(Title, titleFont));
@@ -108,17 +109,14 @@ public class PdfExport {
 		    	topParagraph.add(list);	
 		    }
 		    topParagraph.add(new Paragraph());
+		    pdfDocument.add(topParagraph);
 		    
 		    Image graphImage = null;
 			try {
-				graphImage = Image.getInstance(imgPath);
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
+				graphImage = Image.getInstance(Toolkit.getDefaultToolkit().createImage(objBufferedImage.getSource()), null);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			//And finally add all the lines to the document.
-			pdfDocument.add(topParagraph);
 		    pdfDocument.add(graphImage);
 		    Paragraph bottomParagraph = new Paragraph();
 		    bottomParagraph.add(new Paragraph());
