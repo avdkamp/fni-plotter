@@ -61,6 +61,7 @@ public class ShannonEntropy {
 				    int readSize = (int)Math.min(1000000-minus, in.length() - in.getFilePointer());
 				    
 				    bytes = new byte[readSize];  //creates new byte array.
+				    
 				    in.readFully(bytes); //puts file bytes in the array.
 				    
 		        	int[] values = ByteConverter.fromUnsignedBytesToIntegers(bytes);
@@ -69,8 +70,10 @@ public class ShannonEntropy {
 		        	containsLastBlock = readSize%blockSize;
 		        	if(containsLastBlock == 0){
 		        		blockedValues = new int[values.length/blockSize][blockSize];
+		        		
 		        	} else {
 		        		blockedValues = new int[values.length/blockSize+1][blockSize];
+		        		
 		        	}
 					
 					int block = 0;
@@ -89,8 +92,10 @@ public class ShannonEntropy {
 							allShannonResults.add(entropy(blockedValues[i], containsLastBlock));
 						} else {
 							allShannonResults.add(entropy(blockedValues[i], 0));
+							
 						}
 					}
+					
 					//update the progress in %
 					shannonEntropyEventListener.onProgressUpdate((int) ((in.getFilePointer()*100)/in.length()));
 				}
@@ -99,6 +104,7 @@ public class ShannonEntropy {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
 			shannonEntropyEventListener.onWorkerComplete();
 		}
 	}
@@ -170,5 +176,10 @@ public class ShannonEntropy {
 		 * Called when the worker has completed its task.
 		 */
 		public void onWorkerComplete();
+	}
+	
+	public int getTotallBlocksize(){
+		return allShannonResults.size();
+		
 	}
 }
