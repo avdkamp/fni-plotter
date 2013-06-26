@@ -73,6 +73,7 @@ public class GraphPanel extends JPanel {
 	private NumberAxis domain;
 	private NumberAxis range;
 	private XYPlot plot;
+	private String filename ="";
 	
 	
 	public GraphPanel(){
@@ -328,6 +329,10 @@ public class GraphPanel extends JPanel {
 	public void setBlockSize(int blockSize) {
 		this.blockSize = blockSize;
 	}
+	
+	public int getBlockSize() {
+		return this.blockSize;
+	}
 	public void setPathToFile(String pathToFile) {
 		this.pathToFile = pathToFile;
 	}
@@ -343,6 +348,8 @@ public class GraphPanel extends JPanel {
             }
             count++;
         }
+        
+        setFileName(fz.getName());
         textFieldFileSize.setText(filesz+" Bytes");
     }
 
@@ -366,6 +373,15 @@ public class GraphPanel extends JPanel {
 		return pathToFile;
 	}
 
+	public void setFileName(String filename){
+		
+		this.filename = filename;
+	}
+	
+	public String getFileName(){
+		
+		return this.filename;
+	}
 	/*
 	 * getChart() - added with Robert (mats).
 	 */

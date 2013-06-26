@@ -237,12 +237,12 @@ public class Main {
 							@Override
 							public void doneCalculationAllHashes() {
 								hashes = hcg.getAllHashes();
-								exportLastPart(title, sin, extraInfo, pdf, isFooterSelected, graphPanel.getFilePath(), graphPanel.getFileSize());
+								exportLastPart(title, sin, extraInfo, pdf, isFooterSelected, graphPanel.getFileName(), graphPanel.getFileSize(), graphPanel.getBlockSize());
 							}
 						});
 					} else {
 						hashes = new String[]{"", "", ""};
-						exportLastPart(title, sin, extraInfo, pdf, isFooterSelected, graphPanel.getFilePath(), graphPanel.getFileSize());
+						exportLastPart(title, sin, extraInfo, pdf, isFooterSelected, graphPanel.getFileName(), graphPanel.getFileSize(), graphPanel.getBlockSize());
 					}
 				} else {
 					JOptionPane.showMessageDialog(graphPanel,
@@ -261,14 +261,16 @@ public class Main {
 	 * @param filePath
 	 * @param fileSize
 	 */
-	private void exportLastPart(String title, String sin, String extraInfo, PdfExport pdf, boolean isFooterSelected, String filePath, String fileSize){
+	private void exportLastPart(String title, String sin, String extraInfo, PdfExport pdf, boolean isFooterSelected, String filename, String fileSize, int blocksize){
 		// Call the setDocumentContent method with all the
 		// parameters
 		try {
 			//String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected, File exportPath, String filename
 			// Set the temp img value
+
 //			String pathTest = "/tmp/graph.png";
-			pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filePath, objBufferedImage);
+			pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filename, objBufferedImage, blocksize);
+
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		}

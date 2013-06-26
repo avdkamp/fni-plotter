@@ -82,7 +82,9 @@ public class PdfExport {
 	 * @param hashes
 	 * @throws DocumentException
 	 */
-	public void setDocumentContent(String Title, String sin, String extraInfo, String[] hashes, String fileSize, String filePath, BufferedImage objBufferedImage) throws DocumentException {
+
+	public void setDocumentContent(String Title, String sin, String extraInfo, String[] hashes, String fileSize, String filePath, BufferedImage objBufferedImage, int blocksize) throws DocumentException {
+
 			Paragraph topParagraph = new Paragraph();
 			//Add title to the document.
 			topParagraph.add(new Paragraph(Title, titleFont));
@@ -94,15 +96,17 @@ public class PdfExport {
 			
 			//Set the fileSize
 			topParagraph.add(new Paragraph("Bestandsgrootte :    " + fileSize, fontFam));
+			topParagraph.add(new Paragraph("Block Size :    " + blocksize, fontFam));
 			
 			//Set the filePath
-			topParagraph.add(new Paragraph("Bestandsnaam en pad: " + filePath, fontFam));
+			topParagraph.add(new Paragraph("Bestandsnaam: " + filePath, fontFam));
 			topParagraph.add(new Paragraph());
 			//Set the hashes when selected
-			topParagraph.add(new Paragraph("Hashes", subTitleFont));
+			
 			
 		    List list = new List(true, false, 10);
 		    if (!hashes[0].isEmpty() & !hashes[1].isEmpty() & !hashes[2].isEmpty()) {
+		    	topParagraph.add(new Paragraph("Hashes", subTitleFont));
 		    	list.add(new ListItem("MD5:    " + hashes[0], fontFam ));
 		    	list.add(new ListItem("SHA1:   " + hashes[1], fontFam ));
 		    	list.add(new ListItem("SHA256: " + hashes[2], fontFam ));
