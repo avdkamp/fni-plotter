@@ -243,12 +243,15 @@ public class GraphPanel extends JPanel {
         format.setMaximumFractionDigits(5);
         XYItemLabelGenerator generator = new StandardXYItemLabelGenerator(StandardXYItemLabelGenerator.DEFAULT_ITEM_LABEL_FORMAT, format, format);
         renderer.setBaseItemLabelGenerator(generator);
+        
 	}
 	
 	public void startCalculation(Boolean plainTxtOutput){
 		this.plainTxtOutput = plainTxtOutput;
 		se = new ShannonEntropy(pathToFile, blockSize);
+		
 		graphPanel.restoreAutoBounds();
+		
 		range = (NumberAxis) plot.getRangeAxis();
         range.setRange(0, 8);
         se.setOnShannonEntropyEventListener(new OnShannonEntropyEventListener() {
@@ -260,6 +263,8 @@ public class GraphPanel extends JPanel {
 					dataSet.removeSeries("Series0");
 				}
 				dataSet.addSeries("Series0", data);
+				
+				
 			}
 			
 			@Override
@@ -269,7 +274,10 @@ public class GraphPanel extends JPanel {
 			}
 		});
         se.run();
+        
 	}
+	
+	
 	/**
      * Populates the data array with values.
      */
@@ -302,7 +310,11 @@ public class GraphPanel extends JPanel {
             }
             progressBar.setValue((i*100)/values.size());
             progressBar.setString(((i*100)/values.size())+ "% - Processing Data");
+            
         }
+        // hier kan je de x as zetten maar is nog steeds zinloos bij een grote blocksize
+//        domain = (NumberAxis) plot.getDomainAxis();
+//        domain.setRange(-0.50, se.getTotallBlocksize());
         if(plainTxtOutput){
         	output.close();
         }
