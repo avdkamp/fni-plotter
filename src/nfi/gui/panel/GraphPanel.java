@@ -234,6 +234,7 @@ public class GraphPanel extends JPanel {
         range = (NumberAxis) plot.getRangeAxis();
         range.setRange(0, 8);
         
+        
         plot.setRenderer(renderer);
         renderer.setBaseShapesVisible(true);
         renderer.setBaseShapesFilled(true);
@@ -247,6 +248,9 @@ public class GraphPanel extends JPanel {
 	public void startCalculation(Boolean plainTxtOutput){
 		this.plainTxtOutput = plainTxtOutput;
 		se = new ShannonEntropy(pathToFile, blockSize);
+		graphPanel.restoreAutoBounds();
+		range = (NumberAxis) plot.getRangeAxis();
+        range.setRange(0, 8);
         se.setOnShannonEntropyEventListener(new OnShannonEntropyEventListener() {
 			
 			@Override
@@ -403,8 +407,8 @@ public class GraphPanel extends JPanel {
 		public void exportResults();
 	}
 	public void enableButtons(Boolean hashes){
-
-        graphPanel.restoreAutoBounds();
+		
+        
 
 		if(hashes){
 		textFieldGetMD5.setEnabled(true);
