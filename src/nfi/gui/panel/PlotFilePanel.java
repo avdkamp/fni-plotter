@@ -31,8 +31,8 @@ public class PlotFilePanel extends JPanel {
 	private JComboBox<?> BlockSizeComboBox = new JComboBox<Object>(PlotOptions);
 	private JTextField filePathTextField;
 	private JCheckBox chckbxCalculateHashes = new JCheckBox("");
-	private JCheckBox plainTXToutput;
 	private OnPlotFileEventListener onPlotFileEventListener;
+	
 	private int blocksize;
 	
 	public PlotFilePanel(){
@@ -53,7 +53,7 @@ public class PlotFilePanel extends JPanel {
 		JPanel PlotOptionPanel = new JPanel();
 		PlotOptionPanel.setBackground(SystemColor.menu);
 		PlotOptionPanel.setBorder(new LineBorder(CustomColor));
-		PlotOptionPanel.setBounds(10, 15, 341, 292);
+		PlotOptionPanel.setBounds(10, 15, 341, 324);
 		PlotOptionPanel.setLayout(null);
 		this.add(PlotOptionPanel);
 		lblBlockSize.setBounds(10, 30, 84, 14);
@@ -69,11 +69,11 @@ public class PlotFilePanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				blocksize = Integer.valueOf((String)BlockSizeComboBox.getSelectedItem());
 				
-				onPlotFileEventListener.showGraph(getCalcHashes(), plainTXToutput.isSelected());
+				onPlotFileEventListener.showGraph(getCalcHashes());
 			}
 		});
 		
-		btnPlotEntropy.setBounds(218, 243, 109, 33);
+		btnPlotEntropy.setBounds(218, 282, 109, 33);
 		PlotOptionPanel.add(btnPlotEntropy);
 		btnPlotEntropy.setBackground(CustomColor);
 		btnPlotEntropy.setForeground(Color.white);
@@ -113,16 +113,20 @@ public class PlotFilePanel extends JPanel {
 		PlotOptionPanel.add(lblCalculateHashes);
 		
 		
-		chckbxCalculateHashes.setBounds(175, 240, 37, 14);
+		chckbxCalculateHashes.setBounds(110, 239, 37, 14);
 		PlotOptionPanel.add(chckbxCalculateHashes);
 		
-		JLabel lblPlainTxtOutput = new JLabel("Plain TXT output (desktop)");
-		lblPlainTxtOutput.setBounds(10, 262, 170, 14);
-		PlotOptionPanel.add(lblPlainTxtOutput);
-		
-		plainTXToutput = new JCheckBox("");
-		plainTXToutput.setBounds(175, 262, 37, 14);
-		PlotOptionPanel.add(plainTXToutput);
+		JButton btnPlainTXT = new JButton("Save as Plain TXT");
+		btnPlainTXT.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				blocksize = Integer.valueOf((String)BlockSizeComboBox.getSelectedItem());
+				onPlotFileEventListener.generatePlainTXT(true);
+			}
+		});
+		btnPlainTXT.setForeground(Color.WHITE);
+		btnPlainTXT.setBackground(new Color(21, 66, 115));
+		btnPlainTXT.setBounds(10, 282, 137, 33);
+		PlotOptionPanel.add(btnPlainTXT);
 		
 	}
 	public int getBlockSize(){
@@ -151,7 +155,8 @@ public class PlotFilePanel extends JPanel {
 	 * Inner callback interface
 	 */
 	public static interface OnPlotFileEventListener{
-		public void showGraph(Boolean hashes, Boolean plainTxtOutput);
+		public void showGraph(Boolean hashes);
 		public void fileExplorerPanel();
+		public void generatePlainTXT(boolean plainTxtOutput);
 	}
 }
