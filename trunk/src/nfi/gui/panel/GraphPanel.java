@@ -35,12 +35,12 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.FastScatterPlot;
 //import org.jfree.chart.plot.PlotOrientation;
 //import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+//import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 //import org.jfree.data.xy.DefaultXYDataset;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
+//import java.awt.event.ActionEvent;
 import javax.swing.JLayeredPane;
 
 public class GraphPanel extends JPanel {
@@ -67,7 +67,7 @@ public class GraphPanel extends JPanel {
 	private final JTextField textFieldGetSHA256 = new JTextField("");
 	private final JTextField textFieldGetSHA1 = new JTextField("");
 	private final JTextField textFieldGetMD5 = new JTextField("");
-	private final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, true);
+//	private final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, true);
 	private JLayeredPane layeredPane;
 	private JFreeChart chart;
 //	private NumberAxis domain;
@@ -158,23 +158,23 @@ public class GraphPanel extends JPanel {
 		progressBar.setBounds(359, 647, 783, 25);
 		this.add(progressBar);
 		progressBar.setVisible(false);
+		//TODO: bouw jFreeChart om zodat FastScatterPlotter ook getallen kan laten zien
+//		btnShowGetallen.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				if (renderer.getBaseItemLabelsVisible()) {
+//					renderer.setBaseItemLabelsVisible(false);
+//				} else {
+//					renderer.setBaseItemLabelsVisible(true);
+//				}
+//			}
+//		});
+//		btnShowGetallen.setBounds(213, 628, 136, 44);
 
-		btnShowGetallen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (renderer.getBaseItemLabelsVisible()) {
-					renderer.setBaseItemLabelsVisible(false);
-				} else {
-					renderer.setBaseItemLabelsVisible(true);
-				}
-			}
-		});
-		btnShowGetallen.setBounds(213, 628, 136, 44);
-
-		btnShowGetallen.setForeground(Color.WHITE);
-
-		btnShowGetallen.setBackground(CustomColor);
-		btnShowGetallen.setVisible(false);
-		add(btnShowGetallen);
+//		btnShowGetallen.setForeground(Color.WHITE);
+//
+//		btnShowGetallen.setBackground(CustomColor);
+//		btnShowGetallen.setVisible(false);
+//		add(btnShowGetallen);
 
 		lblExporteren.setBounds(64, 639, 65, 14);
 		lblExporteren.setVisible(false);
