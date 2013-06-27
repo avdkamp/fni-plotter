@@ -291,7 +291,7 @@ public class GraphPanel extends JPanel {
 				progressBar.setString(progress + "% - Calculating Entropy");
 			}
 		});
-		se.run();
+		se.start();
 
 	}
 	private void exportOutputToTxt(){
@@ -312,13 +312,13 @@ public class GraphPanel extends JPanel {
 		 * data[0][float] = x 
 		 * data[1][float] = y
 		 */
-		data = new float[2][se.getResults().size()];
+		data = new float[2][se.getResults().length];
 		progressBar.setValue(progressBar.getMinimum());
-		for (int i = 0; i < se.getResults().size(); i++) {
+		for (int i = 0; i < se.getResults().length; i++) {
 			this.data[0][i] = i;
-			this.data[1][i] = se.getResults().get(i).floatValue();
-			progressBar.setValue((i * 100) / se.getResults().size());
-			progressBar.setString(((i * 100) / se.getResults().size()) + "% - Processing Data");
+			this.data[1][i] = (float) se.getResults()[i];
+			progressBar.setValue((i * 100) / se.getResults().length);
+			progressBar.setString(((i * 100) / se.getResults().length) + "% - Processing Data");
 		}
 //		se.getResults().clear();
 	}
