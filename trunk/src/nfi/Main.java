@@ -137,17 +137,17 @@ public class Main {
 	}
 
 	private void plotFileEventListeners() {
-		plotFilePanel.setBounds(0, 119, 360, 310);
+		plotFilePanel.setBounds(0, 119, 360, 340);
 		layeredPane.add(plotFilePanel, new Integer(1), 0);
 		plotFilePanel.setOnPlotFileEventListener(new OnPlotFileEventListener() {
 			@Override
-			public void showGraph(Boolean hashes, Boolean plainTxtOutput) {
+			public void showGraph(Boolean hashes) {
 				File f = new File(plotFilePanel.getPathToFile());
 
 				if (!plotFilePanel.getPathToFile().isEmpty() && f.exists()) {
 					graphPanel.setBlockSize(plotFilePanel.getBlockSize());
 					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
-					graphPanel.startCalculation(plainTxtOutput);
+					graphPanel.startCalculation(false);
 					graphPanel.enableButtons(hashes);
 					if(hashes){
 						graphPanel.setHashes();
@@ -173,6 +173,22 @@ public class Main {
 				File file = fc.getSelectedFile();
 
 				plotFilePanel.setFilePathTextField(file.getAbsolutePath());
+			}
+			
+			@Override
+			public void generatePlainTXT(boolean plaintxt){
+				File f = new File(plotFilePanel.getPathToFile());
+
+				if (!plotFilePanel.getPathToFile().isEmpty() && f.exists()) {
+				graphPanel.setBlockSize(plotFilePanel.getBlockSize());
+				System.out.println(plotFilePanel.getBlockSize());
+				graphPanel.setPathToFile(plotFilePanel.getPathToFile());
+				graphPanel.startCalculation(plaintxt);
+				}else{
+					JOptionPane.showMessageDialog(plotFilePanel,
+							"Set a valid path!");
+					
+				}
 			}
 		});
 		

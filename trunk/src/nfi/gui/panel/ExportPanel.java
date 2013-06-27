@@ -143,6 +143,24 @@ public class ExportPanel extends JPanel {
 		                default:
 		                    return;
 		                }
+		            }else{
+		            	exportDirectory.approveSelection();
+		            	//Check wether the user selected this feature
+						boolean isHashSelected = chckbxHashes.isSelected();
+						//Check wether the user selected this feature
+						boolean isFooterSelected = chckbxFooter.isSelected();
+						
+						//sin and title are required!!!!!
+						String title = TitleTextField.getText();
+						String sin = SINtextField.getText();
+			
+						if (AddInfoTextArea.getText().equals("")) {
+							extraInfo = "Geen extra informatie beschikbaar.";
+						} else {
+							extraInfo = AddInfoTextArea.getText();
+						}
+						
+						onExportEventListener.exportToPDF(title, sin, extraInfo, isHashSelected, isFooterSelected, exportPath, filename);
 		            }
 				
 				
