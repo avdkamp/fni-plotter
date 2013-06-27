@@ -6,40 +6,37 @@ import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.NumberFormat;
-import java.util.ArrayList;
+//import java.text.NumberFormat;
+//import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileSystemView;
 
 import nfi.ResourceLoader;
 import nfi.calc.HashChecksumGen;
 import nfi.calc.ShannonEntropy;
 import nfi.calc.HashChecksumGen.OnHashCalculationEventListener;
 import nfi.calc.ShannonEntropy.OnShannonEntropyEventListener;
+import nfi.export.MakeLogFile;
 
 import javax.swing.JProgressBar;
 
-import org.jfree.chart.ChartFactory;
+//import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.TickUnitSource;
-import org.jfree.chart.event.ChartProgressEvent;
-import org.jfree.chart.event.ChartProgressListener;
-import org.jfree.chart.labels.StandardXYItemLabelGenerator;
-import org.jfree.chart.labels.XYItemLabelGenerator;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
+//import org.jfree.chart.axis.TickUnitSource;
+//import org.jfree.chart.event.ChartProgressEvent;
+//import org.jfree.chart.event.ChartProgressListener;
+//import org.jfree.chart.labels.StandardXYItemLabelGenerator;
+//import org.jfree.chart.labels.XYItemLabelGenerator;
+import org.jfree.chart.plot.FastScatterPlot;
+//import org.jfree.chart.plot.PlotOrientation;
+//import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.data.xy.DefaultXYDataset;
+//import org.jfree.data.xy.DefaultXYDataset;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -52,12 +49,12 @@ public class GraphPanel extends JPanel {
 	private OnGraphEventListener onGraphEventListener;
 	private Color CustomColor = new Color(21, 66, 115);
 	private ShannonEntropy se;
-	private DefaultXYDataset dataSet;
-	private double[][] data;
+//	private DefaultXYDataset dataSet;
+	private float[][] data;
 	private int blockSize;
 	private String pathToFile;
 	private ChartPanel graphPanel;
-	private Boolean plainTxtOutput;
+	private MakeLogFile mkf;
 
 	private final JLabel lblStatistics = new JLabel(" Statistics");
 	private final JLabel lblExporteren = new JLabel("Export");
@@ -70,12 +67,12 @@ public class GraphPanel extends JPanel {
 	private final JTextField textFieldGetSHA256 = new JTextField("");
 	private final JTextField textFieldGetSHA1 = new JTextField("");
 	private final JTextField textFieldGetMD5 = new JTextField("");
-	private final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(
-			false, true);
+	private final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, true);
+	private JLayeredPane layeredPane;
 	private JFreeChart chart;
-	private NumberAxis domain;
-	private NumberAxis range;
-	private XYPlot plot;
+//	private NumberAxis domain;
+//	private NumberAxis range;
+	private FastScatterPlot plot;
 	private String filename = "";
 
 	public GraphPanel() {
@@ -83,35 +80,29 @@ public class GraphPanel extends JPanel {
 		this.setBackground(Color.WHITE);
 		this.setBounds(0, 119, 1152, 683);
 		this.setLayout(null);
-
-		initGraph();
-
-		JLayeredPane layeredPane = new JLayeredPane();
+		
+		layeredPane = new JLayeredPane();
 		layeredPane.setBounds(361, 0, 781, 640);
-
 		add(layeredPane);
 		lblGraph.setBounds(34, 0, 84, 23);
 		layeredPane.add(lblGraph, new Integer(1), 0);
+		
+		data = new float[2][0];
+		drawChart();
 
 		lblGraph.setOpaque(true);
 		lblGraph.setForeground(Color.WHITE);
 		lblGraph.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblGraph.setBackground(new Color(21, 66, 115));
 
-		graphPanel = new ChartPanel(chart, true);
-		graphPanel.setBounds(0, 23, 781, 615);
-		layeredPane.add(graphPanel);
-		graphPanel.setBackground(SystemColor.menu);
-		graphPanel.setBorder(new LineBorder(CustomColor));
-
-		lblStatistics.setBounds(32, 345, 84, 23);
+		lblStatistics.setBounds(32, 375, 84, 23);
 		lblStatistics.setOpaque(true);
 		lblStatistics.setForeground(Color.WHITE);
 		lblStatistics.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblStatistics.setBackground(new Color(21, 66, 115));
 		this.add(lblStatistics);
 
-		statisticsPanel.setBounds(10, 360, 341, 221);
+		statisticsPanel.setBounds(10, 390, 341, 221);
 		statisticsPanel.setLayout(null);
 		statisticsPanel.setBackground(SystemColor.menu);
 		statisticsPanel.setBorder(new LineBorder(CustomColor));
@@ -158,7 +149,6 @@ public class GraphPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 
 				onGraphEventListener.exportResults();
-
 			}
 		});
 		this.add(exportLabel);
@@ -191,84 +181,108 @@ public class GraphPanel extends JPanel {
 		add(lblExporteren);
 	}
 
-	private void initGraph() {
-
-		dataSet = new DefaultXYDataset();
-
-		chart = ChartFactory.createScatterPlot(null, "data-block", "entropy",
-				dataSet, PlotOrientation.VERTICAL, false, true, false);
-
-		chart.addProgressListener(new ChartProgressListener() {
-
-			@Override
-			public void chartProgress(ChartProgressEvent cpe) {
-				// only called on drawing finished and started, not really a
-				// nice progress updatelistener
-				if (cpe.getType() == ChartProgressEvent.DRAWING_FINISHED) {
-					progressBar.setString(progressBar.getMaximum()
-							+ "% - Done Drawing");
-					progressBar.setValue(progressBar.getMaximum());
-				} else if (cpe.getType() == ChartProgressEvent.DRAWING_STARTED) {
-					progressBar.setString(progressBar.getMinimum()
-							+ "% - Drawing Chart");
-					progressBar.setValue(progressBar.getMinimum());
-				} else {
-					progressBar.setString(cpe.getPercent()
-							+ "% - Drawing Chart");
-				}
-			}
-
-		});
-		// force aliasing of the rendered content..
-		chart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		chart.setBorderVisible(false);
-		chart.setBackgroundImageAlpha(100);
-
-		plot = (XYPlot) chart.getPlot();
-		plot.setDomainGridlinesVisible(true);
-
-		// set the plot's axes to display integers
-		TickUnitSource ticks = NumberAxis.createIntegerTickUnits();
-		domain = (NumberAxis) plot.getDomainAxis();
-		domain.setStandardTickUnits(ticks);
-		range = (NumberAxis) plot.getRangeAxis();
-		range.setRange(0, 8);
-
-		plot.setRenderer(renderer);
-		renderer.setBaseShapesVisible(true);
-		renderer.setBaseShapesFilled(true);
-		// label the points
-		NumberFormat format = NumberFormat.getNumberInstance();
-		format.setMaximumFractionDigits(5);
-		XYItemLabelGenerator generator = new StandardXYItemLabelGenerator(
-				StandardXYItemLabelGenerator.DEFAULT_ITEM_LABEL_FORMAT, format,
-				format);
-		renderer.setBaseItemLabelGenerator(generator);
-
+	private void drawChart() {
+		
+//		dataSet = new DefaultXYDataset();
+//
+//		chart = ChartFactory.createScatterPlot(null, "data-block", "entropy",
+//				dataSet, PlotOrientation.VERTICAL, false, true, false);
+//
+//		chart.addProgressListener(new ChartProgressListener() {
+//
+//			@Override
+//			public void chartProgress(ChartProgressEvent cpe) {
+//				// only called on drawing finished and started, not really a
+//				// nice progress updatelistener
+//				if (cpe.getType() == ChartProgressEvent.DRAWING_FINISHED) {
+//					progressBar.setString(progressBar.getMaximum()
+//							+ "% - Done Drawing");
+//					progressBar.setValue(progressBar.getMaximum());
+//				} else if (cpe.getType() == ChartProgressEvent.DRAWING_STARTED) {
+//					progressBar.setString(progressBar.getMinimum()
+//							+ "% - Drawing Chart");
+//					progressBar.setValue(progressBar.getMinimum());
+//				} else {
+//					progressBar.setString(cpe.getPercent()
+//							+ "% - Drawing Chart");
+//				}
+//			}
+//
+//		});
+//		// force aliasing of the rendered content..
+//		chart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING,
+//				RenderingHints.VALUE_ANTIALIAS_ON);
+//		chart.setBorderVisible(false);
+//		chart.setBackgroundImageAlpha(100);
+//
+//		plot = (XYPlot) chart.getPlot();
+//		plot.setDomainGridlinesVisible(true);
+//
+//		// set the plot's axes to display integers
+//		TickUnitSource ticks = NumberAxis.createIntegerTickUnits();
+//		domain = (NumberAxis) plot.getDomainAxis();
+//		domain.setStandardTickUnits(ticks);
+//		range = (NumberAxis) plot.getRangeAxis();
+//		range.setRange(0, 8);
+//		
+//
+//		plot.setRenderer(renderer);
+//		renderer.setBaseShapesVisible(true);
+//		renderer.setBaseShapesFilled(true);
+//		// label the points
+//		NumberFormat format = NumberFormat.getNumberInstance();
+//		format.setMaximumFractionDigits(5);
+//		XYItemLabelGenerator generator = new StandardXYItemLabelGenerator(
+//				StandardXYItemLabelGenerator.DEFAULT_ITEM_LABEL_FORMAT, format,
+//				format);
+//		renderer.setBaseItemLabelGenerator(generator);
+		
+		final NumberAxis domainAxis = new NumberAxis("Block");
+        domainAxis.setAutoRangeIncludesZero(false);
+        final NumberAxis rangeAxis = new NumberAxis("Entropy");
+        rangeAxis.setRange(0, 8);
+        rangeAxis.setAutoRangeIncludesZero(false);
+        plot = new FastScatterPlot(data, domainAxis, rangeAxis);
+        
+        chart = new JFreeChart("", plot);
+        // force aliasing of the rendered content..
+        chart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+		
+		graphPanel = new ChartPanel(chart, true);
+		graphPanel.setBounds(0, 23, 781, 615);
+		layeredPane.add(graphPanel, 0);
+		graphPanel.setBackground(SystemColor.menu);
+		graphPanel.setBorder(new LineBorder(CustomColor));
 	}
+	
+	private void repaintGraph(){
+		populateData();
+		this.remove(graphPanel);
+		this.revalidate();
+		drawChart();
+		this.repaint();
+}
 
-	public void startCalculation(boolean plaintxt) {
-		this.plainTxtOutput = plaintxt;
-
+	public void startCalculation(boolean writeLogFile) {
+		
 		se = new ShannonEntropy(pathToFile, blockSize);
-
-		graphPanel.restoreAutoBounds();
-
-		range = (NumberAxis) plot.getRangeAxis();
-		range.setRange(0, 8);
+		
+		if(writeLogFile){
+			exportOutputToTxt();
+		}
 		se.setOnShannonEntropyEventListener(new OnShannonEntropyEventListener() {
 
 			@Override
 			public void onWorkerComplete() {
-				populateData(se.getResults());
 				
-					if (dataSet.getSeriesCount() != 0) {
-						dataSet.removeSeries("Series0");
-					}
-					dataSet.addSeries("Series0", data);
+				populateData();
+				repaintGraph();
 				
-
+				if(mkf != null){
+					mkf.setData(data);
+					mkf.run();
+				}
 			}
 
 			@Override
@@ -280,121 +294,33 @@ public class GraphPanel extends JPanel {
 		se.run();
 
 	}
-
+	private void exportOutputToTxt(){
+		
+		JFileChooser exportDirectory = new JFileChooser("");
+		exportDirectory.setDialogTitle("Select directory for Logfile");
+		exportDirectory.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		exportDirectory.setAcceptAllFileFilterUsed(false);
+		exportDirectory.showSaveDialog(null);
+		
+		mkf = new MakeLogFile(exportDirectory.getSelectedFile().getPath(), blockSize);
+	}
 	/**
 	 * Populates the data array with values.
 	 */
-	private void populateData(ArrayList<Double> values) {
+	private void populateData() {
 		/*
-		 * data[0][float] = x data[1][float] = y
+		 * data[0][float] = x 
+		 * data[1][float] = y
 		 */
-		PrintWriter output = null;
-		System.out.println("plainTxtOutput: "+plainTxtOutput);
-		if (plainTxtOutput) {
-
-			JFileChooser exportDirectory = new JFileChooser(
-					"Select export directory");
-			exportDirectory
-					.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-			exportDirectory.setAcceptAllFileFilterUsed(false);
-			exportDirectory.showSaveDialog(null);
-
-			File checkFile = new File(exportDirectory.getSelectedFile()
-					.getPath() + "_entropy.txt");
-			System.out.println("checkFile: " + checkFile);
-			if (checkFile.exists()) {
-				int result = JOptionPane.showConfirmDialog(null,
-						"The TXT output already exists, overwrite?",
-						"Existing file", JOptionPane.YES_NO_CANCEL_OPTION);
-
-				switch (result) {
-				case JOptionPane.YES_OPTION:
-					FileWriter writer = null;
-					try {
-						checkFile.createNewFile();
-						writer = new FileWriter(checkFile, false);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					output = new PrintWriter(writer);
-					output.println("blocksize# " + blockSize);
-					progressBar.setValue(progressBar.getMinimum());
-					this.data = new double[2][values.size()];
-					for (int i = 0; i < values.size(); i++) {
-						this.data[0][i] = i;
-						this.data[1][i] = values.get(i);
-						if (plainTxtOutput) {
-							output.println(i + " - " + values.get(i));
-						}
-						progressBar.setValue((i * 100) / values.size());
-						progressBar.setString(((i * 100) / values.size())
-								+ "% - Processing Data");
-
-					}
-					
-					
-					// hier kan je de x as zetten maar is nog steeds zinloos bij
-					// een grote blocksize
-					// domain = (NumberAxis) plot.getDomainAxis();
-					// domain.setRange(-0.50, se.getTotallBlocksize());
-					if (plainTxtOutput) {
-						output.close();
-						
-						
-					}
-					return;
-
-				case JOptionPane.CANCEL_OPTION:
-
-				default:
-
-				}
-
-			} else {
-				FileWriter writer = null;
-				try {
-					checkFile.createNewFile();
-					writer = new FileWriter(checkFile, false);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				output = new PrintWriter(writer);
-				output.println("blocksize# " + blockSize);
-				progressBar.setValue(progressBar.getMinimum());
-				this.data = new double[2][values.size()];
-				for (int i = 0; i < values.size(); i++) {
-					this.data[0][i] = i;
-					this.data[1][i] = values.get(i);
-					if (plainTxtOutput) {
-						output.println(i + " - " + values.get(i));
-					}
-					progressBar.setValue((i * 100) / values.size());
-					progressBar.setString(((i * 100) / values.size())
-							+ "% - Processing Data");
-
-				}
-				// hier kan je de x as zetten maar is nog steeds zinloos bij een
-				// grote blocksize
-				// domain = (NumberAxis) plot.getDomainAxis();
-				// domain.setRange(-0.50, se.getTotallBlocksize());
-				if (plainTxtOutput) {
-					output.close();
-				}
-				return;
-			}
-		} else {
-			progressBar.setValue(progressBar.getMinimum());
-			this.data = new double[2][values.size()];
-			for (int i = 0; i < values.size(); i++) {
-				this.data[0][i] = i;
-				this.data[1][i] = values.get(i);
-				
-				progressBar.setValue((i * 100) / values.size());
-				progressBar.setString(((i * 100) / values.size())
-						+ "% - Processing Data");
-			}
+		data = new float[2][se.getResults().size()];
+		progressBar.setValue(progressBar.getMinimum());
+		for (int i = 0; i < se.getResults().size(); i++) {
+			this.data[0][i] = i;
+			this.data[1][i] = se.getResults().get(i).floatValue();
+			progressBar.setValue((i * 100) / se.getResults().size());
+			progressBar.setString(((i * 100) / se.getResults().size()) + "% - Processing Data");
 		}
-
+//		se.getResults().clear();
 	}
 
 	public void setHashes() {
