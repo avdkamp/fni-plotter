@@ -20,6 +20,7 @@ public class ShannonEntropy {
 	private int progress;
 	private String pathToFile;
 	private byte[] bytes;
+	private int maxReadLength;
 	//if this is not null then it is the last block
 	private int containsLastBlock;
 	private OnShannonEntropyEventListener shannonEntropyEventListener;
@@ -32,6 +33,7 @@ public class ShannonEntropy {
 	public ShannonEntropy(String pathToFile, int blockSize){
 		this.pathToFile = pathToFile;
 		this.blockSize = blockSize;
+		maxReadLength = 1000000;
 		allShannonResults = new ArrayList<Double>();
 	}
 	/**
@@ -47,45 +49,43 @@ public class ShannonEntropy {
 	 * @since 23-02-2013
 	 */
 	private class CalculateEntropy extends Thread{
-		@SuppressWarnings("resource")
 		@Override
 		public void run(){
 			try {
 				// use RandomAccessFile because it supports readFully()
 				RandomAccessFile in = new RandomAccessFile(pathToFile, "r");
 				in.seek(0L);
+				
+				int minus = maxReadLength%blockSize;
+				int actualMaxReadLength = maxReadLength - minus; 
 				while (in.getFilePointer() < in.length()){
 					//makes sure that the amount that is read is 0 when devided with the blocksize
-					int minus = (1000000%blockSize);
 					// set max read length in bytes, prevents a Perm Space error.
-				    int readSize = (int)Math.min(1000000-minus, in.length() - in.getFilePointer());
+				    int readSize = (int)Math.min(actualMaxReadLength, in.length() - in.getFilePointer());
 				    
 				    bytes = new byte[readSize];  //creates new byte array.
 				    
 				    in.readFully(bytes); //puts file bytes in the array.
 				    
-		        	int[] values = ByteConverter.fromUnsignedBytesToIntegers(bytes);
-		        	
 		        	int[][] blockedValues = null;
 		        	containsLastBlock = readSize%blockSize;
 		        	if(containsLastBlock == 0){
-		        		blockedValues = new int[values.length/blockSize][blockSize];
-		        		
+		        		blockedValues = new int[bytes.length/blockSize][blockSize];
 		        	} else {
-		        		blockedValues = new int[values.length/blockSize+1][blockSize];
-		        		
+		        		blockedValues = new int[bytes.length/blockSize+1][blockSize];
 		        	}
 					
 					int block = 0;
 					int blockPos = 0;
 					//fill multidimensional array according to the assigned block sizes. 
-					for (int value: values) {
-						blockedValues[block][blockPos++] = value;
+					for (byte b: bytes) {
+						blockedValues[block][blockPos++] = (b &0xFF); //turns byte value into unsigned byte integer value.
 						if(blockPos >= blockSize){
 							block++;
 							blockPos = 0;
 						}
 					}
+					bytes = null;
 					//adds the calculated values to the ArrayList
 					for (int i = 0; i < blockedValues.length; i++) {
 						if(containsLastBlock != 0 && (i == blockedValues.length-1)){
@@ -95,10 +95,10 @@ public class ShannonEntropy {
 							
 						}
 					}
-					
 					//update the progress in %
 					shannonEntropyEventListener.onProgressUpdate((int) ((in.getFilePointer()*100)/in.length()));
 				}
+				in.close();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
