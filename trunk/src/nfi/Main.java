@@ -6,8 +6,6 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 
-import org.jfree.chart.JFreeChart;
-
 import com.itextpdf.text.DocumentException;
 
 import java.awt.Color;
@@ -141,13 +139,13 @@ public class Main {
 		layeredPane.add(plotFilePanel, new Integer(1), 0);
 		plotFilePanel.setOnPlotFileEventListener(new OnPlotFileEventListener() {
 			@Override
-			public void showGraph(Boolean hashes) {
+			public void showGraph(Boolean hashes, boolean logFileOutput) {
 				File f = new File(plotFilePanel.getPathToFile());
 
 				if (!plotFilePanel.getPathToFile().isEmpty() && f.exists()) {
 					graphPanel.setBlockSize(plotFilePanel.getBlockSize());
 					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
-					graphPanel.startCalculation(false);
+					graphPanel.startCalculation(logFileOutput);
 					graphPanel.enableButtons(hashes);
 					if(hashes){
 						graphPanel.setHashes();
@@ -175,21 +173,19 @@ public class Main {
 				plotFilePanel.setFilePathTextField(file.getAbsolutePath());
 			}
 			
-			@Override
-			public void generatePlainTXT(boolean plaintxt){
-				File f = new File(plotFilePanel.getPathToFile());
-
-				if (!plotFilePanel.getPathToFile().isEmpty() && f.exists()) {
-				graphPanel.setBlockSize(plotFilePanel.getBlockSize());
-				System.out.println(plotFilePanel.getBlockSize());
-				graphPanel.setPathToFile(plotFilePanel.getPathToFile());
-				graphPanel.startCalculation(plaintxt);
-				}else{
-					JOptionPane.showMessageDialog(plotFilePanel,
-							"Set a valid path!");
-					
-				}
-			}
+//			@Override
+//			public void generatePlainTXT(boolean plaintxt){
+//				File f = new File(plotFilePanel.getPathToFile());
+//
+//				if (!plotFilePanel.getPathToFile().isEmpty() && f.exists()) {
+//					graphPanel.setBlockSize(plotFilePanel.getBlockSize());
+//					System.out.println(plotFilePanel.getBlockSize());
+//					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
+//					graphPanel.startCalculation(plaintxt);
+//				}else{
+//					JOptionPane.showMessageDialog(plotFilePanel, "Set a valid path!");
+//				}
+//			}
 		});
 		
 		
@@ -228,22 +224,9 @@ public class Main {
 				if (!title.isEmpty() && !sin.isEmpty()) {
 					String path = exportPath.toString() + "\\" + filename;
 					final PdfExport pdf = new PdfExport(path + ".pdf");
-					// Initialize chart
-					JFreeChart ch = graphPanel.getChart();
 
-						objBufferedImage=ch.createBufferedImage(500,400);
-//						ByteArrayOutputStream bas = new ByteArrayOutputStream();
-//						        try {
-//						            ImageIO.write(objBufferedImage, "png", bas);
-//						        } catch (IOException e) {
-//						            e.printStackTrace();
-//						        }
-//
-//						byte[] byteArray=bas.toByteArray();
-						
-//						"/tmp/graph.png")(new File(), ch, 500, 400);
+					objBufferedImage= graphPanel.getChart().createBufferedImage(500,400);
 					
-					// set the header
 					pdf.setHeader(title);
 					
 					if (isHashSelected) {
@@ -282,9 +265,6 @@ public class Main {
 		// parameters
 		try {
 			//String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected, File exportPath, String filename
-			// Set the temp img value
-
-//			String pathTest = "/tmp/graph.png";
 			pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filename, objBufferedImage, blocksize);
 
 		} catch (DocumentException e) {

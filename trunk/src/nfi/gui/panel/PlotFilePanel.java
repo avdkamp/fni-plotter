@@ -53,7 +53,7 @@ public class PlotFilePanel extends JPanel {
 		JPanel PlotOptionPanel = new JPanel();
 		PlotOptionPanel.setBackground(SystemColor.menu);
 		PlotOptionPanel.setBorder(new LineBorder(CustomColor));
-		PlotOptionPanel.setBounds(10, 15, 341, 324);
+		PlotOptionPanel.setBounds(10, 15, 341, 308);
 		PlotOptionPanel.setLayout(null);
 		this.add(PlotOptionPanel);
 		lblBlockSize.setBounds(10, 30, 84, 14);
@@ -63,17 +63,21 @@ public class PlotFilePanel extends JPanel {
 		lblFilePath.setBounds(10, 215, 94, 14);
 		PlotOptionPanel.add(lblFilePath);
 		
+		final JCheckBox checkLogWritten = new JCheckBox("");
+		checkLogWritten.setBounds(110, 261, 37, 14);
+		PlotOptionPanel.add(checkLogWritten);
+		
+		
 		JButton btnPlotEntropy = new JButton("Plot Entropy");
 		btnPlotEntropy.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				blocksize = Integer.valueOf((String)BlockSizeComboBox.getSelectedItem());
-				
-				onPlotFileEventListener.showGraph(getCalcHashes());
+				onPlotFileEventListener.showGraph(getCalcHashes(), checkLogWritten.isSelected());
 			}
 		});
 		
-		btnPlotEntropy.setBounds(218, 282, 109, 33);
+		btnPlotEntropy.setBounds(222, 261, 109, 33);
 		PlotOptionPanel.add(btnPlotEntropy);
 		btnPlotEntropy.setBackground(CustomColor);
 		btnPlotEntropy.setForeground(Color.white);
@@ -84,10 +88,9 @@ public class PlotFilePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				onPlotFileEventListener.fileExplorerPanel();
-				
 			}
 		});
-		btnBrowse.setBounds(157, 170, 170, 33);
+		btnBrowse.setBounds(139, 170, 188, 33);
 		PlotOptionPanel.add(btnBrowse);
 		btnBrowse.setBackground(CustomColor);
 		btnBrowse.setForeground(Color.white);
@@ -116,17 +119,9 @@ public class PlotFilePanel extends JPanel {
 		chckbxCalculateHashes.setBounds(110, 239, 37, 14);
 		PlotOptionPanel.add(chckbxCalculateHashes);
 		
-		JButton btnPlainTXT = new JButton("Save as Plain TXT");
-		btnPlainTXT.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				blocksize = Integer.valueOf((String)BlockSizeComboBox.getSelectedItem());
-				onPlotFileEventListener.generatePlainTXT(true);
-			}
-		});
-		btnPlainTXT.setForeground(Color.WHITE);
-		btnPlainTXT.setBackground(new Color(21, 66, 115));
-		btnPlainTXT.setBounds(10, 282, 137, 33);
-		PlotOptionPanel.add(btnPlainTXT);
+		JLabel lblWriteLogFile = new JLabel("Make Log File");
+		lblWriteLogFile.setBounds(10, 261, 114, 14);
+		PlotOptionPanel.add(lblWriteLogFile);
 		
 	}
 	public int getBlockSize(){
@@ -155,8 +150,7 @@ public class PlotFilePanel extends JPanel {
 	 * Inner callback interface
 	 */
 	public static interface OnPlotFileEventListener{
-		public void showGraph(Boolean hashes);
+		public void showGraph(Boolean hashes, boolean logFileOutput);
 		public void fileExplorerPanel();
-		public void generatePlainTXT(boolean plainTxtOutput);
 	}
 }
