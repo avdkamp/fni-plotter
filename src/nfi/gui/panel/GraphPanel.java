@@ -281,7 +281,7 @@ public class GraphPanel extends JPanel {
 				
 				if(mkf != null){
 					mkf.setData(data);
-					mkf.run();
+					mkf.start();
 				}
 			}
 
