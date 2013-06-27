@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -103,24 +104,50 @@ public class ExportPanel extends JPanel {
 				
 				//String Export directory path
 				File exportPath = exportDirectory.getCurrentDirectory();
-				System.out.print("Directory path" + exportPath);
 				
-				//Check wether the user selected this feature
-				boolean isHashSelected = chckbxHashes.isSelected();
-				//Check wether the user selected this feature
-				boolean isFooterSelected = chckbxFooter.isSelected();
+
+				File checkFile = new File(exportDirectory.getSelectedFile().getPath()+".pdf");
+				System.out.println("checkFile: "+checkFile);
 				
-				//sin and title are required!!!!!
-				String title = TitleTextField.getText();
-				String sin = SINtextField.getText();
-	
-				if (AddInfoTextArea.getText().equals("")) {
-					extraInfo = "Geen extra informatie beschikbaar.";
-				} else {
-					extraInfo = AddInfoTextArea.getText();
-				}
 				
-				onExportEventListener.exportToPDF(title, sin, extraInfo, isHashSelected, isFooterSelected, exportPath, filename);
+				
+				 
+		            if (checkFile.exists()) {
+		                int result = JOptionPane.showConfirmDialog(null,
+		                        "The file exists, overwrite?", "Existing file",
+		                        JOptionPane.YES_NO_CANCEL_OPTION);
+		                
+		                switch (result) {
+		                case JOptionPane.YES_OPTION:
+		                	exportDirectory.approveSelection();
+		                	//Check wether the user selected this feature
+		    				boolean isHashSelected = chckbxHashes.isSelected();
+		    				//Check wether the user selected this feature
+		    				boolean isFooterSelected = chckbxFooter.isSelected();
+		    				
+		    				//sin and title are required!!!!!
+		    				String title = TitleTextField.getText();
+		    				String sin = SINtextField.getText();
+		    	
+		    				if (AddInfoTextArea.getText().equals("")) {
+		    					extraInfo = "Geen extra informatie beschikbaar.";
+		    				} else {
+		    					extraInfo = AddInfoTextArea.getText();
+		    				}
+		    				
+		    				onExportEventListener.exportToPDF(title, sin, extraInfo, isHashSelected, isFooterSelected, exportPath, filename);
+		                    return;
+		                case JOptionPane.CANCEL_OPTION:
+		                	exportDirectory.cancelSelection();
+		                    return;
+		                default:
+		                    return;
+		                }
+		            }
+				
+				
+				
+				
 			}
 		});
 		ExportToPDFbutton.setForeground(Color.WHITE);
