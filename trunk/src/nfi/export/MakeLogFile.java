@@ -12,6 +12,8 @@ public class MakeLogFile extends Thread{
 	private String filePath;
 	private int blockSize;
 	private float[][] data;
+	private float[][] data1;
+	private float[][] data2;
 	
 	public MakeLogFile(String filePath, int blockSize){
 		this.filePath = filePath;
@@ -20,6 +22,12 @@ public class MakeLogFile extends Thread{
 	
 	public void setData(float[][] data){
 		this.data = data;
+	}
+	
+	public void setData(float[][] data, float[][] data1, float[][] data2){
+		this.data = data;
+		this.data1 = data1;
+		this.data2 = data2;
 	}
 	
 	@Override
@@ -56,6 +64,19 @@ public class MakeLogFile extends Thread{
 			for (int i = 0; i < data[1].length; i++) {
 				output.println(i + " - " + data[1][i]);
 			}
+			if(data1 != null){
+				for (int i = 0; i < data1[1].length; i++) {
+					output.println(i + " - " + data1[1][i]);
+				}
+				if(data2 != null){
+					for (int i = 0; i < data2[1].length; i++) {
+						output.println(i + " - " + data2[1][i]);
+					}
+					data2 = null;
+				}
+				data1 = null;
+			}
+			data = null;
 			output.close();
 		} catch (IOException e) {
 			e.printStackTrace();
