@@ -147,7 +147,6 @@ public class GraphPanel extends JPanel {
 		exportLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
 				onGraphEventListener.exportResults();
 			}
 		});
@@ -158,6 +157,7 @@ public class GraphPanel extends JPanel {
 		progressBar.setBounds(359, 647, 783, 25);
 		this.add(progressBar);
 		progressBar.setVisible(false);
+		
 		//TODO: bouw jFreeChart om zodat FastScatterPlotter ook getallen kan laten zien
 //		btnShowGetallen.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent e) {
@@ -169,9 +169,7 @@ public class GraphPanel extends JPanel {
 //			}
 //		});
 //		btnShowGetallen.setBounds(213, 628, 136, 44);
-
 //		btnShowGetallen.setForeground(Color.WHITE);
-//
 //		btnShowGetallen.setBackground(CustomColor);
 //		btnShowGetallen.setVisible(false);
 //		add(btnShowGetallen);
@@ -257,7 +255,7 @@ public class GraphPanel extends JPanel {
 	}
 	
 	private void repaintGraph(){
-		populateData();
+		data = se.getResults();
 		this.remove(graphPanel);
 		this.revalidate();
 		drawChart();
@@ -276,7 +274,6 @@ public class GraphPanel extends JPanel {
 			@Override
 			public void onWorkerComplete() {
 				
-				populateData();
 				repaintGraph();
 				
 				if(mkf != null){
@@ -304,24 +301,24 @@ public class GraphPanel extends JPanel {
 		
 		mkf = new MakeLogFile(exportDirectory.getSelectedFile().getPath(), blockSize);
 	}
-	/**
-	 * Populates the data array with values.
-	 */
-	private void populateData() {
-		/*
-		 * data[0][float] = x 
-		 * data[1][float] = y
-		 */
-		data = new float[2][se.getResults().length];
-		progressBar.setValue(progressBar.getMinimum());
-		for (int i = 0; i < se.getResults().length; i++) {
-			this.data[0][i] = i;
-			this.data[1][i] = (float) se.getResults()[i];
-			progressBar.setValue((i * 100) / se.getResults().length);
-			progressBar.setString(((i * 100) / se.getResults().length) + "% - Processing Data");
-		}
-//		se.getResults().clear();
-	}
+//	/**
+//	 * Populates the data array with values.
+//	 */
+//	private void populateData() {
+//		/*
+//		 * data[0][float] = x 
+//		 * data[1][float] = y
+//		 */
+//		data = new float[2][se.getResults().length];
+//		progressBar.setValue(progressBar.getMinimum());
+//		for (int i = 0; i < se.getResults().length; i++) {
+//			this.data[0][i] = i;
+//			this.data[1][i] = (float) se.getResults()[i];
+//			progressBar.setValue((i * 100) / se.getResults().length);
+//			progressBar.setString(((i * 100) / se.getResults().length) + "% - Processing Data");
+//		}
+////		se.getResults().clear();
+//	}
 
 	public void setHashes() {
 		final HashChecksumGen hcg = new HashChecksumGen();

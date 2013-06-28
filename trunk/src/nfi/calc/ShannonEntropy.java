@@ -9,54 +9,53 @@ import java.util.Map;
  * Calculates the Shannon entropy values of unsigned bytes of the given blocksize.
  * 
  * @author Albert van de Kamp
- * @version 1.3
+ * @version 1.4
  * @since 23-02-2013
  */
 public class ShannonEntropy  extends Thread{
 	
-	private double[] shannonResults;
-	private int resultTracker;
+	/**	made multi-dimensional so the graph only needs a pointer to this array */
+	private float[][] shannonResults;
 	private int blockSize;
-	private int progress;
 	private String pathToFile;
-	private byte[] bytes;
-	private int maxReadLength;
-	//if this is not null then it is the last block
-	private int containsLastBlock;
+	/**	1000000 = 100MB, recommended to not increase due to perm-space errors in Java */
+	private final static int MAX_READ_LENGTH = 1000000; 
 	private OnShannonEntropyEventListener shannonEntropyEventListener;
 	/**
 	 * Initialize the class
 	 * 
-	 * @param path to the file that needs to be processed.
-	 * @param the blocksize of that has to be used for the file.
+	 * @param pathToFile that needs to be processed.
+	 * @param blockSize of the desired for the file.
 	 */
 	public ShannonEntropy(String pathToFile, int blockSize){
 		this.pathToFile = pathToFile;
 		this.blockSize = blockSize;
-		maxReadLength = 1000000;
-		resultTracker = 0;
 	}
 	@Override
 	public void run(){
+		int resultTracker = 0;
+		int progress= 0;
+		//if this is not null then it is the last block
 		try {
-			int minus = maxReadLength%blockSize;
-			int actualMaxReadLength = maxReadLength - minus;
+			final int minus = MAX_READ_LENGTH%blockSize;
+			final int actualMaxReadLength = MAX_READ_LENGTH - minus;
 			// use RandomAccessFile because it supports readFully()
 			RandomAccessFile in = new RandomAccessFile(pathToFile, "r");
 			in.seek(0L);
 			
-			shannonResults = new double[(int) ((in.length() / blockSize) + 1)];
+			shannonResults = new float[2][(int) ((in.length() / blockSize) + 1)];
 			while (in.getFilePointer() < in.length()){
 				//makes sure that the amount that is read is 0 when devided with the blocksize
 				// set max read length in bytes, prevents a Perm Space error.
 			    int readSize = (int)Math.min(actualMaxReadLength, in.length() - in.getFilePointer());
 			    
-			    bytes = new byte[readSize];  //creates new byte array.
+			    byte[] bytes = new byte[readSize];  //creates new byte array.
 			    
 			    in.readFully(bytes); //puts file bytes in the array.
 			    
 	        	int[][] blockedValues = null;
-	        	containsLastBlock = readSize%blockSize;
+	        	int containsLastBlock = readSize%blockSize;
+	        	//the last part needs to be one bigger or will trigger array out of bounds exception
 	        	if(containsLastBlock == 0){
 	        		blockedValues = new int[bytes.length/blockSize][blockSize];
 	        	} else {
@@ -77,13 +76,18 @@ public class ShannonEntropy  extends Thread{
 				//adds the calculated values to the ArrayList
 				for (int i = 0; i < blockedValues.length; i++) {
 					if(containsLastBlock != 0 && (i == blockedValues.length-1)){
-						shannonResults[resultTracker++] = entropy(blockedValues[i], containsLastBlock); 
+						shannonResults[0][resultTracker] = resultTracker; 
+						shannonResults[1][resultTracker++] = entropy(blockedValues[i], containsLastBlock); 
 					} else {
-						shannonResults[resultTracker++] = entropy(blockedValues[i], 0);
+						shannonResults[0][resultTracker] = resultTracker;
+						shannonResults[1][resultTracker++] = entropy(blockedValues[i], 0);
 					}
 				}
 				//update the progress in %
-				shannonEntropyEventListener.onProgressUpdate((int) ((in.getFilePointer()*100)/in.length()));
+				if(!(progress >= (int) ((in.getFilePointer()*100)/in.length()))){
+					progress = (int) ((in.getFilePointer()*100)/in.length());
+					shannonEntropyEventListener.onProgressUpdate(progress);
+				}
 			}
 			in.close();
 		} catch (FileNotFoundException e) {
@@ -98,10 +102,11 @@ public class ShannonEntropy  extends Thread{
 	 * This is altered because the last memory block is almost never 100% filled
 	 * 
 	 * @see http://whaticode.com/2010/05/24/a-java-implementation-for-shannon-entropy/
-	 * @param values - Array of unsigned byte values as integers.
+	 * @param Values - Array of unsigned byte values as integers.
+	 * @param isLast - gives the length of the last block, if it is not the last then it should be 0.
 	 * @return Shannon value of the given values.
 	 */	
-	private static double entropy(int[] values, int isLast) {	 
+	private static float entropy(int[] values, int isLast) {	 
 		final Map<Integer, Long> valueOccurances = new HashMap<Integer, Long>();
 		//it is the last block if it is another value than 0
 		int length = (isLast == 0) ? values.length : isLast; 
@@ -111,22 +116,14 @@ public class ShannonEntropy  extends Thread{
 			valueOccurances.put(values[i], valueOccurance == null ? 1L : ++valueOccurance);
 		}
 		
-		double combinedEntropy = 0.0d;
+		float combinedEntropy = 0.0f;
 		//calculate the entropy
 		for (Integer value : valueOccurances.keySet()) {
-			double entropy = valueOccurances.get(value) / (double) length;
+			float entropy = valueOccurances.get(value) / (float) length;
 			combinedEntropy += entropy * (Math.log(entropy) / Math.log(2));
 		}
+		
 		return -combinedEntropy;
-	}
-	/**
-	 * Allows a progressbar to be set by the given %.
-	 * Use onProgressUpdate eventlistener to get the values.
-	 * 
-	 * @return the progress in % of the worker.
-	 */
-	public int getProgress(){
-		return progress;
 	}
 	/**
 	 * Returns all the calculated values according to the Shannon calculation.
@@ -134,12 +131,8 @@ public class ShannonEntropy  extends Thread{
 	 * 
 	 * @return all the results as double
 	 */
-	public double[] getResults(){
+	public float[][] getResults(){
 		return shannonResults;
-	}
-	public int getTotallBlocksize(){
-		return shannonResults.length;
-		
 	}
 	/**
 	 * Initializes the eventlistener.
