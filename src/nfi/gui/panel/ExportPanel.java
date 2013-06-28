@@ -1,15 +1,10 @@
 package nfi.gui.panel;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.SystemColor;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -20,10 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingWorker;
 import javax.swing.border.LineBorder;
 
-public class ExportPanel extends JPanel implements PropertyChangeListener {
+public class ExportPanel extends JPanel {
 
 	private static final long serialVersionUID = -8394418126759717567L;
 	private OnExportEventListener onExportEventListener;
@@ -36,65 +30,17 @@ public class ExportPanel extends JPanel implements PropertyChangeListener {
 	private final JLabel lblTitle = new JLabel("Title");
 	private JTextField TitleTextField;
 	private JTextField SINtextField;
+	private final JProgressBar progressBar = new JProgressBar();
 	// private JTextField imageWidthTextField;
 	// private JTextField ImageHeightTextField;
 	// private JTextField textField;
 	private final JCheckBox chckbxHashes;
 	private final JCheckBox chckbxFooter;
-	private final JProgressBar progressBar = new JProgressBar();
+	JButton ExportToPDFbutton = new JButton("Export");
 	// private JTextField textField_1;
 	// TODO: add a go back to graph button
 
-	JButton ExportToPDFbutton = new JButton("Export");
-
-	private Task task;
-
-	class Task extends SwingWorker<Void, Void> {
-		/*
-		 * Main task. Executed in background thread.
-		 */
-		@Override
-		public Void doInBackground() {
-			Random random = new Random();
-			int progress = 0;
-			// Initialize progress property.
-			setProgress(0);
-			while (progress < 100) {
-				// Sleep for up to one second.
-				try {
-					Thread.sleep(random.nextInt(1000));
-				} catch (InterruptedException ignore) {
-				}
-				// Make random progress.
-				progress += random.nextInt(10);
-				setProgress(Math.min(progress, 100));
-			}
-			return null;
-		}
-
-		/*
-		 * Executed in event dispatching thread
-		 */
-		@Override
-		public void done() {
-			Toolkit.getDefaultToolkit().beep();
-			ExportToPDFbutton.setEnabled(true);
-
-			setCursor(null); // turn off the wait cursor
-			progressBar.setString("Done!");
-		}
-	}
-
-	public void propertyChange(PropertyChangeEvent evt) {
-		if ("progress" == evt.getPropertyName()) {
-			int progress = (Integer) evt.getNewValue();
-			progressBar.setValue(progress);
-			progressBar.setString(progress + "% - Calculating Entropy");
-		}
-	}
-
 	public ExportPanel() {
-
 		this.setVisible(false);
 		this.setBackground(Color.WHITE);
 		this.setBounds(10, 119, 874, 516);
@@ -148,76 +94,48 @@ public class ExportPanel extends JPanel implements PropertyChangeListener {
 		ExportToPDFpanel.add(AddInfoTextArea);
 
 		progressBar.setStringPainted(true);
-		progressBar.setString("Loading...");
+		progressBar.setIndeterminate(false);
 		progressBar.setBounds(110, 283, 440, 25);
+		
 		ExportToPDFpanel.add(progressBar);
-		progressBar.setVisible(true);
+		progressBar.setVisible(false);
 
+		
 		ExportToPDFbutton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				String title = TitleTextField.getText();
+				String sin = SINtextField.getText();
 
-				// Set the export directory for the pdf
-				final JFileChooser exportDirectory = new JFileChooser(
-						"Select export directory");
-				exportDirectory
-						.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-				exportDirectory.setAcceptAllFileFilterUsed(false);
-				exportDirectory.showSaveDialog(null);
-				
+				if (!(title.equals("") || sin.equals(""))) {
+					String extraInfo = new String();
+					// Set the export directory for the pdf
+					JFileChooser exportDirectory = new JFileChooser(
+							"Select export directory");
+					exportDirectory
+							.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+					exportDirectory.setAcceptAllFileFilterUsed(false);
+					exportDirectory.showSaveDialog(null);
+					String filename = exportDirectory.getSelectedFile()
+							.getName();
 
-				javax.swing.SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						action();
-						File checkFile = new File(exportDirectory
-								.getSelectedFile().getPath() + ".pdf");
-						System.out.println("checkFile: " + checkFile);
+					// String Export directory path
+					File exportPath = exportDirectory.getCurrentDirectory();
 
-						String extraInfo = new String();
-						String filename = exportDirectory.getSelectedFile()
-								.getName();
+					File checkFile = new File(exportDirectory.getSelectedFile()
+							.getPath() + ".pdf");
+					System.out.println("checkFile: " + checkFile);
 
-						// String Export directory path
-						File exportPath = exportDirectory.getCurrentDirectory();
+					if (checkFile.exists()) {
+						int result = JOptionPane.showConfirmDialog(null,
+								"The file exists, overwrite?", "Existing file",
+								JOptionPane.YES_NO_CANCEL_OPTION);
 
-						if (checkFile.exists()) {
-							int result = JOptionPane.showConfirmDialog(null,
-									"The file exists, overwrite?",
-									"Existing file",
-									JOptionPane.YES_NO_CANCEL_OPTION);
-
-							switch (result) {
-							case JOptionPane.YES_OPTION:
-								exportDirectory.approveSelection();
-								// Check wether the user selected this feature
-								boolean isHashSelected = chckbxHashes
-										.isSelected();
-								// Check wether the user selected this feature
-								boolean isFooterSelected = chckbxFooter
-										.isSelected();
-
-								// sin and title are required!!!!!
-								String title = TitleTextField.getText();
-								String sin = SINtextField.getText();
-
-								if (AddInfoTextArea.getText().equals("")) {
-									extraInfo = "Geen extra informatie beschikbaar.";
-								} else {
-									extraInfo = AddInfoTextArea.getText();
-								}
-
-								onExportEventListener.exportToPDF(title, sin,
-										extraInfo, isHashSelected,
-										isFooterSelected, exportPath, filename);
-								return;
-							case JOptionPane.CANCEL_OPTION:
-								exportDirectory.cancelSelection();
-								return;
-							default:
-								return;
-							}
-						} else {
+						switch (result) {
+						case JOptionPane.YES_OPTION:
+							
+							setProgressBar(true, "Exporting is in Progress!", true, false);
 							exportDirectory.approveSelection();
 							// Check wether the user selected this feature
 							boolean isHashSelected = chckbxHashes.isSelected();
@@ -226,8 +144,6 @@ public class ExportPanel extends JPanel implements PropertyChangeListener {
 									.isSelected();
 
 							// sin and title are required!!!!!
-							String title = TitleTextField.getText();
-							String sin = SINtextField.getText();
 
 							if (AddInfoTextArea.getText().equals("")) {
 								extraInfo = "Geen extra informatie beschikbaar.";
@@ -238,12 +154,41 @@ public class ExportPanel extends JPanel implements PropertyChangeListener {
 							onExportEventListener.exportToPDF(title, sin,
 									extraInfo, isHashSelected,
 									isFooterSelected, exportPath, filename);
+							return;
+						case JOptionPane.CANCEL_OPTION:
+							exportDirectory.cancelSelection();
+							return;
+						default:
+							return;
+						}
+					} else {
+						
+						setProgressBar(true, "Exporting is in Progress!", true, false);
+						exportDirectory.approveSelection();
+						// Check wether the user selected this feature
+						boolean isHashSelected = chckbxHashes.isSelected();
+						// Check wether the user selected this feature
+						boolean isFooterSelected = chckbxFooter.isSelected();
+
+						// sin and title are required!!!!!
+
+						if (AddInfoTextArea.getText().equals("")) {
+							extraInfo = "Geen extra informatie beschikbaar.";
+						} else {
+							extraInfo = AddInfoTextArea.getText();
 						}
 
+						onExportEventListener.exportToPDF(title, sin,
+								extraInfo, isHashSelected, isFooterSelected,
+								exportPath, filename);
 					}
-				});
 
+				}else{
+					JOptionPane.showMessageDialog(null,
+							"The Title and SIN number fields are required!");
+				}
 			}
+
 		});
 		ExportToPDFbutton.setForeground(Color.WHITE);
 		ExportToPDFbutton.setBackground(new Color(21, 66, 115));
@@ -359,15 +304,11 @@ public class ExportPanel extends JPanel implements PropertyChangeListener {
 
 	}
 
-	public void action() {
-		
-		ExportToPDFbutton.setEnabled(false);
-		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		// Instances of javax.swing.SwingWorker are not reusuable, so
-		// we create new instances as needed.
-		task = new Task();
-		task.addPropertyChangeListener(this);
-		task.execute();
+	public void setProgressBar(boolean activateBar, String txt, boolean visible, boolean enabledExportBtn) {
+		ExportToPDFbutton.setEnabled(enabledExportBtn);
+		progressBar.setVisible(visible);
+		progressBar.setString(txt);
+		progressBar.setIndeterminate(activateBar);
 
 	}
 }

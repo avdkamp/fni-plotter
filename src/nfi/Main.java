@@ -243,10 +243,7 @@ public class Main {
 						hashes = new String[]{"", "", ""};
 						exportLastPart(title, sin, extraInfo, pdf, isFooterSelected, graphPanel.getFileName(), graphPanel.getFileSize(), graphPanel.getBlockSize());
 					}
-				} else {
-					JOptionPane.showMessageDialog(graphPanel,
-							"The Title and SIN number fields are required!");
-				}
+				} 
 			}
 		});
 	}
@@ -281,6 +278,7 @@ public class Main {
 		// Close the document, The document can't be written to
 		// after this statement.
 		pdf.endDocument();
-		JOptionPane.showMessageDialog(graphPanel, "The PDF has been exported.");
+		exportPanel.setProgressBar(false, "", false, true);
+		JOptionPane.showMessageDialog(exportPanel, "The PDF has been exported.");
 	}
 }
