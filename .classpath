@@ -13,10 +13,6 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/NFI Entropy Scanner/libs/doc/jcommon-1.0.18-javadoc.zip!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/jfreechart-1.0.14-custom.jar" sourcepath="libs/src/jfreechart-1.0.14-source.zip">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/NFI Entropy Scanner/libs/doc/jfreechart-1.0.14-javadoc.zip!/"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="libs/jfreechart-1.0.14-custom.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

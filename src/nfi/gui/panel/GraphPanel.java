@@ -48,7 +48,11 @@ public class GraphPanel extends JPanel {
 	private static final long serialVersionUID = 7518936767614981258L;
 	private OnGraphEventListener onGraphEventListener;
 	private Color CustomColor = new Color(21, 66, 115);
-	private ShannonEntropy se;
+	private ShannonEntropy se1;
+	private ShannonEntropy se2;
+	private ShannonEntropy se3;
+	private static final int amountOfThreads = 3;
+	private int startDrawing;
 //	private DefaultXYDataset dataSet;
 	private float[][] data;
 	private int blockSize;
@@ -88,7 +92,7 @@ public class GraphPanel extends JPanel {
 		layeredPane.add(lblGraph, new Integer(1), 0);
 		
 		data = new float[2][0];
-		drawChart();
+		drawChart(true);
 
 		lblGraph.setOpaque(true);
 		lblGraph.setForeground(Color.WHITE);
@@ -179,7 +183,7 @@ public class GraphPanel extends JPanel {
 		add(lblExporteren);
 	}
 
-	private void drawChart() {
+	private void drawChart(boolean firstTime) {
 		
 //		dataSet = new DefaultXYDataset();
 //
@@ -240,7 +244,22 @@ public class GraphPanel extends JPanel {
         final NumberAxis rangeAxis = new NumberAxis("Entropy");
         rangeAxis.setRange(0, 8);
         rangeAxis.setAutoRangeIncludesZero(false);
-        plot = new FastScatterPlot(data, domainAxis, rangeAxis);
+        if(!firstTime){
+        	if(se2.getResults() != null && se3.getResults() != null){
+        		domainAxis.setRange(-5, se1.getResults()[1].length + se2.getResults()[1].length + (se3.getResults()[1].length*1.25));
+        	}else if(se2.getResults() != null){
+        		domainAxis.setRange(-5, se1.getResults()[1].length + (se2.getResults()[1].length*1.25));
+    		} else {
+        		domainAxis.setRange(-5, se1.getResults()[1].length * 1.25);
+        	}
+    		plot = new FastScatterPlot(se1.getResults(), se2.getResults(), se3.getResults(), domainAxis, rangeAxis);
+    		se1 = null;
+    		se2 = null;
+    		se3 = null;
+    	} else {
+    		plot = new FastScatterPlot(data, domainAxis, rangeAxis);
+    		data = null;
+    	}
         
         chart = new JFreeChart("", plot);
         // force aliasing of the rendered content..
@@ -255,31 +274,34 @@ public class GraphPanel extends JPanel {
 	}
 	
 	private void repaintGraph(){
-		data = se.getResults();
-		this.remove(graphPanel);
-		this.revalidate();
-		drawChart();
-		this.repaint();
+		startDrawing++;
+    	if(startDrawing == amountOfThreads){
+    		startDrawing = 0;
+			this.remove(graphPanel);
+			this.revalidate();
+			drawChart(false);
+			this.repaint();
+			if(mkf != null){
+				mkf.setData(se1.getResults(), se2.getResults(), se3.getResults());
+				mkf.start();
+			}
+    	}
 }
 
 	public void startCalculation(boolean writeLogFile) {
 		
-		se = new ShannonEntropy(pathToFile, blockSize);
-		
 		if(writeLogFile){
 			exportOutputToTxt();
 		}
-		se.setOnShannonEntropyEventListener(new OnShannonEntropyEventListener() {
+		
+		se1 = new ShannonEntropy(pathToFile, blockSize, 1, amountOfThreads);
+		se2 = new ShannonEntropy(pathToFile, blockSize, 2, amountOfThreads);
+		se3 = new ShannonEntropy(pathToFile, blockSize, 3, amountOfThreads);
+		se1.setOnShannonEntropyEventListener(new OnShannonEntropyEventListener() {
 
 			@Override
 			public void onWorkerComplete() {
-				
 				repaintGraph();
-				
-				if(mkf != null){
-					mkf.setData(data);
-					mkf.start();
-				}
 			}
 
 			@Override
@@ -288,7 +310,33 @@ public class GraphPanel extends JPanel {
 				progressBar.setString(progress + "% - Calculating Entropy");
 			}
 		});
-		se.start();
+		se2.setOnShannonEntropyEventListener(new OnShannonEntropyEventListener() {
+			
+			@Override
+			public void onWorkerComplete() {
+				repaintGraph();
+			}
+			
+			@Override
+			public void onProgressUpdate(int progress) {
+				//this thread will complete first.
+			}
+		});
+		se3.setOnShannonEntropyEventListener(new OnShannonEntropyEventListener() {
+			
+			@Override
+			public void onWorkerComplete() {
+				repaintGraph();
+			}
+			
+			@Override
+			public void onProgressUpdate(int progress) {
+				//this thread will complete first.
+			}
+		});
+		se1.start();
+		se2.start();
+		se3.start();
 
 	}
 	private void exportOutputToTxt(){
@@ -301,24 +349,6 @@ public class GraphPanel extends JPanel {
 		
 		mkf = new MakeLogFile(exportDirectory.getSelectedFile().getPath(), blockSize);
 	}
-//	/**
-//	 * Populates the data array with values.
-//	 */
-//	private void populateData() {
-//		/*
-//		 * data[0][float] = x 
-//		 * data[1][float] = y
-//		 */
-//		data = new float[2][se.getResults().length];
-//		progressBar.setValue(progressBar.getMinimum());
-//		for (int i = 0; i < se.getResults().length; i++) {
-//			this.data[0][i] = i;
-//			this.data[1][i] = (float) se.getResults()[i];
-//			progressBar.setValue((i * 100) / se.getResults().length);
-//			progressBar.setString(((i * 100) / se.getResults().length) + "% - Processing Data");
-//		}
-////		se.getResults().clear();
-//	}
 
 	public void setHashes() {
 		final HashChecksumGen hcg = new HashChecksumGen();
