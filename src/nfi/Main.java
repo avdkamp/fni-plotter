@@ -172,20 +172,6 @@ public class Main {
 
 				plotFilePanel.setFilePathTextField(file.getAbsolutePath());
 			}
-			
-//			@Override
-//			public void generatePlainTXT(boolean plaintxt){
-//				File f = new File(plotFilePanel.getPathToFile());
-//
-//				if (!plotFilePanel.getPathToFile().isEmpty() && f.exists()) {
-//					graphPanel.setBlockSize(plotFilePanel.getBlockSize());
-//					System.out.println(plotFilePanel.getBlockSize());
-//					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
-//					graphPanel.startCalculation(plaintxt);
-//				}else{
-//					JOptionPane.showMessageDialog(plotFilePanel, "Set a valid path!");
-//				}
-//			}
 		});
 		
 		
