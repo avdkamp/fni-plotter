@@ -124,7 +124,6 @@ public class ExportPanel extends JPanel {
 
 					File checkFile = new File(exportDirectory.getSelectedFile()
 							.getPath() + ".pdf");
-					System.out.println("checkFile: " + checkFile);
 
 					if (checkFile.exists()) {
 						int result = JOptionPane.showConfirmDialog(null,
