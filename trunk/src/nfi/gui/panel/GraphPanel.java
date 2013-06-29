@@ -6,8 +6,6 @@ import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-//import java.text.NumberFormat;
-//import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -23,24 +21,12 @@ import nfi.export.MakeLogFile;
 
 import javax.swing.JProgressBar;
 
-//import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-//import org.jfree.chart.axis.TickUnitSource;
-//import org.jfree.chart.event.ChartProgressEvent;
-//import org.jfree.chart.event.ChartProgressListener;
-//import org.jfree.chart.labels.StandardXYItemLabelGenerator;
-//import org.jfree.chart.labels.XYItemLabelGenerator;
 import org.jfree.chart.plot.FastScatterPlot;
-//import org.jfree.chart.plot.PlotOrientation;
-//import org.jfree.chart.plot.XYPlot;
-//import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-//import org.jfree.data.xy.DefaultXYDataset;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-//import java.awt.event.ActionListener;
-//import java.awt.event.ActionEvent;
 import javax.swing.JLayeredPane;
 
 public class GraphPanel extends JPanel {
@@ -53,7 +39,6 @@ public class GraphPanel extends JPanel {
 	private ShannonEntropy se3;
 	private static final int amountOfThreads = 3;
 	private int startDrawing;
-//	private DefaultXYDataset dataSet;
 	private float[][] data;
 	private int blockSize;
 	private String pathToFile;
@@ -71,11 +56,8 @@ public class GraphPanel extends JPanel {
 	private final JTextField textFieldGetSHA256 = new JTextField("");
 	private final JTextField textFieldGetSHA1 = new JTextField("");
 	private final JTextField textFieldGetMD5 = new JTextField("");
-//	private final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, true);
 	private JLayeredPane layeredPane;
 	private JFreeChart chart;
-//	private NumberAxis domain;
-//	private NumberAxis range;
 	private FastScatterPlot plot;
 	private String filename = "";
 
@@ -185,60 +167,6 @@ public class GraphPanel extends JPanel {
 
 	private void drawChart(boolean firstTime) {
 		
-//		dataSet = new DefaultXYDataset();
-//
-//		chart = ChartFactory.createScatterPlot(null, "data-block", "entropy",
-//				dataSet, PlotOrientation.VERTICAL, false, true, false);
-//
-//		chart.addProgressListener(new ChartProgressListener() {
-//
-//			@Override
-//			public void chartProgress(ChartProgressEvent cpe) {
-//				// only called on drawing finished and started, not really a
-//				// nice progress updatelistener
-//				if (cpe.getType() == ChartProgressEvent.DRAWING_FINISHED) {
-//					progressBar.setString(progressBar.getMaximum()
-//							+ "% - Done Drawing");
-//					progressBar.setValue(progressBar.getMaximum());
-//				} else if (cpe.getType() == ChartProgressEvent.DRAWING_STARTED) {
-//					progressBar.setString(progressBar.getMinimum()
-//							+ "% - Drawing Chart");
-//					progressBar.setValue(progressBar.getMinimum());
-//				} else {
-//					progressBar.setString(cpe.getPercent()
-//							+ "% - Drawing Chart");
-//				}
-//			}
-//
-//		});
-//		// force aliasing of the rendered content..
-//		chart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING,
-//				RenderingHints.VALUE_ANTIALIAS_ON);
-//		chart.setBorderVisible(false);
-//		chart.setBackgroundImageAlpha(100);
-//
-//		plot = (XYPlot) chart.getPlot();
-//		plot.setDomainGridlinesVisible(true);
-//
-//		// set the plot's axes to display integers
-//		TickUnitSource ticks = NumberAxis.createIntegerTickUnits();
-//		domain = (NumberAxis) plot.getDomainAxis();
-//		domain.setStandardTickUnits(ticks);
-//		range = (NumberAxis) plot.getRangeAxis();
-//		range.setRange(0, 8);
-//		
-//
-//		plot.setRenderer(renderer);
-//		renderer.setBaseShapesVisible(true);
-//		renderer.setBaseShapesFilled(true);
-//		// label the points
-//		NumberFormat format = NumberFormat.getNumberInstance();
-//		format.setMaximumFractionDigits(5);
-//		XYItemLabelGenerator generator = new StandardXYItemLabelGenerator(
-//				StandardXYItemLabelGenerator.DEFAULT_ITEM_LABEL_FORMAT, format,
-//				format);
-//		renderer.setBaseItemLabelGenerator(generator);
-		
 		final NumberAxis domainAxis = new NumberAxis("Block");
         domainAxis.setAutoRangeIncludesZero(false);
         final NumberAxis rangeAxis = new NumberAxis("Entropy");
@@ -286,8 +214,8 @@ public class GraphPanel extends JPanel {
 				mkf.start();
 			}
     	}
-}
-
+	}
+	long start;
 	public void startCalculation(boolean writeLogFile) {
 		
 		if(writeLogFile){

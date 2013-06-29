@@ -23,21 +23,15 @@ public class ExportPanel extends JPanel {
 	private OnExportEventListener onExportEventListener;
 
 	private Color CustomColor = new Color(21, 66, 115);
-	// private String[] ImageOptions = {"1024x768", "800x600", "1920x1080"
-	// ,"Screen size"};
 	private final JPanel ExportToPDFpanel = new JPanel();
 	private final JLabel lblExportToPdf = new JLabel(" Export to PDF");
 	private final JLabel lblTitle = new JLabel("Title");
 	private JTextField TitleTextField;
 	private JTextField SINtextField;
 	private final JProgressBar progressBar = new JProgressBar();
-	// private JTextField imageWidthTextField;
-	// private JTextField ImageHeightTextField;
-	// private JTextField textField;
 	private final JCheckBox chckbxHashes;
 	private final JCheckBox chckbxFooter;
 	JButton ExportToPDFbutton = new JButton("Export");
-	// private JTextField textField_1;
 	// TODO: add a go back to graph button
 
 	public ExportPanel() {
@@ -107,6 +101,11 @@ public class ExportPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String title = TitleTextField.getText();
 				String sin = SINtextField.getText();
+				setProgressBar(true, "Exporting is in Progress!", true, false);
+				// Check wether the user selected this feature
+				boolean isHashSelected = chckbxHashes.isSelected();
+				// Check wether the user selected this feature
+				boolean isFooterSelected = chckbxFooter.isSelected();
 
 				if (!(title.equals("") || sin.equals(""))) {
 					String extraInfo = new String();
@@ -135,13 +134,7 @@ public class ExportPanel extends JPanel {
 						switch (result) {
 						case JOptionPane.YES_OPTION:
 							
-							setProgressBar(true, "Exporting is in Progress!", true, false);
 							exportDirectory.approveSelection();
-							// Check wether the user selected this feature
-							boolean isHashSelected = chckbxHashes.isSelected();
-							// Check wether the user selected this feature
-							boolean isFooterSelected = chckbxFooter
-									.isSelected();
 
 							// sin and title are required!!!!!
 
@@ -163,13 +156,7 @@ public class ExportPanel extends JPanel {
 						}
 					} else {
 						
-						setProgressBar(true, "Exporting is in Progress!", true, false);
 						exportDirectory.approveSelection();
-						// Check wether the user selected this feature
-						boolean isHashSelected = chckbxHashes.isSelected();
-						// Check wether the user selected this feature
-						boolean isFooterSelected = chckbxFooter.isSelected();
-
 						// sin and title are required!!!!!
 
 						if (AddInfoTextArea.getText().equals("")) {
@@ -194,97 +181,7 @@ public class ExportPanel extends JPanel {
 		ExportToPDFbutton.setBackground(new Color(21, 66, 115));
 		ExportToPDFbutton.setBounds(441, 203, 109, 33);
 		ExportToPDFpanel.add(ExportToPDFbutton);
-		//
-		//
-		// JLabel ExportToImageLabel = new JLabel(" Export to Image");
-		// ExportToImageLabel.setOpaque(true);
-		// ExportToImageLabel.setForeground(Color.WHITE);
-		// ExportToImageLabel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		// ExportToImageLabel.setBackground(new Color(21, 66, 115));
-		// ExportToImageLabel.setBounds(32, 269, 84, 23);
-		// this.add(ExportToImageLabel);
-		//
-		// JPanel ExportToImagePanel = new JPanel();
-		// ExportToImagePanel.setLayout(null);
-		// ExportToImagePanel.setBorder(new LineBorder(CustomColor));
-		// ExportToImagePanel.setBackground(SystemColor.menu);
-		// ExportToImagePanel.setBounds(10, 280, 417, 182);
-		// this.add(ExportToImagePanel);
-		//
-		// JLabel lblWidth = new JLabel("Width");
-		// lblWidth.setBounds(10, 27, 46, 14);
-		// ExportToImagePanel.add(lblWidth);
-		//
-		// JLabel lblHeight = new JLabel("Height");
-		// lblHeight.setBounds(10, 52, 46, 14);
-		// ExportToImagePanel.add(lblHeight);
-		//
-		// imageWidthTextField = new JTextField();
-		// imageWidthTextField.setBounds(112, 24, 154, 20);
-		// ExportToImagePanel.add(imageWidthTextField);
-		// imageWidthTextField.setColumns(10);
-		//
-		// ImageHeightTextField = new JTextField();
-		// ImageHeightTextField.setBounds(112, 49, 154, 20);
-		// ExportToImagePanel.add(ImageHeightTextField);
-		// ImageHeightTextField.setColumns(10);
-		//
-		//
-		// JComboBox<?> ExportToImageComboBox = new
-		// JComboBox<Object>(ImageOptions);
-		// ExportToImageComboBox.setBounds(112, 80, 154, 20);
-		// ExportToImagePanel.add(ExportToImageComboBox);
-		//
-		// JButton ExportToImageButton = new JButton("Export");
-		// ExportToImageButton.setForeground(Color.WHITE);
-		// ExportToImageButton.setBackground(new Color(21, 66, 115));
-		// ExportToImageButton.setBounds(278, 123, 109, 33);
-		// ExportToImagePanel.add(ExportToImageButton);
-		//
-		// JLabel ExportZoomedImageLabel = new JLabel(" Export Zoomed Image");
-		// ExportZoomedImageLabel.setOpaque(true);
-		// ExportZoomedImageLabel.setForeground(Color.WHITE);
-		// ExportZoomedImageLabel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		// ExportZoomedImageLabel.setBackground(new Color(21, 66, 115));
-		// ExportZoomedImageLabel.setBounds(469, 269, 116, 23);
-		// this.add(ExportZoomedImageLabel);
-		//
-		// JPanel ExportZoomedImagePanel = new JPanel();
-		// ExportZoomedImagePanel.setBorder(new LineBorder(CustomColor));
-		// ExportZoomedImagePanel.setLayout(null);
-		// ExportZoomedImagePanel.setBackground(SystemColor.menu);
-		// ExportZoomedImagePanel.setBounds(447, 280, 417, 182);
-		// this.add(ExportZoomedImagePanel);
-		//
-		// JButton ExportZoomedImageButton = new JButton("Export");
-		// ExportZoomedImageButton.setForeground(Color.WHITE);
-		// ExportZoomedImageButton.setBackground(new Color(21, 66, 115));
-		// ExportZoomedImageButton.setBounds(278, 123, 109, 33);
-		// ExportZoomedImagePanel.add(ExportZoomedImageButton);
-		//
-		//
-		// JComboBox<?> ExportZoomedImageComboBox = new
-		// JComboBox<Object>(ImageOptions);
-		// ExportZoomedImageComboBox.setBounds(112, 80, 154, 20);
-		// ExportZoomedImagePanel.add(ExportZoomedImageComboBox);
-		//
-		// textField = new JTextField();
-		// textField.setColumns(10);
-		// textField.setBounds(112, 49, 154, 20);
-		// ExportZoomedImagePanel.add(textField);
-		//
-		// textField_1 = new JTextField();
-		// textField_1.setColumns(10);
-		// textField_1.setBounds(112, 24, 154, 20);
-		// ExportZoomedImagePanel.add(textField_1);
-		//
-		// JLabel label = new JLabel("Width");
-		// label.setBounds(10, 27, 46, 14);
-		// ExportZoomedImagePanel.add(label);
-		//
-		// JLabel label_1 = new JLabel("Height");
-		// label_1.setBounds(10, 52, 46, 14);
-		// ExportZoomedImagePanel.add(label_1);
+		
 	}
 
 	/**
