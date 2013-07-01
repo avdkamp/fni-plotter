@@ -170,20 +170,17 @@ public class GraphPanel extends JPanel {
 		final NumberAxis domainAxis = new NumberAxis("Block");
         domainAxis.setAutoRangeIncludesZero(false);
         final NumberAxis rangeAxis = new NumberAxis("Entropy");
-        rangeAxis.setRange(0, 8);
+        rangeAxis.setRange(-0.25, 8);
         rangeAxis.setAutoRangeIncludesZero(false);
         if(!firstTime){
         	if(se2.getResults() != null && se3.getResults() != null){
         		domainAxis.setRange(-5, se1.getResults()[1].length + se2.getResults()[1].length + (se3.getResults()[1].length*1.25));
         	}else if(se2.getResults() != null){
-        		domainAxis.setRange(-5, se1.getResults()[1].length + (se2.getResults()[1].length*1.25));
+        		domainAxis.setRange(-5, se1.getResults()[1].length + (se2.getResults()[1].length*1.1));
     		} else {
         		domainAxis.setRange(-5, se1.getResults()[1].length * 1.25);
         	}
     		plot = new FastScatterPlot(se1.getResults(), se2.getResults(), se3.getResults(), domainAxis, rangeAxis);
-    		se1 = null;
-    		se2 = null;
-    		se3 = null;
     	} else {
     		plot = new FastScatterPlot(data, domainAxis, rangeAxis);
     		data = null;
@@ -213,6 +210,9 @@ public class GraphPanel extends JPanel {
 				mkf.setData(se1.getResults(), se2.getResults(), se3.getResults());
 				mkf.start();
 			}
+			se1 = null;
+    		se2 = null;
+    		se3 = null;
     	}
 	}
 	long start;
