@@ -38,7 +38,7 @@ public class Main {
 	private static final HeaderPanel headerPanel = new HeaderPanel();
 	private static final FooterPanel footerPanel = new FooterPanel();
 	private final JLayeredPane layeredPane = new JLayeredPane();
-	private String[] hashes;
+	private String[] hashes = new String[3];
 
 	public static void main(String[] args) throws Exception {
 
@@ -129,8 +129,6 @@ public class Main {
 				graphPanel.setVisible(true);
 			}
 
-			
-			
 		});
 	}
 
@@ -147,7 +145,7 @@ public class Main {
 					graphPanel.setPathToFile(plotFilePanel.getPathToFile());
 					graphPanel.startCalculation(logFileOutput);
 					graphPanel.enableButtons(hashes);
-					if(hashes){
+					if (hashes) {
 						graphPanel.setHashes();
 					}
 					graphPanel.setDotsFilesize(f);
@@ -173,8 +171,7 @@ public class Main {
 				plotFilePanel.setFilePathTextField(file.getAbsolutePath());
 			}
 		});
-		
-		
+
 	}
 
 	private void graphEventListeners() {
@@ -191,9 +188,9 @@ public class Main {
 			}
 		});
 	}
-	
-	
+
 	private BufferedImage objBufferedImage;
+
 	/**
 	 * Call methods for export
 	 */
@@ -203,36 +200,63 @@ public class Main {
 		exportPanel.setBounds(0, 119, 874, 516);
 		layeredPane.add(exportPanel);
 		exportPanel.setOnExportEventListener(new OnExportEventListener() {
-			
+
 			@Override
-			public void exportToPDF(final String title, final String sin, final String extraInfo, boolean isHashSelected, final boolean isFooterSelected, File exportPath, String filename) {
+			public void exportToPDF(final String title, final String sin,
+					final String extraInfo, boolean isHashSelected,
+					final boolean isFooterSelected, File exportPath,
+					String filename) {
 				// Beide velden moeten ingevuld zijn!
 				if (!title.isEmpty() && !sin.isEmpty()) {
 					String path = exportPath.toString() + "\\" + filename;
 					final PdfExport pdf = new PdfExport(path + ".pdf");
 
-					objBufferedImage= graphPanel.getChart().createBufferedImage(500,400);
-					
+					objBufferedImage = graphPanel.getChart()
+							.createBufferedImage(500, 400);
+
 					pdf.setHeader(title);
-					
+
 					if (isHashSelected) {
-						final HashChecksumGen hcg = new HashChecksumGen();
-				    	hcg.GenerateAllHashes(graphPanel.getFilePath());
-				    	hcg.setOnHashCalculationEventListener(new OnHashCalculationEventListener() {
-							@Override
-							public void doneCalculationAllHashes() {
-								hashes = hcg.getAllHashes();
-								exportLastPart(title, sin, extraInfo, pdf, isFooterSelected, graphPanel.getFileName(), graphPanel.getFileSize(), graphPanel.getBlockSize());
-							}
-						});
+						if (graphPanel.getMD5().equals("")) {
+							final HashChecksumGen hcg = new HashChecksumGen();
+							hcg.GenerateAllHashes(graphPanel.getFilePath());
+							hcg.setOnHashCalculationEventListener(new OnHashCalculationEventListener() {
+								@Override
+								public void doneCalculationAllHashes() {
+									hashes = hcg.getAllHashes();
+									exportLastPart(title, sin, extraInfo, pdf,
+											isFooterSelected,
+											graphPanel.getFileName(),
+											graphPanel.getFileSize(),
+											graphPanel.getBlockSize());
+								}
+							});
+						} else {
+							System.out.println("hashes have alrdy been generated");
+							
+							hashes[0] = graphPanel.getMD5();
+							hashes[1] = graphPanel.getSHA1();
+							hashes[2] = graphPanel.getSHA256();
+							
+							System.out.println(hashes[2]);
+							exportLastPart(title, sin, extraInfo, pdf,
+									isFooterSelected, graphPanel.getFileName(),
+									graphPanel.getFileSize(),
+									graphPanel.getBlockSize());
+
+						}
 					} else {
-						hashes = new String[]{"", "", ""};
-						exportLastPart(title, sin, extraInfo, pdf, isFooterSelected, graphPanel.getFileName(), graphPanel.getFileSize(), graphPanel.getBlockSize());
+						hashes = new String[] { "", "", "" };
+						exportLastPart(title, sin, extraInfo, pdf,
+								isFooterSelected, graphPanel.getFileName(),
+								graphPanel.getFileSize(),
+								graphPanel.getBlockSize());
 					}
-				} 
+				}
 			}
 		});
 	}
+
 	/**
 	 * 
 	 * @param title
@@ -243,12 +267,17 @@ public class Main {
 	 * @param filePath
 	 * @param fileSize
 	 */
-	private void exportLastPart(String title, String sin, String extraInfo, PdfExport pdf, boolean isFooterSelected, String filename, String fileSize, int blocksize){
+	private void exportLastPart(String title, String sin, String extraInfo,
+			PdfExport pdf, boolean isFooterSelected, String filename,
+			String fileSize, int blocksize) {
 		// Call the setDocumentContent method with all the
 		// parameters
 		try {
-			//String title, String sin, String extraInfo, boolean isHashSelected, boolean isFooterSelected, File exportPath, String filename
-			pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize, filename, objBufferedImage, blocksize);
+			// String title, String sin, String extraInfo, boolean
+			// isHashSelected, boolean isFooterSelected, File exportPath, String
+			// filename
+			pdf.setDocumentContent(title, sin, extraInfo, hashes, fileSize,
+					filename, objBufferedImage, blocksize);
 
 		} catch (DocumentException e) {
 			e.printStackTrace();
@@ -265,6 +294,7 @@ public class Main {
 		// after this statement.
 		pdf.endDocument();
 		exportPanel.setProgressBar(false, "", false, true);
-		JOptionPane.showMessageDialog(exportPanel, "The PDF has been exported.");
+		JOptionPane
+				.showMessageDialog(exportPanel, "The PDF has been exported.");
 	}
 }
