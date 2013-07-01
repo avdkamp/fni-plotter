@@ -199,6 +199,8 @@ public class GraphPanel extends JPanel {
 			this.revalidate();
 			drawChart(false);
 			this.repaint();
+			progressBar.setValue(100);
+			progressBar.setString("Done");
 			if(mkf != null){
 				mkf.setData(se1.getResults(), se2.getResults(), se3.getResults());
 				mkf.start();
