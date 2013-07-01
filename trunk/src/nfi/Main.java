@@ -209,7 +209,7 @@ public class Main {
 				// Beide velden moeten ingevuld zijn!
 				if (!title.isEmpty() && !sin.isEmpty()) {
 					String path = exportPath.toString() + "\\" + filename;
-					final PdfExport pdf = new PdfExport(path + ".pdf");
+					final PdfExport pdf = new PdfExport(path + "_entropieplot.pdf");
 
 					objBufferedImage = graphPanel.getChart()
 							.createBufferedImage(500, 400);

@@ -123,7 +123,7 @@ public class ExportPanel extends JPanel {
 					File exportPath = exportDirectory.getCurrentDirectory();
 
 					File checkFile = new File(exportDirectory.getSelectedFile()
-							.getPath() + ".pdf");
+							.getPath() + "_entropieplot.pdf");
 
 					if (checkFile.exists()) {
 						int result = JOptionPane.showConfirmDialog(null,
