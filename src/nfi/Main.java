@@ -209,16 +209,23 @@ public class Main {
 				// Beide velden moeten ingevuld zijn!
 				if (!title.isEmpty() && !sin.isEmpty()) {
 					String path = exportPath.toString() + "\\" + filename;
-					final PdfExport pdf = new PdfExport(path + "_entropieplot.pdf");
-
+					File f = new File(path);
+					final PdfExport pdf;
+					if (!f.exists()) {
+						pdf = new PdfExport(path
+								+ "_entropieplot.pdf");
+					} else {
+						pdf = new PdfExport(path);
+					}
 					objBufferedImage = graphPanel.getChart()
 							.createBufferedImage(500, 400);
 
 					pdf.setHeader(title);
 
 					if (isHashSelected) {
-						if (graphPanel.getMD5().equals("")) {
+						if ((graphPanel.getMD5().equals("") || graphPanel.getSHA1().equals("") || graphPanel.getSHA256().equals(""))) {
 							final HashChecksumGen hcg = new HashChecksumGen();
+							System.out.println("empty");
 							hcg.GenerateAllHashes(graphPanel.getFilePath());
 							hcg.setOnHashCalculationEventListener(new OnHashCalculationEventListener() {
 								@Override
@@ -232,12 +239,13 @@ public class Main {
 								}
 							});
 						} else {
-							System.out.println("hashes have alrdy been generated");
-							
+							System.out
+									.println("hashes have alrdy been generated");
+
 							hashes[0] = graphPanel.getMD5();
 							hashes[1] = graphPanel.getSHA1();
 							hashes[2] = graphPanel.getSHA256();
-							
+
 							System.out.println(hashes[2]);
 							exportLastPart(title, sin, extraInfo, pdf,
 									isFooterSelected, graphPanel.getFileName(),

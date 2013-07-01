@@ -125,7 +125,10 @@ public class ExportPanel extends JPanel {
 					File checkFile = new File(exportDirectory.getSelectedFile()
 							.getPath() + "_entropieplot.pdf");
 
-					if (checkFile.exists()) {
+					File path = new File(exportDirectory.getSelectedFile()
+							.getPath());	
+					
+					if ((checkFile.exists() || path.exists())) {
 						int result = JOptionPane.showConfirmDialog(null,
 								"The file exists, overwrite?", "Existing file",
 								JOptionPane.YES_NO_CANCEL_OPTION);
