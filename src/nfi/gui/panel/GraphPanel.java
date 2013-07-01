@@ -205,6 +205,7 @@ public class GraphPanel extends JPanel {
 				mkf.setData(se1.getResults(), se2.getResults(), se3.getResults());
 				mkf.start();
 			}
+			mkf = null;
 			se1 = null;
     		se2 = null;
     		se3 = null;
