@@ -58,16 +58,17 @@ public class ShannonEntropy  extends Thread{
 			// use RandomAccessFile because it supports readFully()
 			RandomAccessFile in = new RandomAccessFile(pathToFile, "r");
 			long maxReadSize = 0;
+			long seek = 0;
 			if((threadNo != 0) && (amountOfThreads != 0)){
 				if(in.length() > actualMaxReadLength){
-					while((in.length()/amountOfThreads) > maxReadSize){
-						maxReadSize += actualMaxReadLength;
+					while((in.length()/amountOfThreads) > seek){
+						seek += actualMaxReadLength;
 					}
-					
-					in.seek((maxReadSize*threadNo) - maxReadSize);
+					maxReadSize = (seek*threadNo) ;
+					in.seek(maxReadSize - seek);
 					if((maxReadSize*threadNo) > in.length()){
-						if((int) (((in.length() - (maxReadSize * threadNo - maxReadSize)) / blockSize)+1) > 0){
-							shannonResults = new float[2][(int) (((in.length() - (maxReadSize * threadNo - maxReadSize)) / blockSize)+1)];
+						if((int) (((in.length() - (maxReadSize - seek)) / blockSize)+1) > 0){
+							shannonResults = new float[2][(int) (((in.length() - (maxReadSize - seek)) / blockSize)+1)];
 							maxReadSize = in.length();
 						} else {
 							in.close();
@@ -76,7 +77,7 @@ public class ShannonEntropy  extends Thread{
 						}
 						
 					} else {
-						shannonResults = new float[2][(int) ((maxReadSize / blockSize) + 1)];
+						shannonResults = new float[2][(int) ((seek / blockSize))];
 					}
 				} else if(!((amountOfThreads - (amountOfThreads - threadNo)) == 1)){
 					in.close();
@@ -88,9 +89,8 @@ public class ShannonEntropy  extends Thread{
 			if(shannonResults == null){
 				in.seek(0L);
 				maxReadSize = in.length();
-				shannonResults = new float[2][(int) ((maxReadSize / blockSize) + 1)];
+				shannonResults = new float[2][(int) ((seek / blockSize) + 1)];
 			}
-			
 			while (in.getFilePointer() < maxReadSize){
 				//makes sure that the amount that is read is 0 when devided with the blocksize
 				// set max read length in bytes, prevents a Perm Space error.
@@ -130,8 +130,8 @@ public class ShannonEntropy  extends Thread{
 					}
 				}
 				//update the progress in %
-				if(!(progress >= (int) ((in.getFilePointer()*100)/maxReadSize))){
-					progress = (int) ((in.getFilePointer()*100)/maxReadSize);
+				if(!(progress >=  (resultTracker*100)/shannonResults[1].length)){
+					progress = (resultTracker*100)/shannonResults[1].length;
 					shannonEntropyEventListener.onProgressUpdate(progress);
 				}
 			}

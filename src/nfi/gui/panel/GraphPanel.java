@@ -173,13 +173,6 @@ public class GraphPanel extends JPanel {
         rangeAxis.setRange(-0.25, 8);
         rangeAxis.setAutoRangeIncludesZero(false);
         if(!firstTime){
-        	if(se2.getResults() != null && se3.getResults() != null){
-        		domainAxis.setRange(-5, se1.getResults()[1].length + se2.getResults()[1].length + (se3.getResults()[1].length*1.25));
-        	}else if(se2.getResults() != null){
-        		domainAxis.setRange(-5, se1.getResults()[1].length + (se2.getResults()[1].length*1.1));
-    		} else {
-        		domainAxis.setRange(-5, se1.getResults()[1].length * 1.25);
-        	}
     		plot = new FastScatterPlot(se1.getResults(), se2.getResults(), se3.getResults(), domainAxis, rangeAxis);
     	} else {
     		plot = new FastScatterPlot(data, domainAxis, rangeAxis);
@@ -234,8 +227,6 @@ public class GraphPanel extends JPanel {
 
 			@Override
 			public void onProgressUpdate(int progress) {
-				progressBar.setValue(progress);
-				progressBar.setString(progress + "% - Calculating Entropy");
 			}
 		});
 		se2.setOnShannonEntropyEventListener(new OnShannonEntropyEventListener() {
@@ -247,7 +238,8 @@ public class GraphPanel extends JPanel {
 			
 			@Override
 			public void onProgressUpdate(int progress) {
-				//this thread will complete first.
+				progressBar.setValue(progress);
+				progressBar.setString(progress + "% - Calculating Entropy");
 			}
 		});
 		se3.setOnShannonEntropyEventListener(new OnShannonEntropyEventListener() {
