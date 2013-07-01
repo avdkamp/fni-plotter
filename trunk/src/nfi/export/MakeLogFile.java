@@ -67,13 +67,9 @@ public class MakeLogFile extends Thread{
 			for (int i = 0; i < data[1].length-1; i++) {
 				output.println(counter++ + " - " + data[1][i]);
 			}
-			System.out.println(data[1].length);
-			System.out.println(data1[1].length);
-			System.out.println(data2[1].length);
 			if(data1 != null){
 				for (int i = 0; i < data1[1].length; i++) {
 					output.println(counter++ + " - " + data1[1][i]);
-					if(data1[1][i] == 0) System.out.println(counter);
 				}
 				if(data2 != null){
 					for (int i = 0; i < data2[1].length; i++) {
