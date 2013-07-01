@@ -61,8 +61,8 @@ public class MakeLogFile extends Thread{
 		try {
 			PrintWriter output = new PrintWriter(new FileWriter(filePath, false));
 			output.println("blocksize# " + blockSize);
-			int counter = 0;
-			for (int i = 0; i < data[1].length-1; i++) {
+			int counter = 1;
+			for (int i = 0; i < data[1].length; i++) {
 				output.println(counter++ + " - " + data[1][i]);
 			}
 			if(data1 != null){
