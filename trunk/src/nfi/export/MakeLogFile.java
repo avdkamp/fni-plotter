@@ -7,8 +7,6 @@ import java.io.PrintWriter;
 
 import javax.swing.JOptionPane;
 
-import com.itextpdf.text.log.SysoLogger;
-
 public class MakeLogFile extends Thread{
 	
 	private String filePath;
