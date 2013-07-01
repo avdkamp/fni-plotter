@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 
 import javax.swing.JOptionPane;
 
+import com.itextpdf.text.log.SysoLogger;
+
 public class MakeLogFile extends Thread{
 	
 	private String filePath;
@@ -61,16 +63,21 @@ public class MakeLogFile extends Thread{
 		try {
 			PrintWriter output = new PrintWriter(new FileWriter(filePath, false));
 			output.println("blocksize# " + blockSize);
-			for (int i = 0; i < data[1].length; i++) {
-				output.println(i + " - " + data[1][i]);
+			int counter = 0;
+			for (int i = 0; i < data[1].length-1; i++) {
+				output.println(counter++ + " - " + data[1][i]);
 			}
+			System.out.println(data[1].length);
+			System.out.println(data1[1].length);
+			System.out.println(data2[1].length);
 			if(data1 != null){
 				for (int i = 0; i < data1[1].length; i++) {
-					output.println(i + " - " + data1[1][i]);
+					output.println(counter++ + " - " + data1[1][i]);
+					if(data1[1][i] == 0) System.out.println(counter);
 				}
 				if(data2 != null){
 					for (int i = 0; i < data2[1].length; i++) {
-						output.println(i + " - " + data2[1][i]);
+						output.println(counter++ + " - " + data2[1][i]);
 					}
 					data2 = null;
 				}

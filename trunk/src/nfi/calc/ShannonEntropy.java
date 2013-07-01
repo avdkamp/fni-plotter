@@ -66,8 +66,15 @@ public class ShannonEntropy  extends Thread{
 					
 					in.seek((maxReadSize*threadNo) - maxReadSize);
 					if((maxReadSize*threadNo) > in.length()){
-						shannonResults = new float[2][(int) (((in.length() - (maxReadSize * threadNo - maxReadSize)) / blockSize) + 1)];
-						maxReadSize = in.length();
+						if((int) (((in.length() - (maxReadSize * threadNo - maxReadSize)) / blockSize)+1) > 0){
+							shannonResults = new float[2][(int) (((in.length() - (maxReadSize * threadNo - maxReadSize)) / blockSize)+1)];
+							maxReadSize = in.length();
+						} else {
+							in.close();
+							shannonEntropyEventListener.onWorkerComplete();
+							return;
+						}
+						
 					} else {
 						shannonResults = new float[2][(int) ((maxReadSize / blockSize) + 1)];
 					}
