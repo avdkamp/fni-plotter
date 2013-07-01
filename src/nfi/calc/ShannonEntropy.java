@@ -50,6 +50,7 @@ public class ShannonEntropy  extends Thread{
 	@Override
 	public void run(){
 		int resultTracker = 0;
+		int counter = 0;
 		int progress= 0;
 		//if this is not null then it is the last block
 		try {
@@ -65,6 +66,7 @@ public class ShannonEntropy  extends Thread{
 						seek += actualMaxReadLength;
 					}
 					maxReadSize = (seek*threadNo) ;
+					resultTracker = ((actualMaxReadLength/512)*threadNo)-(actualMaxReadLength/512);
 					in.seek(maxReadSize - seek);
 					if((maxReadSize*threadNo) > in.length()){
 						if((int) (((in.length() - (maxReadSize - seek)) / blockSize)+1) > 0){
@@ -75,7 +77,6 @@ public class ShannonEntropy  extends Thread{
 							shannonEntropyEventListener.onWorkerComplete();
 							return;
 						}
-						
 					} else {
 						shannonResults = new float[2][(int) ((seek / blockSize))];
 					}
@@ -122,16 +123,16 @@ public class ShannonEntropy  extends Thread{
 				//adds the calculated values to the ArrayList
 				for (int i = 0; i < blockedValues.length; i++) {
 					if(containsLastBlock != 0 && (i == blockedValues.length-1)){
-						shannonResults[0][resultTracker] = resultTracker*threadNo;
-						shannonResults[1][resultTracker++] = entropy(blockedValues[i], containsLastBlock); 
+						shannonResults[0][counter] = resultTracker++;
+						shannonResults[1][counter++] = entropy(blockedValues[i], containsLastBlock); 
 					} else {
-						shannonResults[0][resultTracker] = resultTracker*threadNo;
-						shannonResults[1][resultTracker++] = entropy(blockedValues[i], 0);
+						shannonResults[0][counter] = resultTracker++;
+						shannonResults[1][counter++] = entropy(blockedValues[i], 0);
 					}
 				}
 				//update the progress in %
-				if(!(progress >=  (resultTracker*100)/shannonResults[1].length)){
-					progress = (resultTracker*100)/shannonResults[1].length;
+				if(!(progress >=  (counter*100)/shannonResults[1].length)){
+					progress = (counter*100)/shannonResults[1].length;
 					shannonEntropyEventListener.onProgressUpdate(progress);
 				}
 			}
