@@ -92,11 +92,11 @@ public class PdfExport {
 			topParagraph.add(new Paragraph("Bestandsgegevens", subTitleFont));
 			
 			//Set SIN number
-			topParagraph.add(new Paragraph("SIN nummer :         " + sin, fontFam));
+			topParagraph.add(new Paragraph("SIN nummer: " + sin, fontFam));
 			
 			//Set the fileSize
-			topParagraph.add(new Paragraph("Bestandsgrootte :    " + fileSize, fontFam));
-			topParagraph.add(new Paragraph("Block Size :    " + blocksize, fontFam));
+			topParagraph.add(new Paragraph("Bestandsgrootte: " + fileSize, fontFam));
+			topParagraph.add(new Paragraph("Block Size: " + blocksize, fontFam));
 			
 			//Set the filePath
 			topParagraph.add(new Paragraph("Bestandsnaam: " + filePath, fontFam));
